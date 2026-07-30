@@ -390,8 +390,37 @@ const toast = document.getElementById('toast');
 const translationPanel = document.getElementById('translationPanel');
 const translationContent = document.getElementById('translationContent');
 const STORAGE_PREFIX = 'yongxue_';
-
 let submitted = false;
+
+// ===== 选项打乱 =====
+let shuffles = {};
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateShuffles() {
+  questions.forEach((_, i) => {
+    shuffles[i] = shuffleArray([0, 1, 2, 3]);
+  });
+  localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles));
+}
+
+function loadShuffles() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles'));
+    if (saved && Object.keys(saved).length === questions.length) {
+      shuffles = saved;
+      return;
+    }
+  } catch {}
+  generateShuffles();
+}
 
 function renderTranslation() {
   translationContent.innerHTML = '';
@@ -432,16 +461,17 @@ function renderQuestions() {
     card.className = 'q-card';
     card.id = `q-${i}`;
     const letters = ['A', 'B', 'C', 'D'];
+    const order = shuffles[i] || [0, 1, 2, 3];
     card.innerHTML = `
       <div class="q-header">
         <span class="q-num">${i + 1}</span>
         <span class="q-tag">${q.tag}</span>
       </div>
       <div class="q-text">${q.q}</div>
-      <div class="opts">${q.options.map((opt, oi) =>
+      <div class="opts">${order.map((oi, di) =>
         `<label data-q="${i}" data-opt="${oi}" onclick="selectOption(${i}, ${oi})">
           <input type="radio" name="q${i}" value="${oi}">
-          <span class="opt-letter">${letters[oi]}</span>${opt}</label>`
+          <span class="opt-letter">${letters[di]}</span>${q.options[oi]}</label>`
       ).join('')}</div>
       <div class="explanation" id="exp-${i}">
         <span class="result-tag" id="tag-${i}"></span>
@@ -549,6 +579,7 @@ resetBtn.addEventListener('click', function() {
   localStorage.removeItem(STORAGE_PREFIX + 'answers');
   localStorage.removeItem(STORAGE_PREFIX + 'done');
   localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+  localStorage.removeItem(STORAGE_PREFIX + 'shuffles');
   document.querySelectorAll('.q-card').forEach(c => { c.className = 'q-card'; });
   document.querySelectorAll('.opts label').forEach(l => {
     l.className = ''; const r = l.querySelector('input[type="radio"]'); if (r) r.checked = false;
@@ -560,12 +591,15 @@ resetBtn.addEventListener('click', function() {
   submitBtn.textContent = '📋 提交批改';
   submitBtn.classList.remove('btn-secondary');
   submitBtn.classList.add('btn-primary');
+  generateShuffles();
+  renderQuestions();
   updateProgress();
   scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), 2000); }
 
+loadShuffles();
 renderQuestions();
 const wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'submitted');
 if (wasSubmitted === 'true') { setTimeout(() => { submitted = false; submitBtn.click(); }, 100); }
