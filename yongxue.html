@@ -151,28 +151,43 @@
   .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
   .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
 
-  /* ===== 逐字翻译面板 ===== */
+  /* ===== 逐句精读面板 ===== */
   .translation-panel {
     background: #fff; border-radius: 12px; padding: 18px 18px; margin: 16px 0;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0ebe3; display: none;
   }
   .translation-panel.show { display: block; }
   .translation-panel h3 {
-    font-size: 15px; font-weight: 600; color: #5a3e2b; margin-bottom: 12px;
+    font-size: 15px; font-weight: 600; color: #5a3e2b; margin-bottom: 14px;
     padding-bottom: 8px; border-bottom: 2px solid #f0ebe3;
   }
-  .translation-grid { display: flex; flex-wrap: wrap; gap: 8px 4px; line-height: 2.2; }
-  .translation-word {
-    display: inline-flex; align-items: baseline; gap: 2px; font-size: 13px; color: #555; white-space: nowrap;
+  .sentence-block {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f5f0e8;
   }
-  .translation-word .tw-original { color: #333; font-weight: 500; }
-  .translation-word .tw-arrow { color: #ccc; margin: 0 1px; font-size: 11px; }
-  .translation-word .tw-meaning { color: #888; font-size: 12px; }
-  .translation-word.is-quiz { background: #f5ede2; border-radius: 4px; padding: 0 6px; }
-  .translation-word.is-quiz .tw-original { color: #5a3e2b; font-weight: 700; }
-  .translation-word.is-quiz .tw-meaning { color: #8b5e3c; font-weight: 500; }
-  .translation-word .tw-bracket { color: #c49a6c; font-weight: 400; }
-  .translation-sep { color: #ddd; font-size: 11px; margin: 0 2px; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; padding-left: 0; margin-bottom: 2px; }
+  .s-line .s-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #bbb;
+    min-width: 3.2em;
+    letter-spacing: 1px;
+  }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #8b5e3c; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word {
+    display: inline-block;
+    background: #fdf9f3;
+    border: 1px solid #e8dcc8;
+    border-radius: 4px;
+    padding: 0 8px;
+    margin: 2px 3px 2px 0;
+    font-weight: 500;
+  }
+  .s-line-trans { color: #666; font-size: 13px; }
 
   .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
   .footer .divider { width: 40px; height: 2px; background: #e0d5c5; margin: 0 auto 12px; border-radius: 2px; }
@@ -192,7 +207,7 @@
     .q-card { padding: 14px 14px; }
     .opts label { padding: 9px 12px; font-size: 13px; }
     .result-panel .score-num { font-size: 42px; }
-    .translation-word { font-size: 12px; }
+
   }
   @media (min-width: 600px) {
     body { padding: 20px 0 48px; }
@@ -234,10 +249,10 @@
     <div class="score-comment" id="scoreComment"></div>
   </div>
 
-  <!-- 逐字翻译面板 -->
+  <!-- 逐句精读面板 -->
   <div class="translation-panel" id="translationPanel">
-    <h3>📖 逐字直译</h3>
-    <div class="translation-grid" id="translationGrid"></div>
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
   </div>
 
   <div class="footer">
@@ -312,59 +327,53 @@ const questions = [
     answer: 1, explain: '"咏絮之才"典出谢道韫咏雪之事，后世用来赞誉有文学才华的女子。' }
 ];
 
-// ===== 逐字翻译数据 =====
-// q: true 表示该词是习题字词，会显示为【词：义】
-const translationData = [
-  { t: "谢太傅", m: "谢安" },
-  { t: "寒雪日", m: "寒冷的雪天" },
-  { t: "内集", m: "把家人聚集在一起", q: true },
-  { t: "与", m: "和" },
-  { t: "儿女", m: "子侄辈", q: true },
-  { t: "讲论", m: "讲解谈论" },
-  { t: "文义", m: "文章义理" },
-  { sep: "。" },
-  { t: "俄而", m: "不久", q: true },
-  { t: "雪", m: "雪" },
-  { t: "骤", m: "急", q: true },
-  { t: "公", m: "谢太傅" },
-  { t: "欣然", m: "高兴的样子", q: true },
-  { t: "曰", m: "说" },
-  { sep: "：" },
-  { t: "白雪", m: "白雪" },
-  { t: "纷纷", m: "纷飞的样子" },
-  { t: "何所似", m: "像什么", q: true },
-  { sep: "？" },
-  { t: "兄子", m: "兄长之子" },
-  { t: "胡儿", m: "谢朗（小名）" },
-  { t: "曰", m: "说" },
-  { sep: "：" },
-  { t: "撒盐", m: "撒盐" },
-  { t: "空中", m: "空中" },
-  { t: "差可拟", m: "大体上可以比拟", q: true },
-  { sep: "。" },
-  { t: "兄女", m: "兄长的女儿" },
-  { t: "曰", m: "说" },
-  { sep: "：" },
-  { t: "未若", m: "不如", q: true },
-  { t: "柳絮", m: "柳絮" },
-  { t: "因", m: "乘，趁", q: true },
-  { t: "风", m: "风" },
-  { t: "起", m: "飞起" },
-  { sep: "。" },
-  { t: "公", m: "谢太傅" },
-  { t: "大笑", m: "大笑" },
-  { t: "乐", m: "高兴" },
-  { sep: "。" },
-  { t: "即", m: "就是", q: true },
-  { t: "公大兄", m: "谢安的大哥" },
-  { t: "无奕", m: "谢无奕" },
-  { t: "女", m: "女儿" },
-  { sep: "，" },
-  { t: "左将军", m: "左将军" },
-  { t: "王凝之", m: "王凝之（王羲之之子）" },
-  { t: "妻", m: "妻子" },
-  { t: "也", m: "（判断语气）" },
-  { sep: "。" }
+// ===== 逐句精读数据 =====
+const sentenceData = [
+  {
+    original: "谢太傅寒雪日内集，与儿女讲论文义。",
+    notes: [
+      { word: "内集", meaning: "把家人聚集在一起" },
+      { word: "儿女", meaning: "子侄辈" }
+    ],
+    trans: "谢安在寒冷的雪天把家人聚集在一起，和子侄辈讲解谈论文章义理。"
+  },
+  {
+    original: "俄而雪骤，公欣然曰：\"白雪纷纷何所似？\"",
+    notes: [
+      { word: "俄而", meaning: "不久" },
+      { word: "骤", meaning: "急" },
+      { word: "欣然", meaning: "高兴的样子" },
+      { word: "何所似", meaning: "像什么" }
+    ],
+    trans: "不久雪下得紧了，谢太傅高兴地说：\"白雪纷纷扬扬像什么？\""
+  },
+  {
+    original: "兄子胡儿曰：\"撒盐空中差可拟。\"",
+    notes: [
+      { word: "差可拟", meaning: "大体上可以比拟" }
+    ],
+    trans: "他哥哥的儿子胡儿说：\"在空中撒盐大体可以比拟。\""
+  },
+  {
+    original: "兄女曰：\"未若柳絮因风起。\"",
+    notes: [
+      { word: "未若", meaning: "不如" },
+      { word: "因", meaning: "乘，趁" }
+    ],
+    trans: "他哥哥的女儿说：\"不如比作柳絮乘风飞起。\""
+  },
+  {
+    original: "公大笑乐。",
+    notes: [],
+    trans: "谢太傅大笑，非常高兴。"
+  },
+  {
+    original: "即公大兄无奕女，左将军王凝之妻也。",
+    notes: [
+      { word: "即", meaning: "就是" }
+    ],
+    trans: "（她）就是谢安的大哥谢无奕的女儿，左将军王凝之的妻子。"
+  }
 ];
 
 const container = document.getElementById('questionsContainer');
@@ -379,31 +388,40 @@ const resultStars = document.getElementById('resultStars');
 const scoreComment = document.getElementById('scoreComment');
 const toast = document.getElementById('toast');
 const translationPanel = document.getElementById('translationPanel');
-const translationGrid = document.getElementById('translationGrid');
+const translationContent = document.getElementById('translationContent');
 const STORAGE_PREFIX = 'yongxue_';
 
 let submitted = false;
 
 function renderTranslation() {
-  translationGrid.innerHTML = '';
-  translationData.forEach(item => {
-    if (item.sep) {
-      const sep = document.createElement('span');
-      sep.className = 'translation-sep';
-      sep.textContent = item.sep;
-      translationGrid.appendChild(sep);
-      return;
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div');
+    block.className = 'sentence-block';
+
+    const orig = document.createElement('div');
+    orig.className = 's-line s-line-original';
+    orig.innerHTML = '<span class="s-label">原文</span>' + s.original;
+
+    block.appendChild(orig);
+
+    if (s.notes.length > 0) {
+      const notes = document.createElement('div');
+      notes.className = 's-line s-line-notes';
+      let html = '<span class="s-label">注释</span>';
+      html += s.notes.map(n =>
+        '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>'
+      ).join('');
+      notes.innerHTML = html;
+      block.appendChild(notes);
     }
-    const el = document.createElement('span');
-    el.className = 'translation-word' + (item.q ? ' is-quiz' : '');
-    let html = '';
-    if (item.q) {
-      html = `<span class="tw-bracket">【</span><span class="tw-original">${item.t}</span><span class="tw-arrow">：</span><span class="tw-meaning">${item.m}</span><span class="tw-bracket">】</span>`;
-    } else {
-      html = `<span class="tw-original">${item.t}</span><span class="tw-arrow">→</span><span class="tw-meaning">${item.m}</span>`;
-    }
-    el.innerHTML = html;
-    translationGrid.appendChild(el);
+
+    const trans = document.createElement('div');
+    trans.className = 's-line s-line-trans';
+    trans.innerHTML = '<span class="s-label">译文</span>' + s.trans;
+    block.appendChild(trans);
+
+    translationContent.appendChild(block);
   });
 }
 
