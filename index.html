@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>¹âµãĞ¡ÛÓÎÄÑÔÎÄÑ¡ÔñÌâ</title>
+<title>å…‰ç‚¹å°å£¬æ–‡è¨€æ–‡é€‰æ‹©é¢˜</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -14,67 +14,36 @@
     line-height: 1.8;
   }
   .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
-
   .banner {
     background: linear-gradient(135deg, #3d2b1a 0%, #8b5e3c 100%);
-    color: #fff;
-    text-align: center;
-    padding: 40px 20px 30px;
-    margin-bottom: 20px;
+    color: #fff; text-align: center; padding: 40px 20px 30px; margin-bottom: 20px;
   }
   .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
   .banner .badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 20px;
-    padding: 3px 16px;
-    font-size: 12px;
-    margin-top: 10px;
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 3px 16px; font-size: 12px; margin-top: 10px;
   }
-
   .tree-section { margin-bottom: 20px; }
-  .tree-node { margin: 1px 0; }
   .tree-folder {
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px;
     font-size: 14px; font-weight: 600; color: #5a3e2b;
     cursor: pointer; user-select: none; transition: background 0.15s;
   }
   .tree-folder:hover { background: #f0ebe3; }
-  .tree-folder .arrow {
-    font-size: 10px; color: #c4a87c; transition: transform 0.2s;
-    display: inline-block; width: 14px;
-  }
+  .tree-folder .arrow { font-size: 10px; color: #c4a87c; transition: transform 0.2s; display: inline-block; width: 14px; }
   .tree-folder .arrow.open { transform: rotate(90deg); }
   .tree-folder .folder-icon { font-size: 16px; }
   .tree-folder .count { font-size: 11px; color: #b3926f; font-weight: 400; margin-left: auto; }
-  .tree-children {
-    padding-left: 20px; overflow: hidden;
-    max-height: 0; transition: max-height 0.3s ease;
-  }
+  .tree-children { padding-left: 20px; overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
   .tree-children.open { max-height: 1000px; }
-  .tree-quiz {
-    display: flex; align-items: center; gap: 8px;
-    padding: 5px 10px; border-radius: 6px;
-    font-size: 13px; color: #555; text-decoration: none; transition: background 0.15s;
-  }
+  .tree-quiz { display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 6px; font-size: 13px; color: #555; text-decoration: none; transition: background 0.15s; }
   .tree-quiz:hover { background: #f0ebe3; color: #3d2b1a; }
   .tree-quiz .q-icon { font-size: 14px; }
   .tree-quiz .q-title { flex: 1; }
   .tree-quiz .q-count { font-size: 11px; color: #b3926f; }
-  .tree-empty { padding: 4px 10px; font-size: 12px; color: #ccc; font-style: italic; }
-
-  .section-title {
-    font-size: 15px; font-weight: 600; color: #5a3e2b;
-    padding-bottom: 8px; border-bottom: 2px solid #e0d5c5; margin: 20px 0 14px;
-  }
-  .quiz-card {
-    background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0ebe3;
-    display: flex; align-items: center; gap: 14px;
-    text-decoration: none; color: inherit; transition: all 0.2s;
-  }
+  .section-title { font-size: 15px; font-weight: 600; color: #5a3e2b; padding-bottom: 8px; border-bottom: 2px solid #e0d5c5; margin: 20px 0 14px; }
+  .quiz-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0ebe3; display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; transition: all 0.2s; }
   .quiz-card:hover { border-color: #c4a87c; box-shadow: 0 3px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
   .quiz-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .quiz-icon.green { background: #e8f5e9; }
@@ -83,179 +52,75 @@
   .quiz-info .meta { font-size: 12px; color: #999; margin-top: 2px; }
   .quiz-info .meta span { display: inline-block; background: #f0ebe3; border-radius: 4px; padding: 0 6px; margin-right: 4px; font-size: 11px; color: #8b7355; }
   .quiz-arrow { font-size: 18px; color: #c4a87c; }
-
-  .empty-state { text-align: center; padding: 40px 20px; color: #bbb; font-size: 14px; }
-  .empty-state .big-icon { font-size: 48px; margin-bottom: 12px; }
-
   .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
   .footer .divider { width: 40px; height: 2px; background: #e0d5c5; margin: 0 auto 12px; border-radius: 2px; }
-
-  @media (max-width: 400px) {
-    .banner { padding: 30px 14px 22px; }
-    .banner h1 { font-size: 19px; }
-    .quiz-card { padding: 14px 14px; }
-  }
-  @media (min-width: 600px) {
-    body { padding: 20px 0 48px; }
-    .container { padding: 0 20px; }
-    .banner { border-radius: 16px; margin: 0 14px 20px; }
-  }
+  @media (max-width: 400px) { .banner { padding: 30px 14px 22px; } .banner h1 { font-size: 19px; } .quiz-card { padding: 14px 14px; } }
+  @media (min-width: 600px) { body { padding: 20px 0 48px; } .container { padding: 0 20px; } .banner { border-radius: 16px; margin: 0 14px 20px; } }
 </style>
 </head>
 <body>
-
 <div class="container">
-
   <div class="banner">
-    <h1>”9Ş8 ¹âµãĞ¡ÛÓÎÄÑÔÎÄÑ¡ÔñÌâ</h1>
-    <span class="badge" id="quizCount">¼ÓÔØÖĞ¡­</span>
+    <h1>ğŸ“– å…‰ç‚¹å°å£¬æ–‡è¨€æ–‡é€‰æ‹©é¢˜</h1>
+    <span class="badge" id="quizCount">åŠ è½½ä¸­â€¦</span>
   </div>
-
   <div id="treeContainer" class="tree-section"></div>
-
-  <div class="section-title">”9ß5 È«²¿×Ô²â</div>
+  <div class="section-title">ğŸ“ å…¨éƒ¨è‡ªæµ‹</div>
   <div id="quizList"></div>
-
   <div class="footer">
     <div class="divider"></div>
-    <p>”9ß2 <strong>¹âµãĞ¡ÛÓ</strong> ¡¤ ×¨×¢ÓïÎÄÑ§Ï°ÇáÁ¿»¯¡¢ÈÕ³£»¯</p>
+    <p>ğŸ“š <strong>å…‰ç‚¹å°å£¬</strong> &middot; ä¸“æ³¨è¯­æ–‡å­¦ä¹ è½»é‡åŒ–ã€æ—¥å¸¸åŒ–</p>
   </div>
 </div>
-
 <script>
 const quizzes = [
-  {
-    title: "¡¶ÊØÖê´ıÍÃ¡·¾«¶Á×Ô²â",
-    path: "shouzhudai.html",
-    questions: 12,
-    icon: "”9¶0",
-    iconClass: "brown",
-    desc: "¡¶º«·Ç×Ó¡¤Îåó¼¡·",
-    category: "¿ÎÄÚ¹ÅÎÄ/¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§/¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ÈıÄê¼¶"
-  },
-  {
-    title: "¡¶Ë¾Âí¹â¡·¾«¶Á×Ô²â",
-    path: "simaguang.html",
-    questions: 12,
-    icon: "•0ã5",
-    iconClass: "green",
-    desc: "¡¶ËÎÊ·¡¤Ë¾Âí¹â´«¡·",
-    category: "¿ÎÄÚ¹ÅÎÄ/¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§/¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ÈıÄê¼¶"
-  },
-  {
-    title: "¡¶Ó½Ñ©¡·¾«¶Á×Ô²â",
-    path: "yongxue.html",
-    questions: 17,
-    icon: "7Â6„1‚5",
-    iconClass: "green",
-    desc: "¡¶ÊÀËµĞÂÓï¡·¶şÔò",
-    category: "¿ÎÄÚ¹ÅÎÄ/¿ÎÄÚ¹ÅÎÄ-³õÖĞ/¿ÎÄÚ¹ÅÎÄ-³õÖĞ-ÆßÉÏ"
-  }
+  { title: 'ã€Šå®ˆæ ªå¾…å…”ã€‹ç²¾è¯»è‡ªæµ‹', path: 'shouzhudai.html', questions: 12, icon: 'ğŸŒ¾', iconClass: 'brown', desc: 'ã€ŠéŸ©éå­Â·äº”è«ã€‹', category: 'è¯¾å†…å¤æ–‡/è¯¾å†…å¤æ–‡-å°å­¦/è¯¾å†…å¤æ–‡-å°å­¦-ä¸‰å¹´çº§' },
+  { title: 'ã€Šå¸é©¬å…‰ã€‹ç²¾è¯»è‡ªæµ‹', path: 'simaguang.html', questions: 12, icon: 'ğŸ§±', iconClass: 'green', desc: 'ã€Šå®‹å²Â·å¸é©¬å…‰ä¼ ã€‹', category: 'è¯¾å†…å¤æ–‡/è¯¾å†…å¤æ–‡-å°å­¦/è¯¾å†…å¤æ–‡-å°å­¦-ä¸‰å¹´çº§' },
+  { title: 'ã€Šå’é›ªã€‹ç²¾è¯»è‡ªæµ‹', path: 'yongxue.html', questions: 17, icon: 'â„ï¸', iconClass: 'green', desc: 'ã€Šä¸–è¯´æ–°è¯­ã€‹äºŒåˆ™', category: 'è¯¾å†…å¤æ–‡/è¯¾å†…å¤æ–‡-åˆä¸­/è¯¾å†…å¤æ–‡-åˆä¸­-ä¸ƒä¸Š' }
 ];
-
 const treeStructure = {
-  "¿ÎÄÚ¹ÅÎÄ": {
-    "¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§": [
-      "¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ÈıÄê¼¶",
-      "¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ËÄÄê¼¶",
-      "¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ÎåÄê¼¶",
-      "¿ÎÄÚ¹ÅÎÄ-Ğ¡Ñ§-ÁùÄê¼¶"
-    ],
-    "¿ÎÄÚ¹ÅÎÄ-³õÖĞ": [
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-ÆßÉÏ",
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-ÆßÏÂ",
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-°ËÉÏ",
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-°ËÏÂ",
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-¾ÅÉÏ",
-      "¿ÎÄÚ¹ÅÎÄ-³õÖĞ-¾ÅÏÂ"
-    ]
+  "è¯¾å†…å¤æ–‡": {
+    "è¯¾å†…å¤æ–‡-å°å­¦": ["è¯¾å†…å¤æ–‡-å°å­¦-ä¸‰å¹´çº§", "è¯¾å†…å¤æ–‡-å°å­¦-å››å¹´çº§", "è¯¾å†…å¤æ–‡-å°å­¦-äº”å¹´çº§", "è¯¾å†…å¤æ–‡-å°å­¦-å…­å¹´çº§"],
+    "è¯¾å†…å¤æ–‡-åˆä¸­": ["è¯¾å†…å¤æ–‡-åˆä¸­-ä¸ƒä¸Š", "è¯¾å†…å¤æ–‡-åˆä¸­-ä¸ƒä¸‹", "è¯¾å†…å¤æ–‡-åˆä¸­-å…«ä¸Š", "è¯¾å†…å¤æ–‡-åˆä¸­-å…«ä¸‹", "è¯¾å†…å¤æ–‡-åˆä¸­-ä¹ä¸Š", "è¯¾å†…å¤æ–‡-åˆä¸­-ä¹ä¸‹"]
   }
 };
-
-const quizList = document.getElementById('quizList');
-const quizCount = document.getElementById('quizCount');
-const treeContainer = document.getElementById('treeContainer');
-
+const ql = document.getElementById('quizList');
+const qc = document.getElementById('quizCount');
+const tc = document.getElementById('treeContainer');
 function buildFullTree() {
   const root = { children: {} };
-  quizzes.forEach((q, idx) => {
-    const parts = q.category.split('/');
-    let node = root;
-    parts.forEach(part => {
-      if (!node.children[part]) { node.children[part] = { name: part, children: {}, items: [] }; }
-      node = node.children[part];
-    });
-    node.items.push(idx);
-  });
-  function ensurePath(pathParts) {
-    let node = root;
-    pathParts.forEach(part => {
-      if (!node.children[part]) { node.children[part] = { name: part, children: {}, items: [] }; }
-      node = node.children[part];
-    });
-    return node;
-  }
-  Object.keys(treeStructure).forEach(l1 => {
-    Object.keys(treeStructure[l1]).forEach(l2 => {
-      ensurePath([l1, l2]);
-      treeStructure[l1][l2].forEach(l3 => { ensurePath([l1, l2, l3]); });
-    });
-  });
+  quizzes.forEach((q, idx) => { let n = root; q.category.split('/').forEach(p => { if (!n.children[p]) n.children[p] = { name: p, children: {}, items: [] }; n = n.children[p]; }); n.items.push(idx); });
+  function ep(parts) { let n = root; parts.forEach(p => { if (!n.children[p]) n.children[p] = { name: p, children: {}, items: [] }; n = n.children[p]; }); return n; }
+  Object.keys(treeStructure).forEach(l1 => { Object.keys(treeStructure[l1]).forEach(l2 => { ep([l1, l2]); treeStructure[l1][l2].forEach(l3 => ep([l1, l2, l3])); }); });
   return root;
 }
-
-function countDescendantItems(node) {
-  let count = node.items.length;
-  Object.values(node.children).forEach(c => { count += countDescendantItems(c); });
-  return count;
-}
-
-function renderTree(node, container, depth) {
-  const names = Object.keys(node.children).sort();
-  names.forEach(name => {
-    const child = node.children[name];
-    const itemCount = child.items.length + countDescendantItems(child);
-    const hasChildren = Object.keys(child.children).length > 0 || child.items.length > 0;
-    if (!hasChildren) return;
-    const wrap = document.createElement('div');
-    wrap.className = 'tree-node';
-    const folder = document.createElement('div');
-    folder.className = 'tree-folder';
-    folder.style.paddingLeft = (10 + depth * 4) + 'px';
-    const arrow = document.createElement('span'); arrow.className = 'arrow'; arrow.textContent = '7œ4'; folder.appendChild(arrow);
-    const icon = document.createElement('span'); icon.className = 'folder-icon'; icon.textContent = '”9Ü8'; folder.appendChild(icon);
-    const label = document.createElement('span'); label.textContent = name; folder.appendChild(label);
-    const cnt = document.createElement('span'); cnt.className = 'count'; cnt.textContent = itemCount + ' Ìâ'; folder.appendChild(cnt);
-    const childrenDiv = document.createElement('div'); childrenDiv.className = 'tree-children';
-    child.items.forEach(idx => {
-      const q = quizzes[idx];
-      const link = document.createElement('a'); link.className = 'tree-quiz'; link.href = q.path;
-      link.style.paddingLeft = (10 + (depth + 1) * 4) + 'px';
-      link.innerHTML = '<span class="q-icon">' + q.icon + '</span><span class="q-title">' + q.title + '</span><span class="q-count">' + q.questions + 'Ìâ</span>';
-      childrenDiv.appendChild(link);
-    });
-    if (Object.keys(child.children).length > 0) { renderTree(child, childrenDiv, depth + 1); }
-    if (depth <= 1) { childrenDiv.classList.add('open'); arrow.classList.add('open'); }
-    folder.addEventListener('click', function(e) { e.stopPropagation(); childrenDiv.classList.toggle('open'); arrow.classList.toggle('open'); });
-    wrap.appendChild(folder); wrap.appendChild(childrenDiv);
-    container.appendChild(wrap);
+function cdi(n) { let c = n.items.length; Object.values(n.children).forEach(x => c += cdi(x)); return c; }
+function renderTree(n, container, depth) {
+  Object.keys(n.children).sort().forEach(name => {
+    const ch = n.children[name]; const ic = ch.items.length + cdi(ch);
+    const hc = Object.keys(ch.children).length > 0 || ch.items.length > 0;
+    if (!hc) return;
+    const w = document.createElement('div'); w.className = 'tree-node';
+    const f = document.createElement('div'); f.className = 'tree-folder'; f.style.paddingLeft = (10 + depth * 4) + 'px';
+    const a = document.createElement('span'); a.className = 'arrow'; a.textContent = 'â–¶'; f.appendChild(a);
+    const i = document.createElement('span'); i.className = 'folder-icon'; i.textContent = 'ğŸ“‚'; f.appendChild(i);
+    const l = document.createElement('span'); l.textContent = name; f.appendChild(l);
+    const c = document.createElement('span'); c.className = 'count'; c.textContent = ic + ' é¢˜'; f.appendChild(c);
+    const cd = document.createElement('div'); cd.className = 'tree-children';
+    ch.items.forEach(idx => { const q = quizzes[idx]; const link = document.createElement('a'); link.className = 'tree-quiz'; link.href = q.path; link.style.paddingLeft = (10 + (depth + 1) * 4) + 'px'; link.innerHTML = '<span class="q-icon">' + q.icon + '</span><span class="q-title">' + q.title + '</span><span class="q-count">' + q.questions + 'é¢˜</span>'; cd.appendChild(link); });
+    if (Object.keys(ch.children).length > 0) renderTree(ch, cd, depth + 1);
+    if (depth <= 1) { cd.classList.add('open'); a.classList.add('open'); }
+    f.addEventListener('click', function(e) { e.stopPropagation(); cd.classList.toggle('open'); a.classList.toggle('open'); });
+    w.appendChild(f); w.appendChild(cd); container.appendChild(w);
   });
 }
-
 function renderCards() {
-  quizCount.textContent = '¹² ' + quizzes.length + ' Ì××Ô²âÌâ';
-  if (quizzes.length === 0) { quizList.innerHTML = '<div class="empty-state"><div class="big-icon">”9ß2</div><p>×Ô²âÌâ×¼±¸ÖĞ£¬¾´ÇëÆÚ´ı¡­¡­</p></div>'; return; }
-  quizList.innerHTML = '';
-  quizzes.forEach(q => {
-    const card = document.createElement('a'); card.className = 'quiz-card'; card.href = q.path;
-    card.innerHTML = '<div class="quiz-icon ' + q.iconClass + '">' + q.icon + '</div><div class="quiz-info"><h3>' + q.title + '</h3><div class="meta"><span>' + q.questions + ' Ìâ</span>' + (q.desc || '') + '</div></div><div class="quiz-arrow">6§9</div>';
-    quizList.appendChild(card);
-  });
+  qc.textContent = 'å…± ' + quizzes.length + ' å¥—è‡ªæµ‹é¢˜';
+  if (!quizzes.length) { ql.innerHTML = '<div class="empty-state"><div class="big-icon">ğŸ“š</div><p>è‡ªæµ‹é¢˜å‡†å¤‡ä¸­ï¼Œæ•¬è¯·æœŸå¾…â€¦â€¦</p></div>'; return; }
+  ql.innerHTML = '';
+  quizzes.forEach(q => { const card = document.createElement('a'); card.className = 'quiz-card'; card.href = q.path; card.innerHTML = '<div class="quiz-icon ' + q.iconClass + '">' + q.icon + '</div><div class="quiz-info"><h3>' + q.title + '</h3><div class="meta"><span>' + q.questions + ' é¢˜</span>' + (q.desc || '') + '</div></div><div class="quiz-arrow">â€º</div>'; ql.appendChild(card); });
 }
-
-const tree = buildFullTree();
-renderTree(tree, treeContainer, 0);
-renderCards();
+const tree = buildFullTree(); renderTree(tree, tc, 0); renderCards();
 </script>
 </body>
 </html>
