@@ -15,16 +15,14 @@
   }
   .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
 
-  /* ===== 顶部 ===== */
   .banner {
     background: linear-gradient(135deg, #5a3e2b 0%, #8b5e3c 100%);
     color: #fff;
     text-align: center;
-    padding: 36px 20px 28px;
-    margin-bottom: 18px;
+    padding: 28px 20px 22px;
   }
   .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
-  .banner p { font-size: 13px; opacity: 0.8; margin-top: 6px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
   .banner .badge {
     display: inline-block;
     background: rgba(255,255,255,0.15);
@@ -32,22 +30,37 @@
     border-radius: 20px;
     padding: 2px 14px;
     font-size: 11px;
-    margin-top: 10px;
+    margin-top: 8px;
   }
-  .banner .original {
-    background: rgba(255,255,255,0.08);
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-top: 14px;
-    font-size: 14px;
-    line-height: 2;
-    text-align: left;
-    font-family: inherit;
-    color: #f0e6d8;
-  }
-  .banner .original strong { color: #fff; }
 
-  /* ===== 进度条 ===== */
+  /* ===== 原文面板（吸顶） ===== */
+  .sticky-original {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #5a3e2b;
+    color: #e8dcc8;
+    padding: 10px 16px;
+    font-size: 13px;
+    line-height: 1.9;
+    max-height: 30vh;
+    overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong {
+    color: #d4b896;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .sticky-original u {
+    text-decoration: none;
+    border-bottom: 1.5px dotted #d4b896;
+    padding-bottom: 1px;
+  }
+
   .progress-bar-wrap {
     background: #ede7dd;
     border-radius: 10px;
@@ -62,14 +75,8 @@
     transition: width 0.3s;
     width: 0%;
   }
-  .progress-text {
-    text-align: center;
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 10px;
-  }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
 
-  /* ===== 题卡 ===== */
   .q-card {
     background: #fff;
     border-radius: 12px;
@@ -77,288 +84,148 @@
     margin-bottom: 12px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     border: 1px solid #f0ebe3;
-    transition: opacity 0.2s;
   }
   .q-card.correct { border-left: 4px solid #4caf50; }
   .q-card.wrong   { border-left: 4px solid #e53935; }
 
-  .q-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
   .q-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    background: #5a3e2b;
-    color: #fff;
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: 600;
-    flex-shrink: 0;
-    margin-top: 2px;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 24px; height: 24px; background: #5a3e2b; color: #fff;
+    border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px;
   }
-  .q-tag {
-    font-size: 11px;
-    color: #b3926f;
-    background: #f5efe7;
-    border-radius: 4px;
-    padding: 0 8px;
-    margin-left: 4px;
-    white-space: nowrap;
-  }
-  .q-text {
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.7;
-    margin-bottom: 8px;
-  }
-  .q-text .highlight {
-    color: #8b5e3c;
-    font-weight: 600;
-  }
-  .q-text .inline-quote {
-    color: #8b5e3c;
-    font-style: italic;
-  }
+  .q-tag { font-size: 11px; color: #b3926f; background: #f5efe7; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #8b5e3c; font-weight: 600; }
 
-  /* ===== 选项 ===== */
   .opts { margin-top: 4px; }
   .opts label {
-    display: block;
-    padding: 10px 14px;
-    margin: 5px 0;
-    border-radius: 8px;
-    border: 1.5px solid #e8e0d3;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
+    display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px;
+    border: 1.5px solid #e8e0d3; font-size: 14px; cursor: pointer; transition: all 0.15s;
   }
   .opts label:hover { border-color: #c4a87c; background: #fdf9f3; }
   .opts label.selected { border-color: #8b5e3c; background: #f5ede2; }
   .opts label.disabled { pointer-events: none; opacity: 0.85; }
-
-  .opts label.show-correct {
-    border-color: #4caf50;
-    background: #e8f5e9;
-  }
-  .opts label.show-wrong {
-    border-color: #e53935;
-    background: #fce4ec;
-  }
-
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
   .opts input[type="radio"] { display: none; }
 
   .opt-letter {
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    border-radius: 50%;
-    background: #f0ebe3;
-    font-size: 12px;
-    font-weight: 600;
-    margin-right: 8px;
-    color: #666;
-    transition: all 0.15s;
+    display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center;
+    border-radius: 50%; background: #f0ebe3; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666;
   }
-  .opts label.selected .opt-letter {
-    background: #8b5e3c;
-    color: #fff;
-  }
-  .opts label.show-correct .opt-letter {
-    background: #4caf50;
-    color: #fff;
-  }
-  .opts label.show-wrong .opt-letter {
-    background: #e53935;
-    color: #fff;
-  }
+  .opts label.selected .opt-letter { background: #8b5e3c; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
 
-  /* ===== 解析区 ===== */
   .explanation {
-    margin-top: 8px;
-    padding: 10px 14px;
-    background: #faf7f0;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.8;
-    display: none;
-    color: #555;
+    margin-top: 8px; padding: 10px 14px; background: #faf7f0; border-radius: 8px;
+    font-size: 13px; line-height: 1.8; display: none; color: #555;
   }
   .explanation.show { display: block; }
   .explanation strong { color: #5a3e2b; }
-  .explanation .result-tag {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 0 8px;
-    border-radius: 4px;
-    margin-right: 6px;
-  }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
   .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
   .result-tag.wrong-tag  { background: #fce4ec; color: #c62828; }
 
-  /* ===== 按钮组 ===== */
-  .btn-bar {
-    text-align: center;
-    margin: 28px 0 12px;
-  }
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
   .btn {
-    display: inline-block;
-    padding: 14px 40px;
-    border-radius: 28px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin: 4px 6px;
-    font-family: inherit;
+    display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px;
+    font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit;
   }
-  .btn-primary {
-    background: linear-gradient(135deg, #8b5e3c, #5a3e2b);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(90,62,43,0.3);
-  }
+  .btn-primary { background: linear-gradient(135deg, #8b5e3c, #5a3e2b); color: #fff; box-shadow: 0 2px 8px rgba(90,62,43,0.3); }
   .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(90,62,43,0.35); }
-  .btn-primary:active { transform: translateY(0); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .btn-secondary {
-    background: #fff;
-    color: #5a3e2b;
-    border: 2px solid #c4a87c;
-  }
+  .btn-secondary { background: #fff; color: #5a3e2b; border: 2px solid #c4a87c; }
   .btn-secondary:hover { background: #f5efe7; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
 
-  .btn-small {
-    padding: 8px 20px;
-    font-size: 13px;
-    border-radius: 20px;
-  }
-
-  /* ===== 成绩面板 ===== */
   .result-panel {
-    background: linear-gradient(135deg, #5a3e2b, #8b5e3c);
-    color: #fff;
-    border-radius: 16px;
-    padding: 28px 20px;
-    margin: 24px 0 16px;
-    text-align: center;
-    display: none;
+    background: linear-gradient(135deg, #5a3e2b, #8b5e3c); color: #fff; border-radius: 16px;
+    padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none;
   }
   .result-panel.show { display: block; }
-  .result-panel .score-num {
-    font-size: 52px;
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  .result-panel .score-label {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-top: 2px;
-  }
-  .result-panel .score-comment {
-    font-size: 15px;
-    margin-top: 12px;
-    opacity: 0.95;
-  }
-  .result-panel .score-detail {
-    font-size: 13px;
-    margin-top: 8px;
-    opacity: 0.7;
-  }
-  .result-stars {
-    font-size: 28px;
-    margin-top: 8px;
-    letter-spacing: 4px;
-  }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
 
-  /* ===== 底部 ===== */
-  .footer {
-    text-align: center;
-    padding: 30px 0 10px;
-    font-size: 12px;
-    color: #bbb;
+  /* ===== 逐字翻译面板 ===== */
+  .translation-panel {
+    background: #fff; border-radius: 12px; padding: 18px 18px; margin: 16px 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0ebe3; display: none;
   }
-  .footer .divider {
-    width: 40px;
-    height: 2px;
-    background: #e0d5c5;
-    margin: 0 auto 12px;
-    border-radius: 2px;
+  .translation-panel.show { display: block; }
+  .translation-panel h3 {
+    font-size: 15px; font-weight: 600; color: #5a3e2b; margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 2px solid #f0ebe3;
   }
+  .translation-grid { display: flex; flex-wrap: wrap; gap: 8px 4px; line-height: 2.2; }
+  .translation-word {
+    display: inline-flex; align-items: baseline; gap: 2px; font-size: 13px; color: #555; white-space: nowrap;
+  }
+  .translation-word .tw-original { color: #333; font-weight: 500; }
+  .translation-word .tw-arrow { color: #ccc; margin: 0 1px; font-size: 11px; }
+  .translation-word .tw-meaning { color: #888; font-size: 12px; }
+  .translation-word.is-quiz { background: #f5ede2; border-radius: 4px; padding: 0 6px; }
+  .translation-word.is-quiz .tw-original { color: #5a3e2b; font-weight: 700; }
+  .translation-word.is-quiz .tw-meaning { color: #8b5e3c; font-weight: 500; }
+  .translation-word .tw-bracket { color: #c49a6c; font-weight: 400; }
+  .translation-sep { color: #ddd; font-size: 11px; margin: 0 2px; }
 
-  /* ===== Toast ===== */
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e0d5c5; margin: 0 auto 12px; border-radius: 2px; }
+
   .toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: #fff;
-    padding: 10px 24px;
-    border-radius: 20px;
-    font-size: 13px;
-    z-index: 999;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    white-space: nowrap;
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: #333; color: #fff; padding: 10px 24px; border-radius: 20px;
+    font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; white-space: nowrap;
   }
   .toast.show { opacity: 1; }
 
-  /* ===== 响应式 ===== */
   @media (max-width: 400px) {
-    .banner { padding: 28px 14px 22px; }
+    .banner { padding: 24px 14px 18px; }
     .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 12px; padding: 8px 12px; max-height: 25vh; }
     .q-card { padding: 14px 14px; }
     .opts label { padding: 9px 12px; font-size: 13px; }
     .result-panel .score-num { font-size: 42px; }
+    .translation-word { font-size: 12px; }
   }
-
   @media (min-width: 600px) {
     body { padding: 20px 0 48px; }
     .container { padding: 0 20px; }
-    .banner { border-radius: 16px; margin: 0 14px 18px; }
+    .banner, .sticky-original { border-radius: 0; }
   }
 </style>
 </head>
 <body>
 
+<div class="banner">
+  <h1>📖 《咏雪》精读自测</h1>
+  <p>部编版七年级上册 · 《世说新语》二则</p>
+  <span class="badge">20 道选择题 · 测测你对这篇古文掌握得怎样</span>
+</div>
+
+<!-- 原文面板（吸顶） -->
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 谢太傅寒雪日<u>内集</u>，与<u>儿女</u>讲论文义。<u>俄而</u>雪<u>骤</u>，公<u>欣然</u>曰："白雪纷纷<u>何所似</u>？"兄子胡儿曰："撒盐空中<u>差可拟</u>。"兄女曰："<u>未若</u>柳絮<u>因</u>风起。"公大笑乐。<u>即</u>公大兄无奕女，左将军王凝之妻也。
+</div>
+
 <div class="container">
 
-  <!-- 横幅 -->
-  <div class="banner">
-    <h1>📖 《咏雪》精读自测</h1>
-    <p>部编版七年级上册 · 《世说新语》二则</p>
-    <span class="badge">20 道选择题 · 测测你对这篇古文掌握得怎样</span>
-    <div class="original">
-      <strong>原文：</strong>谢太傅寒雪日内集，与儿女讲论文义。俄而雪骤，公欣然曰："白雪纷纷何所似？"兄子胡儿曰："撒盐空中差可拟。"兄女曰："未若柳絮因风起。"公大笑乐。即公大兄无奕女，左将军王凝之妻也。
-    </div>
-  </div>
-
-  <!-- 进度 -->
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
   <div class="progress-text" id="progressText">已答 0 / 20 题</div>
 
-  <!-- 题目区 -->
   <div id="questionsContainer"></div>
 
-  <!-- 按钮 -->
   <div class="btn-bar">
     <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
     <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
   </div>
 
-  <!-- 成绩面板 -->
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
@@ -367,172 +234,139 @@
     <div class="score-comment" id="scoreComment"></div>
   </div>
 
-  <!-- 底部 -->
+  <!-- 逐字翻译面板 -->
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐字直译</h3>
+    <div class="translation-grid" id="translationGrid"></div>
+  </div>
+
   <div class="footer">
     <div class="divider"></div>
     <p>📚 关注公众号 · 获取更多古文精读自测</p>
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== 《咏雪》题库 · 20题 =====
 const questions = [
-  // 文学常识
-  {
-    tag: "文学常识",
-    q: '《咏雪》选自哪部著作？',
+  { tag: "文学常识", q: '《咏雪》选自哪部著作？',
     options: ["《世说新语》", "《聊斋志异》", "《资治通鉴》", "《战国策》"],
-    answer: 0,
-    explain: '《咏雪》选自《世说新语·言语》，该书由南朝宋刘义庆组织文人编纂，主要记载东汉后期到魏晋名士的言行与逸事。'
-  },
-  {
-    tag: "文学常识",
-    q: '《世说新语》是由谁组织编纂的？',
+    answer: 0, explain: '《咏雪》选自《世说新语·言语》，由南朝宋刘义庆组织文人编纂。' },
+  { tag: "文学常识", q: '《世说新语》是由谁组织编纂的？',
     options: ["刘禹锡", "刘义庆", "司马光", "蒲松龄"],
-    answer: 1,
-    explain: '《世说新语》由南朝宋刘义庆（武帝之侄）组织门下文人编纂而成。刘禹锡是唐代诗人，司马光编《资治通鉴》，蒲松龄作《聊斋志异》。'
-  },
-  {
-    tag: "文学常识",
-    q: '"谢太傅"指的是谁？',
+    answer: 1, explain: '《世说新语》由南朝宋刘义庆组织门下文人编纂而成。' },
+  { tag: "文学常识", q: '"谢太傅"指的是谁？',
     options: ["谢玄", "谢安", "谢灵运", "谢朓"],
-    answer: 1,
-    explain: '"谢太傅"指谢安，东晋名相，死后追赠太傅。"太傅"是官名，文中以官职称呼，表示尊敬。'
-  },
-  // 字词释义
-  {
-    tag: "字词释义",
-    q: '"寒雪日内集"中"<span class="highlight">内集</span>"的意思是？',
+    answer: 1, explain: '"谢太傅"指谢安，东晋名相，死后追赠太傅。' },
+  { tag: "字词释义", q: '"寒雪日内集"中"<span class="highlight">内集</span>"的意思是？',
     options: ["内部集会", "把家人聚集在一起", "在室内集中", "内部收集"],
-    answer: 1,
-    explain: '"内集"意为"把家人聚集在一起"。"内"指家人、内部，"集"为聚集。'
-  },
-  {
-    tag: "字词释义",
-    q: '"与儿女讲论文义"中"<span class="highlight">儿女</span>"的意思是？',
+    answer: 1, explain: '"内集"意为"把家人聚集在一起"，"内"指家人。' },
+  { tag: "字词释义", q: '"与儿女讲论文义"中"<span class="highlight">儿女</span>"的意思是？',
     options: ["儿子和女儿", "子侄辈（泛指家中晚辈）", "儿子", "女儿"],
-    answer: 1,
-    explain: '课下注释："儿女"指"子侄辈"，即家中晚辈。不仅指谢安自己的儿女，也包括侄子谢朗（胡儿）和侄女谢道韫。'
-  },
-  {
-    tag: "字词释义",
-    q: '"<span class="highlight">俄而</span>雪骤"中"俄而"的意思是？',
+    answer: 1, explain: '课下注释："儿女"指"子侄辈"，即家中晚辈。' },
+  { tag: "字词释义", q: '"<span class="highlight">俄而</span>雪骤"中"俄而"的意思是？',
     options: ["突然", "不久，一会儿", "渐渐地", "慢慢地"],
-    answer: 1,
-    explain: '"俄而"表示时间短暂，意为"不久，一会儿"。类似的词还有"俄顷""少顷""未几"等。'
-  },
-  {
-    tag: "字词释义",
-    q: '"俄而雪<span class="highlight">骤</span>"中"骤"的意思是？',
+    answer: 1, explain: '"俄而"表示时间短暂，意为"不久，一会儿"。' },
+  { tag: "字词释义", q: '"俄而雪<span class="highlight">骤</span>"中"骤"的意思是？',
     options: ["快速", "急，紧（雪下得大而急）", "突然", "奔跑"],
-    answer: 1,
-    explain: '"骤"此处意为"急"，指雪下得又大又急，而不是"突然"（"俄而"已表"不久"义）。'
-  },
-  {
-    tag: "字词释义",
-    q: '"公欣然曰"中"<span class="highlight">欣然</span>"的意思是？',
+    answer: 1, explain: '"骤"此处意为"急"，指雪下得又大又急。' },
+  { tag: "字词释义", q: '"公欣然曰"中"<span class="highlight">欣然</span>"的意思是？',
     options: ["高兴的样子", "生气地", "平静地", "严肃地"],
-    answer: 0,
-    explain: '"欣然"是形容词，意为"高兴的样子"。"然"是词尾，表示"……的样子"，如"忽然""悠然""黯然"。'
-  },
-  {
-    tag: "字词释义",
-    q: '"白雪纷纷何所似"中"<span class="highlight">何所似</span>"的意思是？',
+    answer: 0, explain: '"欣然"意为"高兴的样子"。"然"是词尾，表示"……的样子"。' },
+  { tag: "字词释义", q: '"白雪纷纷何所似"中"<span class="highlight">何所似</span>"的意思是？',
     options: ["像什么", "为什么相似", "多么相似", "怎样相似"],
-    answer: 0,
-    explain: '"何所似"即"所似者何"，意思是"像什么"。"何"为疑问代词"什么"，"似"为"像"。'
-  },
-  {
-    tag: "字词释义",
-    q: '"撒盐空中差可拟"中"<span class="highlight">差可拟</span>"的意思是？',
+    answer: 0, explain: '"何所似"即"像什么"，"何"为疑问代词"什么"。' },
+  { tag: "字词释义", q: '"撒盐空中差可拟"中"<span class="highlight">差可拟</span>"的意思是？',
     options: ["大体上可以比拟", "差别很大", "差一点就能比", "差别可以忽略"],
-    answer: 0,
-    explain: '课下注释："差可拟"意为"大体上可以比拟"。"差"读chā，意为"大体、差不多"；"拟"为"比拟、相比"。'
-  },
-  {
-    tag: "字词释义",
-    q: '"未若柳絮因风起"中"<span class="highlight">未若</span>"的意思是？',
+    answer: 0, explain: '课下注释："差可拟"意为"大体上可以比拟"。' },
+  { tag: "字词释义", q: '"未若柳絮因风起"中"<span class="highlight">未若</span>"的意思是？',
     options: ["不如", "不像", "没有像", "未能"],
-    answer: 0,
-    explain: '"未若"意为"不如"。"未"表否定，"若"是"像、如"。谢道韫说：不如比作柳絮乘风飞起。'
-  },
-  {
-    tag: "字词释义",
-    q: '"未若柳絮<span class="highlight">因</span>风起"中"因"的意思是？',
+    answer: 0, explain: '"未若"意为"不如"。谢道韫说：不如比作柳絮乘风飞起。' },
+  { tag: "字词释义", q: '"未若柳絮<span class="highlight">因</span>风起"中"因"的意思是？',
     options: ["因为", "乘，趁", "原因", "顺着"],
-    answer: 1,
-    explain: '"因"在此处意为"乘、趁"，即"柳絮趁着风势飞起"。与《核舟记》中"罔不因势象形"的"因"（顺着）相近。'
-  },
-  {
-    tag: "字词释义",
-    q: '即公大兄无奕女"中"<span class="highlight">即</span>"的意思是？',
+    answer: 1, explain: '"因"在此处意为"乘、趁"，即"柳絮趁着风势飞起"。' },
+  { tag: "字词释义", q: '即公大兄无奕女"中"<span class="highlight">即</span>"的意思是？',
     options: ["立即", "就是", "既然", "即使"],
-    answer: 1,
-    explain: '"即"意为"就是"。这句话是说：（她）就是谢安大哥谢无奕的女儿，左将军王凝之的妻子。'
-  },
-  // 内容理解
-  {
-    tag: "内容理解",
-    q: '谢太傅对两个比喻的反应是——',
+    answer: 1, explain: '"即"意为"就是"。' },
+  { tag: "内容理解", q: '谢太傅对两个比喻的反应是——',
     options: ["未明确表态", "「大笑乐」，非常高兴", "比较后认为柳絮更好", "两个都否定了"],
-    answer: 1,
-    explain: '文中写道"公大笑乐"——谢安听了两人的回答后大笑，十分快乐。这个反应含蓄地表现了他对谢道韫的回答更为欣赏。'
-  },
-  {
-    tag: "内容理解",
-    q: '文章最后一句交代谢道韫的<span class="highlight">身份</span>，作者的用意是？',
+    answer: 1, explain: '文中写道"公大笑乐"，含蓄地表现了他对谢道韫的回答更为欣赏。' },
+  { tag: "内容理解", q: '文章最后一句交代谢道韫的<span class="highlight">身份</span>，作者的用意是？',
     options: ["补充说明家庭关系", "暗示对谢道韫才气的赞赏", "介绍王凝之的背景", "交待故事结局"],
-    answer: 1,
-    explain: '末句点明谢道韫是谢无奕的女儿、王凝之的妻子，是侧面交代其身份，含蓄表达了作者对她咏絮之才的赞赏。这也是"咏絮之才"典故的由来。'
-  },
-  {
-    tag: "内容理解",
-    q: '谢太傅对于两个比喻，只是"大笑乐"而未明确评判优劣，这样写的好处是？',
+    answer: 1, explain: '末句含蓄表达了作者对谢道韫咏絮之才的赞赏。' },
+  { tag: "内容理解", q: '谢太傅对于两个比喻，只是"大笑乐"而未明确评判优劣，这样写的好处是？',
     options: ["说明谢太傅也不知道哪个更好", "含蓄地让读者自行品味高下，使文章余味无穷", "说明谢太傅两种比喻都不满意", "为了增加故事的悬念"],
-    answer: 1,
-    explain: '谢安"大笑乐"而未直接评判，这是高明的写法——让读者在对比中自己体会谢道韫"柳絮因风起"的妙处，含蓄隽永，余味无穷。这也是本文作为"言语"名篇的精彩之处。'
-  },
-  // 句子理解与修辞
-  {
-    tag: "句子理解",
-    q: '"撒盐空中"作比喻，主要抓住了雪的什么特点？',
+    answer: 1, explain: '谢安"大笑乐"而未直接评判，让读者在对比中自己体会谢道韫的妙处，含蓄隽永。' },
+  { tag: "句子理解", q: '"撒盐空中"作比喻，主要抓住了雪的什么特点？',
     options: ["轻盈飘逸", "颜色洁白和颗粒感", "冰冷刺骨", "纷纷扬扬"],
-    answer: 1,
-    explain: '"撒盐空中"抓住了雪的颜色洁白和下落时如盐粒般的质感。但不足之处是盐粒沉重下落快，少了雪花轻盈飘逸的神韵。'
-  },
-  {
-    tag: "句子理解",
-    q: '"柳絮因风起"作比喻，主要抓住了雪的什么特点？',
+    answer: 1, explain: '"撒盐空中"抓住了雪的颜色洁白和如盐粒般的质感。' },
+  { tag: "句子理解", q: '"柳絮因风起"作比喻，主要抓住了雪的什么特点？',
     options: ["颜色洁白", "轻盈飘逸、随风飞扬", "寒冷", "晶莹剔透"],
-    answer: 1,
-    explain: '"柳絮因风起"以春日柳絮喻冬日飞雪，既写出了雪花轻盈飘逸的姿态，又暗含冬去春来的美好联想，意境更胜一筹。'
-  },
-  {
-    tag: "句子理解",
-    q: '以下对两个比喻的赏析，<b>不正确</b>的是？',
-    options: [
-      '"撒盐空中"更贴近雪的色泽和下落形态',
-      '"柳絮因风起"比"撒盐空中"更有诗意和韵味',
-      '"柳絮因风起"是春天的事物，用来比喻雪不合适',
-      '两个比喻各有特色，但历来更推崇谢道韫的比喻'
-    ],
-    answer: 2,
-    explain: '恰恰相反，"柳絮因风起"以春景喻冬景，既写出雪的轻盈，又给人以春天即将到来的联想，正因其巧妙而备受推崇。"咏絮之才"的典故就源于此。'
-  },
-  // 综合
-  {
-    tag: "综合",
-    q: '后人常用"<span class="highlight">咏絮之才</span>"来赞美什么？',
+    answer: 1, explain: '"柳絮因风起"写出了雪花轻盈飘逸的姿态，意境更胜一筹。' },
+  { tag: "句子理解", q: '以下对两个比喻的赏析，<b>不正确</b>的是？',
+    options: ['"撒盐空中"更贴近雪的色泽和下落形态', '"柳絮因风起"比"撒盐空中"更有诗意和韵味', '"柳絮因风起"是春天的事物，用来比喻雪不合适', '两个比喻各有特色，但历来更推崇谢道韫的比喻'],
+    answer: 2, explain: '"柳絮因风起"以春景喻冬景，正因其巧妙而备受推崇。' },
+  { tag: "综合", q: '后人常用"<span class="highlight">咏絮之才</span>"来赞美什么？',
     options: ["擅长写诗的人", "有文才的女子", "擅长画画的人", "善于辩论的人"],
-    answer: 1,
-    explain: '"咏絮之才"典出谢道韫咏雪之事，后世用来赞誉有文学才华的女子。《红楼梦》中林黛玉的判词"堪怜咏絮才"即用此典。'
-  }
+    answer: 1, explain: '"咏絮之才"典出谢道韫咏雪之事，后世用来赞誉有文学才华的女子。' }
 ];
 
-// ===== DOM 引用 =====
+// ===== 逐字翻译数据 =====
+// q: true 表示该词是习题字词，会显示为【词：义】
+const translationData = [
+  { t: "谢太傅", m: "谢安" },
+  { t: "寒雪日", m: "寒冷的雪天" },
+  { t: "内集", m: "把家人聚集在一起", q: true },
+  { t: "与", m: "和" },
+  { t: "儿女", m: "子侄辈", q: true },
+  { t: "讲论", m: "讲解谈论" },
+  { t: "文义", m: "文章义理" },
+  { sep: "。" },
+  { t: "俄而", m: "不久", q: true },
+  { t: "雪", m: "雪" },
+  { t: "骤", m: "急", q: true },
+  { t: "公", m: "谢太傅" },
+  { t: "欣然", m: "高兴的样子", q: true },
+  { t: "曰", m: "说" },
+  { sep: "：" },
+  { t: "白雪", m: "白雪" },
+  { t: "纷纷", m: "纷飞的样子" },
+  { t: "何所似", m: "像什么", q: true },
+  { sep: "？" },
+  { t: "兄子", m: "兄长之子" },
+  { t: "胡儿", m: "谢朗（小名）" },
+  { t: "曰", m: "说" },
+  { sep: "：" },
+  { t: "撒盐", m: "撒盐" },
+  { t: "空中", m: "空中" },
+  { t: "差可拟", m: "大体上可以比拟", q: true },
+  { sep: "。" },
+  { t: "兄女", m: "兄长的女儿" },
+  { t: "曰", m: "说" },
+  { sep: "：" },
+  { t: "未若", m: "不如", q: true },
+  { t: "柳絮", m: "柳絮" },
+  { t: "因", m: "乘，趁", q: true },
+  { t: "风", m: "风" },
+  { t: "起", m: "飞起" },
+  { sep: "。" },
+  { t: "公", m: "谢太傅" },
+  { t: "大笑", m: "大笑" },
+  { t: "乐", m: "高兴" },
+  { sep: "。" },
+  { t: "即", m: "就是", q: true },
+  { t: "公大兄", m: "谢安的大哥" },
+  { t: "无奕", m: "谢无奕" },
+  { t: "女", m: "女儿" },
+  { sep: "，" },
+  { t: "左将军", m: "左将军" },
+  { t: "王凝之", m: "王凝之（王羲之之子）" },
+  { t: "妻", m: "妻子" },
+  { t: "也", m: "（判断语气）" },
+  { sep: "。" }
+];
+
 const container = document.getElementById('questionsContainer');
 const submitBtn = document.getElementById('submitBtn');
 const resetBtn = document.getElementById('resetBtn');
@@ -544,108 +378,94 @@ const correctCountEl = document.getElementById('correctCount');
 const resultStars = document.getElementById('resultStars');
 const scoreComment = document.getElementById('scoreComment');
 const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationGrid = document.getElementById('translationGrid');
+const STORAGE_PREFIX = 'yongxue_';
 
 let submitted = false;
 
-// ===== 渲染题目 =====
+function renderTranslation() {
+  translationGrid.innerHTML = '';
+  translationData.forEach(item => {
+    if (item.sep) {
+      const sep = document.createElement('span');
+      sep.className = 'translation-sep';
+      sep.textContent = item.sep;
+      translationGrid.appendChild(sep);
+      return;
+    }
+    const el = document.createElement('span');
+    el.className = 'translation-word' + (item.q ? ' is-quiz' : '');
+    let html = '';
+    if (item.q) {
+      html = `<span class="tw-bracket">【</span><span class="tw-original">${item.t}</span><span class="tw-arrow">：</span><span class="tw-meaning">${item.m}</span><span class="tw-bracket">】</span>`;
+    } else {
+      html = `<span class="tw-original">${item.t}</span><span class="tw-arrow">→</span><span class="tw-meaning">${item.m}</span>`;
+    }
+    el.innerHTML = html;
+    translationGrid.appendChild(el);
+  });
+}
+
 function renderQuestions() {
   container.innerHTML = '';
   questions.forEach((q, i) => {
     const card = document.createElement('div');
     card.className = 'q-card';
     card.id = `q-${i}`;
-
     const letters = ['A', 'B', 'C', 'D'];
-
-    let headerHTML = `
+    card.innerHTML = `
       <div class="q-header">
         <span class="q-num">${i + 1}</span>
         <span class="q-tag">${q.tag}</span>
       </div>
       <div class="q-text">${q.q}</div>
-    `;
-
-    let optsHTML = '<div class="opts">';
-    q.options.forEach((opt, oi) => {
-      optsHTML += `
-        <label data-q="${i}" data-opt="${oi}" onclick="selectOption(${i}, ${oi})">
+      <div class="opts">${q.options.map((opt, oi) =>
+        `<label data-q="${i}" data-opt="${oi}" onclick="selectOption(${i}, ${oi})">
           <input type="radio" name="q${i}" value="${oi}">
-          <span class="opt-letter">${letters[oi]}</span>
-          ${opt}
-        </label>
-      `;
-    });
-    optsHTML += '</div>';
-
-    const explainHTML = `
+          <span class="opt-letter">${letters[oi]}</span>${opt}</label>`
+      ).join('')}</div>
       <div class="explanation" id="exp-${i}">
         <span class="result-tag" id="tag-${i}"></span>
-        <strong>解析：</strong>${q.explain}
-      </div>
-    `;
-
-    card.innerHTML = headerHTML + optsHTML + explainHTML;
+        <strong>解析：</strong>${q.explain}</div>`;
     container.appendChild(card);
   });
 }
 
-// ===== 选择选项 =====
 function selectOption(qIdx, optIdx) {
   if (submitted) return;
-
-  const labels = document.querySelectorAll(`label[data-q="${qIdx}"]`);
-  labels.forEach(l => l.classList.remove('selected'));
-  labels[optIdx].classList.add('selected');
-
-  // 存答案
+  document.querySelectorAll(`label[data-q="${qIdx}"]`).forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector(`label[data-q="${qIdx}"][data-opt="${optIdx}"]`);
+  if (label) label.classList.add('selected');
   const answers = getStoredAnswers();
   answers[qIdx] = optIdx;
-  localStorage.setItem('yongxue_answers', JSON.stringify(answers));
-
-  // 存已答
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
   const done = getAnswered();
-  if (!done.includes(qIdx)) {
-    done.push(qIdx);
-    localStorage.setItem('yongxue_done', JSON.stringify(done));
-  }
-
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
   updateProgress();
   checkSubmitReady();
 }
 
-function getStoredAnswers() {
-  try { return JSON.parse(localStorage.getItem('yongxue_answers')) || {}; } catch { return {}; }
-}
-function getAnswered() {
-  try { return JSON.parse(localStorage.getItem('yongxue_done')) || []; } catch { return []; }
-}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
 
-// ===== 从存储恢复 =====
 function restoreFromStorage() {
   const answers = getStoredAnswers();
   const answered = getAnswered();
   if (!answered.length) return;
-
   Object.keys(answers).forEach(k => {
-    const idx = parseInt(k);
-    const opt = answers[k];
-    const labels = document.querySelectorAll(`label[data-q="${idx}"]`);
-    if (labels[opt]) {
-      labels[opt].classList.add('selected');
-      const radio = labels[opt].querySelector('input[type="radio"]');
-      if (radio) radio.checked = true;
-    }
+    const idx = parseInt(k), opt = answers[k];
+    const label = document.querySelector(`label[data-q="${idx}"][data-opt="${opt}"]`);
+    if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; }
   });
   updateProgress();
   checkSubmitReady();
 }
 
-// ===== 进度 =====
 function updateProgress() {
   const done = getAnswered().length;
   const total = questions.length;
-  const pct = Math.round((done / total) * 100);
-  progressFill.style.width = Math.min(pct, 100) + '%';
+  progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%';
   progressText.textContent = `已答 ${done} / ${total} 题`;
 }
 
@@ -653,63 +473,39 @@ function checkSubmitReady() {
   const done = getAnswered().length;
   const total = questions.length;
   submitBtn.disabled = done < total;
-  if (done === total) {
-    submitBtn.textContent = '📋 提交批改';
-  } else {
-    submitBtn.textContent = `📋 提交批改（还差 ${total - done} 题）`;
-  }
+  submitBtn.textContent = done === total ? '📋 提交批改' : `📋 提交批改（还差 ${total - done} 题）`;
 }
 
-// ===== 提交 =====
 submitBtn.addEventListener('click', function() {
   if (submitted) return;
-  if (submitBtn.disabled) {
-    showToast('请先完成所有题目再提交');
-    return;
-  }
-
+  if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
   submitted = true;
   const answers = getStoredAnswers();
   let correct = 0;
-  const wrongList = [];
-
   questions.forEach((q, i) => {
     const userAns = answers[i];
     const isCorrect = userAns === q.answer;
     if (isCorrect) correct++;
-
     const card = document.getElementById(`q-${i}`);
     card.classList.add(isCorrect ? 'correct' : 'wrong');
-
-    const labels = document.querySelectorAll(`label[data-q="${i}"]`);
-    labels.forEach(l => l.classList.add('disabled'));
-
-    // 标正确答案
-    const correctLabel = document.querySelector(`label[data-q="${i}"][data-opt="${q.answer}"]`);
-    if (correctLabel) correctLabel.classList.add('show-correct');
-
-    // 标用户错误
+    document.querySelectorAll(`label[data-q="${i}"]`).forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector(`label[data-q="${i}"][data-opt="${q.answer}"]`);
+    if (cl) cl.classList.add('show-correct');
     if (!isCorrect && userAns !== undefined) {
-      const wrongLabel = document.querySelector(`label[data-q="${i}"][data-opt="${userAns}"]`);
-      if (wrongLabel) wrongLabel.classList.add('show-wrong');
+      const wl = document.querySelector(`label[data-q="${i}"][data-opt="${userAns}"]`);
+      if (wl) wl.classList.add('show-wrong');
     }
-
-    // 显示解析
     const exp = document.getElementById(`exp-${i}`);
     exp.classList.add('show');
     const tag = document.getElementById(`tag-${i}`);
     tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag';
     tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
   });
-
-  // 成绩面板
   resultPanel.classList.add('show');
   scoreNum.textContent = `${correct}/${questions.length}`;
   correctCountEl.textContent = correct;
-
   const pct = correct / questions.length;
-  let stars = '';
-  let comment = '';
+  let stars = '', comment = '';
   if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 《咏雪》大师级！你是古文达人！'; }
   else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很扎实！再巩固一下错题就完美了。'; }
   else if (pct >= 0.6) { stars = '⭐⭐⭐'; comment = '💪 基础不错，建议对照课下注释再复习一遍。'; }
@@ -717,76 +513,45 @@ submitBtn.addEventListener('click', function() {
   else { stars = '⭐'; comment = '🔄 建议先熟读课文和课下注释，再回来挑战！'; }
   resultStars.textContent = stars;
   scoreComment.textContent = comment;
-
   submitBtn.disabled = true;
   submitBtn.textContent = '✅ 已批改';
   submitBtn.classList.add('btn-secondary');
   submitBtn.classList.remove('btn-primary');
 
-  // 滚动到成绩
-  setTimeout(() => {
-    resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 200);
+  renderTranslation();
+  translationPanel.classList.add('show');
 
-  localStorage.setItem('yongxue_submitted', 'true');
+  setTimeout(() => { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
 });
 
-// ===== 重置 =====
 resetBtn.addEventListener('click', function() {
-  if (submitted) {
-    if (!confirm('重新答题将清除当前成绩，确定吗？')) return;
-  }
-
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
   submitted = false;
-  localStorage.removeItem('yongxue_answers');
-  localStorage.removeItem('yongxue_done');
-  localStorage.removeItem('yongxue_submitted');
-
-  const cards = document.querySelectorAll('.q-card');
-  cards.forEach(c => { c.className = 'q-card'; });
-
-  const labels = document.querySelectorAll('.opts label');
-  labels.forEach(l => {
-    l.className = '';
-    const radio = l.querySelector('input[type="radio"]');
-    if (radio) radio.checked = false;
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+  document.querySelectorAll('.q-card').forEach(c => { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(l => {
+    l.className = ''; const r = l.querySelector('input[type="radio"]'); if (r) r.checked = false;
   });
-
-  const expls = document.querySelectorAll('.explanation');
-  expls.forEach(e => e.classList.remove('show'));
-
+  document.querySelectorAll('.explanation').forEach(e => e.classList.remove('show'));
+  translationPanel.classList.remove('show');
   resultPanel.classList.remove('show');
-
   submitBtn.disabled = true;
   submitBtn.textContent = '📋 提交批改';
   submitBtn.classList.remove('btn-secondary');
   submitBtn.classList.add('btn-primary');
-
   updateProgress();
   scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ===== Toast =====
-function showToast(msg) {
-  toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => toast.classList.remove('show'), 2000);
-}
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), 2000); }
 
-// ===== 初始化 =====
 renderQuestions();
-
-// 恢复之前提交状态
-const wasSubmitted = localStorage.getItem('yongxue_submitted');
-if (wasSubmitted === 'true') {
-  setTimeout(() => {
-    submitted = false;
-    submitBtn.click();
-  }, 100);
-} else {
-  restoreFromStorage();
-}
+const wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'submitted');
+if (wasSubmitted === 'true') { setTimeout(() => { submitted = false; submitBtn.click(); }, 100); }
+else { restoreFromStorage(); }
 </script>
 </body>
 </html>
