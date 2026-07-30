@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>光点小塾文言文选择题</title>
+<title>光点小塾文言文选择�?/title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -33,7 +33,7 @@
     margin-top: 10px;
   }
 
-  /* ===== 分类树 ===== */
+  /* ===== 分类�?===== */
   .tree-section { margin-bottom: 20px; }
   .tree-node { margin: 1px 0; }
   .tree-folder {
@@ -111,8 +111,8 @@
 <div class="container">
 
   <div class="banner">
-    <h1>📖 光点小塾文言文选择题</h1>
-    <span class="badge" id="quizCount">加载中…</span>
+    <h1>📖 光点小塾文言文选择�?/h1>
+    <span class="badge" id="quizCount">加载中�?/span>
   </div>
 
   <div id="treeContainer" class="tree-section"></div>
@@ -130,21 +130,29 @@
 // ===== 题库 =====
 const quizzes = [
   {
-    title: "《司马光》精读自测",
+    title: "��������á������Բ�",
+    path: "shouzhudai.html",
+    questions: 12,
+    icon: "??",
+    iconClass: "brown",
+    desc: "�������ӡ���󼡷",
+    category: "���ڹ���/���ڹ���-Сѧ/���ڹ���-Сѧ-���꼶"
+  },  {
+    title: "《司马光》精读自�?,
     path: "simaguang.html",
     questions: 12,
     icon: "🧱",
     iconClass: "green",
-    desc: "《宋史·司马光传》",
-    category: "课内古文/课内古文-小学/课内古文-小学-三年级"
+    desc: "《宋史·司马光传�?,
+    category: "课内古文/课内古文-小学/课内古文-小学-三年�?
   },
   {
-    title: "《咏雪》精读自测",
+    title: "《咏雪》精读自�?,
     path: "yongxue.html",
     questions: 20,
     icon: "❄️",
     iconClass: "green",
-    desc: "《世说新语》二则",
+    desc: "《世说新语》二�?,
     category: "课内古文/课内古文-初中/课内古文-初中-七上"
   }
 ];
@@ -153,10 +161,10 @@ const quizzes = [
 const treeStructure = {
   "课内古文": {
     "课内古文-小学": [
-      "课内古文-小学-三年级",
-      "课内古文-小学-四年级",
-      "课内古文-小学-五年级",
-      "课内古文-小学-六年级"
+      "课内古文-小学-三年�?,
+      "课内古文-小学-四年�?,
+      "课内古文-小学-五年�?,
+      "课内古文-小学-六年�?
     ],
     "课内古文-初中": [
       "课内古文-初中-七上",
@@ -173,11 +181,11 @@ const quizList = document.getElementById('quizList');
 const quizCount = document.getElementById('quizCount');
 const treeContainer = document.getElementById('treeContainer');
 
-// ===== 构建分类树（含空分类） =====
+// ===== 构建分类树（含空分类�?=====
 function buildFullTree() {
   const root = { children: {} };
 
-  // 先按 quiz 的 category 填充
+  // 先按 quiz �?category 填充
   quizzes.forEach((q, idx) => {
     const parts = q.category.split('/');
     let node = root;
@@ -190,8 +198,7 @@ function buildFullTree() {
     node.items.push(idx);
   });
 
-  // 再补全预定义的目录结构
-  function ensurePath(pathParts) {
+  // 再补全预定义的目录结�?  function ensurePath(pathParts) {
     let node = root;
     pathParts.forEach(part => {
       if (!node.children[part]) {
@@ -231,15 +238,14 @@ function renderTree(node, container, depth) {
     const wrap = document.createElement('div');
     wrap.className = 'tree-node';
 
-    // 只有非空或有子节点的才显示为可点击的文件夹
-    if (hasChildren) {
+    // 只有非空或有子节点的才显示为可点击的文件�?    if (hasChildren) {
       const folder = document.createElement('div');
       folder.className = 'tree-folder';
       folder.style.paddingLeft = (10 + depth * 4) + 'px';
 
       const arrow = document.createElement('span');
       arrow.className = 'arrow';
-      arrow.textContent = '▶';
+      arrow.textContent = '�?;
       folder.appendChild(arrow);
 
       const icon = document.createElement('span');
@@ -253,20 +259,19 @@ function renderTree(node, container, depth) {
 
       const cnt = document.createElement('span');
       cnt.className = 'count';
-      cnt.textContent = itemCount + ' 题';
+      cnt.textContent = itemCount + ' �?;
       folder.appendChild(cnt);
 
       const childrenDiv = document.createElement('div');
       childrenDiv.className = 'tree-children';
 
-      // 该分类下的题目
-      child.items.forEach(idx => {
+      // 该分类下的题�?      child.items.forEach(idx => {
         const q = quizzes[idx];
         const link = document.createElement('a');
         link.className = 'tree-quiz';
         link.href = q.path;
         link.style.paddingLeft = (10 + (depth + 1) * 4) + 'px';
-        link.innerHTML = `<span class="q-icon">${q.icon}</span><span class="q-title">${q.title}</span><span class="q-count">${q.questions}题</span>`;
+        link.innerHTML = `<span class="q-icon">${q.icon}</span><span class="q-title">${q.title}</span><span class="q-count">${q.questions}�?/span>`;
         childrenDiv.appendChild(link);
       });
 
@@ -296,9 +301,9 @@ function renderTree(node, container, depth) {
 
 // ===== 渲染卡片列表 =====
 function renderCards() {
-  quizCount.textContent = `共 ${quizzes.length} 套自测题`;
+  quizCount.textContent = `�?${quizzes.length} 套自测题`;
   if (quizzes.length === 0) {
-    quizList.innerHTML = '<div class="empty-state"><div class="big-icon">📚</div><p>自测题准备中，敬请期待……</p></div>';
+    quizList.innerHTML = '<div class="empty-state"><div class="big-icon">📚</div><p>自测题准备中，敬请期待…�?/p></div>';
     return;
   }
   quizList.innerHTML = '';
@@ -310,14 +315,14 @@ function renderCards() {
       <div class="quiz-icon ${q.iconClass}">${q.icon}</div>
       <div class="quiz-info">
         <h3>${q.title}</h3>
-        <div class="meta"><span>${q.questions} 题</span>${q.desc || ''}</div>
+        <div class="meta"><span>${q.questions} �?/span>${q.desc || ''}</div>
       </div>
-      <div class="quiz-arrow">›</div>`;
+      <div class="quiz-arrow">�?/div>`;
     quizList.appendChild(card);
   });
 }
 
-// ===== 初始化 =====
+// ===== 初始�?=====
 const tree = buildFullTree();
 renderTree(tree, treeContainer, 0);
 renderCards();
