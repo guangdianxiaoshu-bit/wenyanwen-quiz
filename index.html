@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>古文精读自测题集</title>
+<title>光点小塾文言文选择题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -19,11 +19,10 @@
     background: linear-gradient(135deg, #3d2b1a 0%, #8b5e3c 100%);
     color: #fff;
     text-align: center;
-    padding: 48px 20px 36px;
-    margin-bottom: 24px;
+    padding: 40px 20px 30px;
+    margin-bottom: 20px;
   }
-  .banner h1 { font-size: 26px; font-weight: 700; letter-spacing: 3px; }
-  .banner p { font-size: 14px; opacity: 0.85; margin-top: 8px; }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
   .banner .badge {
     display: inline-block;
     background: rgba(255,255,255,0.15);
@@ -31,9 +30,73 @@
     border-radius: 20px;
     padding: 3px 16px;
     font-size: 12px;
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
+  /* ===== 分类树 ===== */
+  .tree-section {
+    margin-bottom: 20px;
+  }
+  .tree-node {
+    margin: 1px 0;
+  }
+  .tree-folder {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5a3e2b;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .tree-folder:hover { background: #f0ebe3; }
+  .tree-folder .arrow {
+    font-size: 10px;
+    color: #c4a87c;
+    transition: transform 0.2s;
+    display: inline-block;
+    width: 14px;
+  }
+  .tree-folder .arrow.open { transform: rotate(90deg); }
+  .tree-folder .folder-icon { font-size: 16px; }
+  .tree-folder .count {
+    font-size: 11px;
+    color: #b3926f;
+    font-weight: 400;
+    margin-left: auto;
+  }
+  .tree-children {
+    padding-left: 20px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+  }
+  .tree-children.open { max-height: 1000px; }
+
+  .tree-quiz {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .tree-quiz:hover { background: #f0ebe3; color: #3d2b1a; }
+  .tree-quiz .q-icon { font-size: 14px; }
+  .tree-quiz .q-title { flex: 1; }
+  .tree-quiz .q-count {
+    font-size: 11px;
+    color: #b3926f;
+  }
+
+  /* ===== 首页卡片 ===== */
   .section-title {
     font-size: 15px;
     font-weight: 600;
@@ -42,7 +105,6 @@
     border-bottom: 2px solid #e0d5c5;
     margin: 20px 0 14px;
   }
-
   .quiz-card {
     background: #fff;
     border-radius: 12px;
@@ -62,7 +124,6 @@
     box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     transform: translateY(-1px);
   }
-
   .quiz-icon {
     width: 48px;
     height: 48px;
@@ -74,8 +135,6 @@
     flex-shrink: 0;
   }
   .quiz-icon.green { background: #e8f5e9; }
-  .quiz-icon.brown { background: #f5efe7; }
-
   .quiz-info { flex: 1; }
   .quiz-info h3 { font-size: 16px; font-weight: 600; color: #3d2b1a; }
   .quiz-info .meta {
@@ -92,10 +151,7 @@
     font-size: 11px;
     color: #8b7355;
   }
-  .quiz-arrow {
-    font-size: 18px;
-    color: #c4a87c;
-  }
+  .quiz-arrow { font-size: 18px; color: #c4a87c; }
 
   .empty-state {
     text-align: center;
@@ -120,16 +176,14 @@
   }
 
   @media (max-width: 400px) {
-    .banner { padding: 36px 14px 28px; }
-    .banner h1 { font-size: 22px; }
-    .banner p { font-size: 13px; }
+    .banner { padding: 30px 14px 22px; }
+    .banner h1 { font-size: 19px; }
     .quiz-card { padding: 14px 14px; }
   }
-
   @media (min-width: 600px) {
     body { padding: 20px 0 48px; }
     .container { padding: 0 20px; }
-    .banner { border-radius: 16px; margin: 0 14px 24px; }
+    .banner { border-radius: 16px; margin: 0 14px 20px; }
   }
 </style>
 </head>
@@ -138,13 +192,15 @@
 <div class="container">
 
   <div class="banner">
-    <h1>📖 古文精读自测</h1>
-    <p>部编版初中语文 · 重点篇目逐篇突破</p>
+    <h1>📖 光点小塾文言文选择题</h1>
     <span class="badge" id="quizCount">加载中…</span>
   </div>
 
-  <div class="section-title">📝 自测列表</div>
+  <!-- 分类树 -->
+  <div id="treeContainer" class="tree-section"></div>
 
+  <!-- 全部自测 -->
+  <div class="section-title">📝 全部自测</div>
   <div id="quizList"></div>
 
   <div class="footer">
@@ -154,7 +210,7 @@
 </div>
 
 <script>
-// ===== 题库目录 =====
+// ===== 题库 =====
 const quizzes = [
   {
     title: "《咏雪》精读自测",
@@ -162,23 +218,124 @@ const quizzes = [
     questions: 20,
     icon: "❄️",
     iconClass: "green",
-    desc: "部编版七上 · 《世说新语》二则"
+    desc: "《世说新语》二则",
+    category: "课内古文/课内古文-初中/课内古文-初中-七上"
   }
 ];
 
 const quizList = document.getElementById('quizList');
 const quizCount = document.getElementById('quizCount');
+const treeContainer = document.getElementById('treeContainer');
 
-function renderList() {
+// ===== 构建分类树 =====
+function buildTree() {
+  const root = { children: {} };
+
+  quizzes.forEach((q, idx) => {
+    const parts = q.category.split('/');
+    let node = root;
+    parts.forEach((part, pi) => {
+      if (!node.children[part]) {
+        node.children[part] = { name: part, children: {}, items: [], depth: pi };
+      }
+      node = node.children[part];
+    });
+    node.items.push(idx);
+  });
+
+  return root;
+}
+
+function renderTree(node, container, depth) {
+  const names = Object.keys(node.children);
+  names.sort();
+
+  names.forEach(name => {
+    const child = node.children[name];
+    const itemCount = child.items.length + countDescendantItems(child);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'tree-node';
+
+    const folder = document.createElement('div');
+    folder.className = 'tree-folder';
+    folder.style.paddingLeft = (10 + depth * 4) + 'px';
+
+    const arrow = document.createElement('span');
+    arrow.className = 'arrow';
+    arrow.textContent = '▶';
+    folder.appendChild(arrow);
+
+    const icon = document.createElement('span');
+    icon.className = 'folder-icon';
+    icon.textContent = '📂';
+    folder.appendChild(icon);
+
+    const label = document.createElement('span');
+    label.textContent = name;
+    folder.appendChild(label);
+
+    const cnt = document.createElement('span');
+    cnt.className = 'count';
+    cnt.textContent = itemCount + ' 题';
+    folder.appendChild(cnt);
+
+    const childrenDiv = document.createElement('div');
+    childrenDiv.className = 'tree-children';
+
+    // 该分类下的题目
+    child.items.forEach(idx => {
+      const q = quizzes[idx];
+      const link = document.createElement('a');
+      link.className = 'tree-quiz';
+      link.href = q.path;
+      link.style.paddingLeft = (10 + (depth + 1) * 4) + 'px';
+      link.innerHTML = `
+        <span class="q-icon">${q.icon}</span>
+        <span class="q-title">${q.title}</span>
+        <span class="q-count">${q.questions}题</span>
+      `;
+      childrenDiv.appendChild(link);
+    });
+
+    // 子分类
+    if (Object.keys(child.children).length > 0) {
+      renderTree(child, childrenDiv, depth + 1);
+    }
+
+    // 默认展开第一层（课内古文）
+    if (depth === 0) {
+      childrenDiv.classList.add('open');
+      arrow.classList.add('open');
+    }
+
+    folder.addEventListener('click', function(e) {
+      e.stopPropagation();
+      childrenDiv.classList.toggle('open');
+      arrow.classList.toggle('open');
+    });
+
+    wrap.appendChild(folder);
+    wrap.appendChild(childrenDiv);
+    container.appendChild(wrap);
+  });
+}
+
+function countDescendantItems(node) {
+  let count = 0;
+  Object.values(node.children).forEach(c => {
+    count += c.items.length;
+    count += countDescendantItems(c);
+  });
+  return count;
+}
+
+// ===== 渲染卡片列表 =====
+function renderCards() {
   quizCount.textContent = `共 ${quizzes.length} 套自测题`;
 
   if (quizzes.length === 0) {
-    quizList.innerHTML = `
-      <div class="empty-state">
-        <div class="big-icon">📚</div>
-        <p>自测题准备中，敬请期待……</p>
-      </div>
-    `;
+    quizList.innerHTML = '<div class="empty-state"><div class="big-icon">📚</div><p>自测题准备中，敬请期待……</p></div>';
     return;
   }
 
@@ -193,7 +350,7 @@ function renderList() {
         <h3>${q.title}</h3>
         <div class="meta">
           <span>${q.questions} 题</span>
-          ${q.desc}
+          ${q.desc || ''}
         </div>
       </div>
       <div class="quiz-arrow">›</div>
@@ -202,7 +359,10 @@ function renderList() {
   });
 }
 
-renderList();
+// ===== 初始化 =====
+const tree = buildTree();
+renderTree(tree, treeContainer, 0);
+renderCards();
 </script>
 </body>
 </html>
