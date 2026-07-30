@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>光点小塾古文自测</title>
+<style>
+body{font-family:sans-serif;background:#f8f5f0;color:#333;padding:0 0 40px;margin:0}
+h1{text-align:center;color:#5a3e2b;padding:30px 0 10px;font-size:20px}
+.c{max-width:500px;margin:0 auto;padding:0 12px}
+.item{display:block;background:#fff;border-radius:10px;padding:14px 16px;margin:0 0 10px;border:1px solid #ede7dd;text-decoration:none;color:inherit;transition:border .2s}
+.item:hover{border-color:#c4a87c}
+.item .t{font-size:15px;font-weight:600;color:#3d2b1a}
+.item .s{font-size:12px;color:#999;margin-top:2px}
+.sec{font-size:13px;color:#5a3e2b;font-weight:600;padding:6px 0 8px;border-bottom:2px solid #e0d5c5;margin-bottom:12px}
+.ft{text-align:center;padding:30px 0;font-size:12px;color:#bbb}
+</style>
+</head>
+<body>
+<h1>光点小塾 · 古文自测</h1>
+<div class=c>
+<div class=sec>自测列表</div>
+<div id=l></div>
+<div class=ft>专注语文学习轻量化、日常化</div>
+</div>
+<script>
+var q=[
+{n:'《王戎不取道旁李》',p:'wangrong.html',s:'四年级上 · 12题'},
+{n:'《精卫填海》',p:'jingwei.html',s:'四年级上 · 12题'},
+{n:'《守株待兔》',p:'shouzhudai.html',s:'三年级下 · 12题'},
+{n:'《司马光》',p:'simaguang.html',s:'三年级上 · 12题'},
+{n:'《咏雪》',p:'yongxue.html',s:'七年级上 · 17题'}
+];
+var h='';for(var i=0;i<q.length;i++){h+='<a class=item href="'+q[i].p+'"><div class=t>'+q[i].n+'</div><div class=s>'+q[i].s+'</div></a>';}
+document.getElementById('l').innerHTML=h;
+</script>
+</body>
+</html>
