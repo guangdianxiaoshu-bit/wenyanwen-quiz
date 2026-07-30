@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>光点小塾古文自测</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,PingFang SC,Noto Serif SC,sans-serif;background:#f8f5f0;color:#2c2c2c;padding:0 0 48px;line-height:1.8}
+.wrap{max-width:500px;margin:0 auto;padding:0 14px}
+.banner{background:linear-gradient(135deg,#3d2b1a,#8b5e3c);color:#fff;text-align:center;padding:32px 0 24px;margin:0 0 16px}
+.banner h1{font-size:20px;font-weight:700}
+.banner .b{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:2px 14px;font-size:11px;margin-top:8px}
+/* tree */
+.fold{display:flex;align-items:center;gap:4px;padding:5px 10px;font-size:14px;font-weight:600;color:#5a3e2b;cursor:pointer;border-radius:4px}
+.fold:hover{background:#f0ebe3}
+.fold .ar{font-size:9px;color:#c4a87c;display:inline-block;width:12px;transition:transform .2s}
+.fold .ar.o{transform:rotate(90deg)}
+.ch{padding-left:18px;overflow:hidden;max-height:0;transition:max-height .3s}
+.ch.o{max-height:2000px}
+.ti{display:flex;align-items:center;gap:4px;padding:4px 10px;font-size:13px;color:#555;text-decoration:none;border-radius:4px}
+.ti:hover{background:#f0ebe3;color:#3d2b1a}
+.ti .c{font-size:11px;color:#b3926f;margin-left:auto}
+/* cards */
+.sec{font-size:15px;font-weight:600;color:#5a3e2b;padding-bottom:6px;border-bottom:2px solid #e0d5c5;margin:20px 0 12px}
+.cd{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;border:1px solid #ede7dd;display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.cd:hover{border-color:#c4a87c}
+.ic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:#e8f5e9}
+.nf{flex:1}
+.nf h3{font-size:15px;font-weight:600;color:#3d2b1a}
+.nf .m{font-size:12px;color:#999;margin-top:1px}
+.nf .m span{background:#f0ebe3;border-radius:4px;padding:0 6px;font-size:11px;color:#8b7355}
+.arw{font-size:16px;color:#c4a87c}
+.ft{text-align:center;padding:30px 0 10px;font-size:12px;color:#bbb}
+.ft .d{width:40px;height:2px;background:#e0d5c5;margin:0 auto 10px}
+</style>
+</head>
+<body>
+<div class=wrap>
+
+<div class=banner><h1>📖 光点小塾古文自测</h1><span class=b id=bc></span></div>
+
+<div id=tr></div>
+
+<div class=sec>📝 全部自测</div>
+<div id=li></div>
+
+<div class=ft><div class=d></div><p>📚 光点小塾 &middot; 专注语文学习轻量化、日常化</p></div>
+
+</div>
+<script>
+var Q=[
+{ti:'《王戎不取道旁李》精读自测',pa:'wangrong.html',nu:12,ic:'🍒',de:'四年级上 · 世说新语'},
+{ti:'《精卫填海》精读自测',pa:'jingwei.html',nu:12,ic:'🐟',de:'四年级上 · 山海经'},
+{ti:'《守株待兔》精读自测',pa:'shouzhudai.html',nu:12,ic:'🌾',de:'三年级下 · 韩非子'},
+{ti:'《司马光》精读自测',pa:'simaguang.html',nu:12,ic:'🧱',de:'三年级上 · 宋史'},
+{ti:'《咏雪》精读自测',pa:'yongxue.html',nu:17,ic:'❄️',de:'七年级上 · 世说新语'}
+];
+
+var T={
+'课内古文':{_o:1,
+  '课内古文-小学':{_o:1,
+    '课内古文-小学-三年级':{_i:[2,3]},
+    '课内古文-小学-四年级':{_i:[0,1]},
+    '课内古文-小学-五年级':{},
+    '课内古文-小学-六年级':{}
+  },
+  '课内古文-初中':{_o:1,
+    '课内古文-初中-七上':{_i:[4]},
+    '课内古文-初中-七下':{},
+    '课内古文-初中-八上':{},
+    '课内古文-初中-八下':{},
+    '课内古文-初中-九上':{},
+    '课内古文-初中-九下':{}
+  }
+};
+
+// count items in a subtree
+function cnt(node){var n=0;for(var k in node){if(k[0]=='_'){if(k=='_i')n+=node[k].length}else n+=cnt(node[k])}return n}
+
+function rd(tr,node,depth){
+  var keys=Object.keys(node).filter(function(k){return k[0]!='_'}).sort();
+  for(var i=0;i<keys.length;i++){
+    var name=keys[i],ch=node[name],total=cnt(ch);
+    if(total==0&&Object.keys(ch).filter(function(k){return k[0]!='_'}).length==0)continue;
+    var wrap=document.createElement('div');
+    var f=document.createElement('div');f.className='fold';f.style.paddingLeft=(6+depth*4)+'px';
+    var a=document.createElement('span');a.className='ar';a.textContent='▶';f.appendChild(a);
+    var ic=document.createElement('span');ic.textContent='📂';f.appendChild(ic);
+    var lb=document.createElement('span');lb.textContent=name.substring(name.lastIndexOf('-')+1);f.appendChild(lb);
+    if(name.indexOf('-')==-1)lb.textContent=name;
+    var cn=document.createElement('span');cn.textContent=total+'题';cn.style.cssText='margin-left:auto;font-size:11px;color:#b3926f';f.appendChild(cn);
+    var cd=document.createElement('div');cd.className='ch';
+    if(ch._i){ch._i.forEach(function(j){var q=Q[j];var lk=document.createElement('a');lk.className='ti';lk.href=q.pa;lk.style.paddingLeft=(6+(depth+1)*4)+'px';lk.innerHTML='<span>'+q.ic+'</span><span>'+q.ti+'</span><span class=c>'+q.nu+'题</span>';cd.appendChild(lk)})}
+    if(Object.keys(ch).filter(function(k){return k[0]!='_'}).length>0)rd(ch,cd,depth+1);
+    if(ch._o){cd.classList.add('o');a.classList.add('o')}
+    var _a=a;_a._cd=cd;
+    f.onclick=function(e){e.stopPropagation();this._cd.classList.toggle('o');this.querySelector('.ar').classList.toggle('o')};
+    f._cd=cd;
+    wrap.appendChild(f);wrap.appendChild(cd);tr.appendChild(wrap);
+  }
+}
+
+(function(){
+var bc=document.getElementById('bc'),li=document.getElementById('li'),tr=document.getElementById('tr');
+bc.textContent='共'+Q.length+'套';
+li.innerHTML='';
+for(var i=0;i<Q.length;i++){var q=Q[i],c=document.createElement('a');c.className='cd';c.href=q.pa;
+c.innerHTML='<div class=ic>'+q.ic+'</div><div class=nf><h3>'+q.ti+'</h3><div class=m><span>'+q.nu+'题</span>'+q.de+'</div></div><div class=arw>›</div>';li.appendChild(c);}
+
+rd(T,tr,0);
+})();
+</script>
+</body>
+</html>
