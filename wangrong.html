@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《王戎不取道旁李》精读自测 · 12题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f8f5f0;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #6b3a5a 0%, #a8587e 100%);
+    color: #fff; text-align: center; padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 2px 14px; font-size: 11px; margin-top: 8px; }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #6b3a5a; color: #f0d4e4;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #d4a0bc; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #d4a0bc; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #ede0e8; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #6b3a5a, #c47ca0); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ede0e8; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #6b3a5a; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #a8587e; background: #f0e0e8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #6b3a5a; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #ede0e8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c47ca0; background: #fdf5f8; }
+  .opts label.selected { border-color: #6b3a5a; background: #f0e0e8; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #ede0e8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #6b3a5a; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #fdf5f8; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #6b3a5a; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #6b3a5a, #a8587e); color: #fff; box-shadow: 0 2px 8px rgba(107,58,90,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(107,58,90,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #6b3a5a; border: 2px solid #c47ca0; }
+  .btn-secondary:hover { background: #fdf5f8; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #6b3a5a, #a8587e); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ede0e8; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #6b3a5a; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #ede0e8; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f0e0e8; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #6b3a5a; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #fdf5f8; border: 1px solid #ede0e8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #ede0e8; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; } .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; } .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) { body { padding: 20px 0 48px; } .container { padding: 0 20px; } .banner, .sticky-original { border-radius: 0; } }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《王戎不取道旁李》精读自测</h1>
+  <p>部编版四年级上册 · 《世说新语》</p>
+  <span class="badge">12 道选择题 · 测测你对这篇古文掌握得怎样</span>
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 王戎七岁，<u>尝</u><u>与</u><u>诸</u>小儿<u>游</u>。看道边李树多<u>子</u><u>折</u>枝，<u>诸</u>儿<u>竞</u><u>走</u><u>取</u><u>之</u>，<u>唯</u>戎不动。人问<u>之</u>，答<u>曰</u>："树在道边而多子，<u>此</u><u>必</u><u>苦</u>李。"取之，<u>信</u><u>然</u>。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 12 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 12 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    <p><a href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/" style="color:#c47ca0;text-decoration:none;font-size:12px;">← 返回目录</a></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var questions = [
+  { tag: "字词释义", q: '"王戎七岁，<u>尝</u>与诸小儿游"中"尝"的意思是？', options: ["品尝", "曾经", "尝试", "常常"], answer: 1, explain: '"尝"意为"曾经"。王戎七岁的时候，曾经和一群小孩一起玩。' },
+  { tag: "字词释义", q: '"尝<u>与</u>诸小儿游"中"与"的意思是？', options: ["给予", "和", "参与", "与其"], answer: 1, explain: '"与"是介词，意为"和、跟"。' },
+  { tag: "字词释义", q: '"尝与<u>诸</u>小儿游"中"诸"的意思是？', options: ["各个", "许多", "诸位", "诸多"], answer: 0, explain: '"诸"意为"众、各"。"诸小儿"即"各位小孩、一群小孩"。' },
+  { tag: "字词释义", q: '"看道边李树多<u>子</u>折枝"中"子"的意思是？', options: ["儿子", "果实", "种子", "子女"], answer: 1, explain: '"子"在此处指"果实"，即李子。李树上结满了果子。' },
+  { tag: "字词释义", q: '"诸儿<u>竞</u>走取之"中"竞"的意思是？', options: ["竞争", "争相", "竞赛", "究竟"], answer: 1, explain: '"竞"意为"争相"。其他小孩都争相跑过去摘李子。' },
+  { tag: "字词释义", q: '"诸儿竞<u>走</u>取之"中"走"的意思是？', options: ["走路", "跑", "散步", "逃走"], answer: 1, explain: '"走"在古文中意为"跑"，是古今异义词。小孩们跑着去摘李子。' },
+  { tag: "字词释义", q: '"诸儿竞走取<u>之</u>"中"之"指的是什么？', options: ["王戎", "李子", "树枝", "小孩"], answer: 1, explain: '"之"是代词，指代"李子"。小孩们争相跑过去摘李子。' },
+  { tag: "字词释义", q: '"<u>唯</u>戎不动"中"唯"的意思是？', options: ["唯一", "只有", "唯独", "思维"], answer: 1, explain: '"唯"意为"只有"。只有王戎站在原地不动。' },
+  { tag: "字词释义", q: '"答<u>曰</u>"中"曰"的意思是？', options: ["说", "日", "是", "因为"], answer: 0, explain: '"曰"意为"说"。王戎回答说。' },
+  { tag: "字词释义", q: '"<u>此</u>必苦李"中"此"的意思是？', options: ["此时", "这", "因此", "彼此"], answer: 1, explain: '"此"意为"这"。这一定是苦李子。' },
+  { tag: "字词释义", q: '"此<u>必</u>苦李"中"必"的意思是？', options: ["必须", "一定", "必要", "毕竟"], answer: 1, explain: '"必"意为"一定"。这一定是苦李子。' },
+  { tag: "内容理解", q: '"取之，<u>信然</u>"中"信然"的意思是？', options: ["相信别人", "确实这样", "信以为真", "自然相信"], answer: 1, explain: '"信然"意为"确实这样"。"信"是"确实"，"然"是"这样"。摘下李子一尝，果然像王戎说的那样是苦的。王戎小小年纪就能通过观察推理得出结论，表现了善于观察思考的品质。' }
+];
+
+var sentenceData = [
+  { original: "王戎七岁，尝与诸小儿游。", notes: [{ word: "尝", meaning: "曾经" }, { word: "与", meaning: "和" }, { word: "诸", meaning: "众、各" }], trans: "王戎七岁的时候，曾经和一群小孩子一起游玩。" },
+  { original: "看道边李树多子折枝，", notes: [{ word: "子", meaning: "果实" }], trans: "看见路边李树上结满果实，压弯了树枝，" },
+  { original: "诸儿竞走取之，唯戎不动。", notes: [{ word: "竞", meaning: "争相" }, { word: "走", meaning: "跑" }, { word: "之", meaning: "李子" }, { word: "唯", meaning: "只有" }], trans: "其他小孩都争相跑去摘李子，只有王戎没有动。" },
+  { original: "人问之，答曰：\"树在道边而多子，此必苦李。\"", notes: [{ word: "曰", meaning: "说" }, { word: "此", meaning: "这" }, { word: "必", meaning: "一定" }], trans: "有人问他，王戎回答说：\"李树长在路边却结满果实，这一定是苦李子。\"" },
+  { original: "取之，信然。", notes: [{ word: "信然", meaning: "确实这样" }], trans: "摘来一尝，果然像他说的那样。" }
+];
+
+var container = document.getElementById('questionsContainer');
+var submitBtn = document.getElementById('submitBtn');
+var resetBtn = document.getElementById('resetBtn');
+var progressFill = document.getElementById('progressFill');
+var progressText = document.getElementById('progressText');
+var resultPanel = document.getElementById('resultPanel');
+var scoreNum = document.getElementById('scoreNum');
+var correctCountEl = document.getElementById('correctCount');
+var resultStars = document.getElementById('resultStars');
+var scoreComment = document.getElementById('scoreComment');
+var toast = document.getElementById('toast');
+var translationPanel = document.getElementById('translationPanel');
+var translationContent = document.getElementById('translationContent');
+var STORAGE_PREFIX = 'wangrong_';
+
+var submitted = false;
+var shuffles = {};
+function shuffleArray(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function generateShuffles() { for (var i = 0; i < questions.length; i++) { shuffles[i] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { var s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch(e) {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  for (var si = 0; si < sentenceData.length; si++) { var s = sentenceData[si];
+    var block = document.createElement('div'); block.className = 'sentence-block';
+    var orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { var notes = document.createElement('div'); notes.className = 's-line s-line-notes'; var html = '<span class="s-label">注释</span>'; for (var ni = 0; ni < s.notes.length; ni++) { html += '<span class="note-word">【' + s.notes[ni].word + '：' + s.notes[ni].meaning + '】</span>'; } notes.innerHTML = html; block.appendChild(notes); }
+    var trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  }
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  for (var qi = 0; qi < questions.length; qi++) { var q = questions[qi];
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + qi;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    var optsHtml = '';
+    for (var oi = 0; oi < 4; oi++) { var di = order[oi]; optsHtml += '<label data-q="' + qi + '" data-opt="' + di + '" onclick="selectOption(' + qi + ', ' + di + ')"><input type="radio" name="q' + qi + '" value="' + di + '"><span class="opt-letter">' + letters[oi] + '</span>' + q.options[di] + '</label>'; }
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + optsHtml + '</div><div class="explanation" id="exp-' + qi + '"><span class="result-tag" id="tag-' + qi + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  var labels = document.querySelectorAll('label[data-q="' + qIdx + '"]'); for (var i = 0; i < labels.length; i++) { labels[i].classList.remove('selected'); }
+  var label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]'); if (label) label.classList.add('selected');
+  var answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  var done = getAnswered();
+  if (done.indexOf(qIdx) === -1) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch(e) { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch(e) { return []; } }
+function restoreFromStorage() {
+  var answers = getStoredAnswers(); var answered = getAnswered();
+  if (!answered.length) return;
+  var keys = Object.keys(answers);
+  for (var ki = 0; ki < keys.length; ki++) { var idx = parseInt(keys[ki]); var opt = answers[keys[ki]]; var label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); var r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } }
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { var done = getAnswered().length; var total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { var done = getAnswered().length; var total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; var answers = getStoredAnswers(); var correct = 0;
+  for (var i = 0; i < questions.length; i++) { var q = questions[i]; var userAns = answers[i]; var isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    var card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    var labels = document.querySelectorAll('label[data-q="' + i + '"]'); for (var li = 0; li < labels.length; li++) { labels[li].classList.add('disabled'); }
+    var cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { var wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    var exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    var tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  }
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  var pct = correct / questions.length; var stars = ''; var comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+loadShuffles(); renderQuestions();
+var wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'submitted');
+if (wasSubmitted === 'true') { setTimeout(function() { submitted = false; submitBtn.click(); }, 100); }
+else { restoreFromStorage(); }
+</script>
+</body>
+</html>
