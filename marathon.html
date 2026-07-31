@@ -107,6 +107,7 @@
   <div class="finish">
     <div>🏁 连打完成</div>
     <div class="rate" id="rateNum">0%</div>
+    <div class="sub" id="pickedList" style="margin-top:6px;font-size:14px;opacity:.95"></div>
     <div class="sub" id="rateDetail"></div>
     <div class="sub" id="timeUsed" style="margin-top:4px;font-size:13px;opacity:.85"></div>
     <div class="cm" id="rateComment"></div>
@@ -163,9 +164,12 @@ var cur = 0;    // current index
 var correct = 0;
 
 var startTime = 0;
+var picked = [];
 startBtn.addEventListener('click', function(){
   startTime = Date.now();
+  picked = [];
   seq = [];
+  titles.forEach(function(t){ var cb = document.querySelector('input[value="' + t + '"]'); if (cb && cb.checked) picked.push(t); });
   titles.forEach(function(t){
     var cb = document.querySelector('input[value="' + t + '"]');
     if (cb && cb.checked) {
@@ -214,6 +218,7 @@ function finish(){
   var total = seq.length;
   var rate = Math.round(correct / total * 100);
   document.getElementById('rateNum').textContent = rate + '%';
+  document.getElementById('pickedList').textContent = '本次篇目：' + picked.join('、');
   document.getElementById('rateDetail').textContent = '答对 ' + correct + ' / ' + total + ' 题';
   var used = Math.round((Date.now() - startTime) / 1000);
   var mm = Math.floor(used / 60), ss = used % 60;
