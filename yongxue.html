@@ -423,6 +423,9 @@ function generateShuffles() {
     shuffles[i] = shuffleArray([0, 1, 2, 3]);
   });
   localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles));
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
 }
 
 function loadShuffles() {
