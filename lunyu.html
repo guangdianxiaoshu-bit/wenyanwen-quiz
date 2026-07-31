@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《古人谈读书之论语》 · 13题</title>
+<title>《古人谈读书之论语》 · 16题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -147,18 +147,18 @@
 <div class="banner">
   <h1>📖 《古人谈读书之论语》</h1>
   <p>部编版五年级上册 · 《论语》</p>
-  <span class="badge">13 道选择题 · 测测你对这篇古文掌握得怎样</span>
+  <span class="badge">16 道选择题 · 测测你对这篇古文掌握得怎样</span>
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> ①知之为知之，不知为不知，是<u>知</u>也。｜②<u>敏</u>而<u>好</u>学，不<u>耻</u><u>下问</u>。｜③默而<u>识</u>之，学而不<u>厌</u>，<u>诲</u>人不倦。｜④我非生而知之者，好古，<u>敏</u>以求之者也。｜⑤学如不<u>及</u>，犹恐失之。｜⑥吾<u>尝</u>终日不食，终夜不寝，以思，无<u>益</u>，不如学也。<br>
+  <strong>原文</strong> ①知之为知之，不知为不知，是<u>知</u>也。｜②<u>敏</u>而<u>好</u>学，不<u>耻</u><u>下问</u>。｜③默而<u>识</u>之，学而不<u>厌</u>，<u>诲</u>人不倦。｜④我非生而知之者，好古，<u>敏</u>以求之者也。｜⑤学如不<u>及</u>，<u>犹</u>恐失之。｜⑥吾<u>尝</u><u>终日</u>不食，终夜不寝，以思，无<u>益</u>，不如学也。<br>
   <strong>常识</strong> 本文选自《论语》，是孔子及其弟子关于读书学习态度的语录。
 </div>
 
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 13 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 16 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -170,7 +170,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 13 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 16 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -192,9 +192,9 @@
 
 <script>
 const questions = [
-  { tag: "字词释义", q: '“是<span class="highlight">知</span>也”中“<span class="highlight">知</span>”的意思是？',
-    options: ["知道", "同“智”，智慧", "知识", "知觉"], answer: 1,
-    explain: '“知”是通假字，同“智”，意为“智慧”。知道就是知道，不知道就是不知道，这就是智慧。' },
+  { tag: "字词释义", q: '“是<span class="highlight">知</span>也”中“<span class="highlight">知</span>”的读音和意思是？',
+    options: ["zhī，知道", "zhì，同“智”，智慧", "zhī，知识", "zhì，知觉"], answer: 1,
+    explain: '“知”是通假字，同“智”，读zhì，意为“智慧”。知道就是知道，不知道就是不知道，这就是智慧。' },
   { tag: "字词释义", q: '“<span class="highlight">敏</span>而好学”中“<span class="highlight">敏</span>”的意思是？',
     options: ["聪敏", "敏捷", "敏感", "勤奋"], answer: 0,
     explain: '“敏”此处指聪敏。聪明而又喜好学习。' },
@@ -207,8 +207,8 @@ const questions = [
   { tag: "字词释义", q: '“不耻<span class="highlight">下问</span>”中“<span class="highlight">下问</span>”的意思是？',
     options: ["向下问", "向地位、学问不如自己的人请教", "低声地问", "谦虚地问"], answer: 1,
     explain: '“下问”指向地位、学问不如自己的人请教。' },
-  { tag: "字词释义", q: '“默而<span class="highlight">识</span>之”中“<span class="highlight">识</span>”的意思是？',
-    options: ["认识", "知识", "记住", "识别"], answer: 2,
+  { tag: "字词释义", q: '“默而<span class="highlight">识</span>之”中“<span class="highlight">识</span>”的读音和意思是？',
+    options: ["shí，认识", "shí，知识", "zhì，记住", "zhì，识别"], answer: 2,
     explain: '“识”读zhì，意为“记住”。默默地记住所学的知识。' },
   { tag: "字词释义", q: '“学而不<span class="highlight">厌</span>”中“<span class="highlight">厌</span>”的意思是？',
     options: ["讨厌", "厌烦", "满足", "厌倦"], answer: 2,
@@ -222,9 +222,18 @@ const questions = [
   { tag: "字词释义", q: '“学如不<span class="highlight">及</span>”中“<span class="highlight">及</span>”的意思是？',
     options: ["以及", "到达", "赶得上", "及时"], answer: 2,
     explain: '“及”意为“赶得上”。学习就像追赶什么似的，唯恐赶不上。' },
+  { tag: "字词释义", q: '“<span class="highlight">犹</span>恐失之”中“<span class="highlight">犹</span>”的意思是？',
+    options: ["还，尚且", "犹如", "犹豫", "尤其"], answer: 0,
+    explain: '“犹”意为“还，尚且”。学到了，还唯恐丢失了。' },
   { tag: "字词释义", q: '“吾<span class="highlight">尝</span>终日不食”中“<span class="highlight">尝</span>”的意思是？',
     options: ["品尝", "曾经", "尝试", "偿还"], answer: 1,
     explain: '“尝”意为“曾经”。我曾经整天不吃饭。' },
+  { tag: "字词释义", q: '“吾尝<span class="highlight">终日</span>不食”中“<span class="highlight">终日</span>”的意思是？',
+    options: ["整天", "太阳", "终于", "一天"], answer: 0,
+    explain: '“终日”意为“整天”。我曾经整天不吃饭。' },
+  { tag: "字词释义", q: '“以思，无<span class="highlight">益</span>”中“<span class="highlight">益</span>”的意思是？',
+    options: ["益处，好处", "增加", "有益", "溢出"], answer: 0,
+    explain: '“益”意为“益处、好处”。用来思考没有益处，不如去学习。' },
   { tag: "内容理解", q: '“知之为知之，不知为不知，是知也”告诉我们什么道理？',
     options: ["做人要谦虚", "要诚实，知道就是知道，不知道就是不知道", "要多向别人请教", "做人要聪明"], answer: 1,
     explain: '这则语录告诉我们：对待知识要诚实，不不懂装懂，这才是真正的智慧。' },
@@ -238,8 +247,8 @@ const sentenceData = [
   { original: "②敏而好学，不耻下问。", notes: [{ word: "敏", meaning: "聪敏" }, { word: "好", meaning: "喜好" }, { word: "耻", meaning: "以……为耻" }, { word: "下问", meaning: "向地位、学问不如自己的人请教" }], trans: "聪敏而又喜好学习，不以向地位、学问不如自己的人请教为耻。" },
   { original: "③默而识之，学而不厌，诲人不倦。", notes: [{ word: "识", meaning: "记住" }, { word: "厌", meaning: "满足" }, { word: "诲", meaning: "教诲" }], trans: "默默地记住所学的知识，学习不知道满足，教诲别人不知疲倦。" },
   { original: "④我非生而知之者，好古，敏以求之者也。", notes: [{ word: "敏", meaning: "勤勉" }], trans: "我不是生来就懂得知识的人，而是喜好古代文化，勤奋敏捷地去求得知识的人。" },
-  { original: "⑤学如不及，犹恐失之。", notes: [{ word: "及", meaning: "赶得上" }], trans: "学习就像追赶什么似的，唯恐赶不上；学到了，还唯恐丢失了。" },
-  { original: "⑥吾尝终日不食，终夜不寝，以思，无益，不如学也。", notes: [{ word: "尝", meaning: "曾经" }, { word: "益", meaning: "益处" }], trans: "我曾经整天不吃饭，整夜不睡觉，用来思考，但没有益处，不如去学习。" }
+  { original: "⑤学如不及，犹恐失之。", notes: [{ word: "及", meaning: "赶得上" }, { word: "犹", meaning: "还，尚且" }], trans: "学习就像追赶什么似的，唯恐赶不上；学到了，还唯恐丢失了。" },
+  { original: "⑥吾尝终日不食，终夜不寝，以思，无益，不如学也。", notes: [{ word: "尝", meaning: "曾经" }, { word: "终日", meaning: "整天" }, { word: "益", meaning: "益处" }], trans: "我曾经整天不吃饭，整夜不睡觉，用来思考，但没有益处，不如去学习。" }
 ];
 
 const container = document.getElementById('questionsContainer');
