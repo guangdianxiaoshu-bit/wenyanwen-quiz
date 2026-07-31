@@ -176,9 +176,11 @@ var correct = 0;
 
 var startTime = 0;
 var picked = [];
+var perTitle = {};
 startBtn.addEventListener('click', function(){
   startTime = Date.now();
   picked = [];
+  perTitle = {};
   seq = [];
   titles.forEach(function(t){ var cb = document.querySelector('input[value="' + t + '"]'); if (cb && cb.checked) picked.push(t); });
   titles.forEach(function(t){
@@ -214,7 +216,7 @@ window.pick = function(optIdx, el){
   var labels = document.querySelectorAll('#qOpts label');
   for (var i=0;i<labels.length;i++) labels[i].classList.add('lock');
   el.classList.add('picked');
-  if (optIdx === q.a) correct++;
+  if (optIdx === q.a) { correct++; } else { perTitle[q.title] = (perTitle[q.title] || 0) + 1; }
   setTimeout(nextQ, 350);
 };
 
@@ -229,7 +231,8 @@ function finish(){
   var total = seq.length;
   var rate = Math.round(correct / total * 100);
   document.getElementById('rateNum').textContent = rate + '%';
-  document.getElementById('pickedList').textContent = '本次篇目：' + picked.join('、');
+  var parts = picked.map(function(t){ var w = perTitle[t] || 0; return w === 0 ? t + '（全对⭐）' : t + '（错了' + w + '题）'; });
+  document.getElementById('pickedList').textContent = '本次篇目：' + parts.join('、');
   document.getElementById('rateDetail').textContent = '答对 ' + correct + ' / ' + total + ' 题';
   var used = Math.round((Date.now() - startTime) / 1000);
   var mm = Math.floor(used / 60), ss = used % 60;
