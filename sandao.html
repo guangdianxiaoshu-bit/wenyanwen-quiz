@@ -199,7 +199,7 @@ const questions = [
     options: ["说", "叫做", "认为", "称谓"], answer: 0,
     explain: '“谓”意为“说”。我曾经说读书有三到。' },
   { tag: "字词释义", q: '“心不在此，<span class="highlight">则</span>眼不看仔细”中“<span class="highlight">则</span>”的意思是？',
-    options: ["原则", "就，便", "但是", "那么"], answer: 1,
+    options: ["原则", "就", "但是", "那么"], answer: 1,
     explain: '“则”意为“就，便”。心思不在这里，那么眼睛就不看仔细。' },
   { tag: "字词释义", q: '“心<span class="highlight">既</span>不专一”中“<span class="highlight">既</span>”的意思是？',
     options: ["既然", "即使", "已经", "既而"], answer: 2,
@@ -208,16 +208,16 @@ const questions = [
     options: ["浪漫", "随意", "漫步", "散漫"], answer: 1,
     explain: '“漫浪”意为“随意”。却只是随意地诵读。' },
   { tag: "字词释义", q: '“<span class="highlight">决</span>不能记”中“<span class="highlight">决</span>”的意思是？',
-    options: ["决定", "坚决", "一定，必定", "决断"], answer: 2,
+    options: ["决定", "坚决", "一定", "决断"], answer: 2,
     explain: '“决”意为“一定，必定”。一定不能记住。' },
   { tag: "字词释义", q: '“记<span class="highlight">亦</span>不能久也”中“<span class="highlight">亦</span>”的意思是？',
     options: ["也", "又如", "并且", "既然"], answer: 0,
     explain: '“亦”意为“也”。记住了也不能长久。' },
   { tag: "字词释义", q: '“心到最<span class="highlight">急</span>”中“<span class="highlight">急</span>”的意思是？',
-    options: ["着急", "紧急", "要紧，重要", "急促"], answer: 2,
+    options: ["着急", "紧急", "要紧", "急促"], answer: 2,
     explain: '“急”意为“要紧，重要”。三到之中，心到最要紧。' },
   { tag: "字词释义", q: '“眼口<span class="highlight">岂</span>不到乎”中“<span class="highlight">岂</span>”的意思是？',
-    options: ["哪里", "难道，怎么", "岂止", "可以"], answer: 1,
+    options: ["哪里", "难道", "岂止", "可以"], answer: 1,
     explain: '“岂”意为“难道，怎么”，表反问。心思到了，眼睛和嘴巴难道会不到吗？' },
   { tag: "内容理解", q: '朱熹认为读书三到中，哪一最为重要？',
     options: ["眼到", "口到", "心到", "手到"], answer: 2,
@@ -229,9 +229,9 @@ const questions = [
 
 const sentenceData = [
   { original: "余尝谓读书有三到，谓心到、眼到、口到。", notes: [{ word: "尝", meaning: "曾经" }, { word: "谓", meaning: "说" }], trans: "我曾经说读书有三到，就是心到、眼到、口到。" },
-  { original: "心不在此，则眼不看仔细，心既不专一，却只漫浪诵读，决不能记，记亦不能久也。", notes: [{ word: "则", meaning: "就，便" }, { word: "既", meaning: "已经" }, { word: "漫浪", meaning: "随意" }, { word: "决", meaning: "一定，必定" }, { word: "亦", meaning: "也" }], trans: "心思不在这里，那么眼睛就不看仔细，心思已经不专一，却只是随意地诵读，一定不能记住，记住了也不能长久。" },
-  { original: "三到之中，心到最急。", notes: [{ word: "急", meaning: "要紧，重要" }], trans: "三到之中，心到最要紧。" },
-  { original: "心既到矣，眼口岂不到乎？", notes: [{ word: "岂", meaning: "难道，怎么" }], trans: "心思已经到了，眼睛和嘴巴难道会不到吗？" }
+  { original: "心不在此，则眼不看仔细，心既不专一，却只漫浪诵读，决不能记，记亦不能久也。", notes: [{ word: "则", meaning: "就" }, { word: "既", meaning: "已经" }, { word: "漫浪", meaning: "随意" }, { word: "决", meaning: "一定" }, { word: "亦", meaning: "也" }], trans: "心思不在这里，那么眼睛就不看仔细，心思已经不专一，却只是随意地诵读，一定不能记住，记住了也不能长久。" },
+  { original: "三到之中，心到最急。", notes: [{ word: "急", meaning: "要紧" }], trans: "三到之中，心到最要紧。" },
+  { original: "心既到矣，眼口岂不到乎？", notes: [{ word: "岂", meaning: "难道" }], trans: "心思已经到了，眼睛和嘴巴难道会不到吗？" }
 ];
 
 const container = document.getElementById('questionsContainer');
