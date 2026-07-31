@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《论语》十二章 · 29题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #fdf7f6;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7b241c 0%, #a93226 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7b241c; color: #f2d7d5;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #e74c3c; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #e74c3c; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #f2d7d5; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7b241c, #e6b0aa); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f2d7d5; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7b241c; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #a93226; background: #f2d7d5; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7b241c; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #f2d7d5; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #e6b0aa; background: #fadbd8; }
+  .opts label.selected { border-color: #7b241c; background: #f2d7d5; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #f2d7d5; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7b241c; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #fadbd8; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7b241c; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7b241c, #a93226); color: #fff; box-shadow: 0 2px 8px rgba(123,36,28,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(123,36,28,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7b241c; border: 2px solid #e6b0aa; }
+  .btn-secondary:hover { background: #fadbd8; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7b241c, #a93226); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f2d7d5; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7b241c; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f2d7d5; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #fadbd8; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7b241c; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #fadbd8; border: 1px solid #f2d7d5; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #f2d7d5; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(123,36,28,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #4a1712; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《论语》十二章</h1>
+  <p>部编版七年级上册 · 《论语》</p>
+  
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> ①子曰：“学而<u>时</u><u>习</u>之，不亦<u>说</u>乎？有朋自远方来，不亦乐乎？人不知而不<u>愠</u>，不亦君子乎？”｜②曾子曰：“吾<u>日</u><u>三</u>省吾<u>身</u>：为人谋而不<u>忠</u>乎？与朋友交而不信乎？<u>传</u>不习乎？”｜③子曰：“吾十<u>有</u>五而<u>志</u>于学，三十而<u>立</u>，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲，不<u>逾</u>矩。”｜④子曰：“温故<u>而</u>知新，可以为师矣。”｜⑤子曰：“学而不思则<u>罔</u>，思<u>而</u>不学则<u>殆</u>。”｜⑥子曰：“贤哉，回也！一箪食，一瓢饮，在陋巷，人不<u>堪</u>其忧，回也不改其乐。贤哉，回也！”｜⑦子曰：“知之者不如好之者，好之者不如<u>乐</u>之者。”｜⑧子曰：“<u>饭</u><u>疏食</u>，饮水，曲肱而枕之，乐亦在其中矣。不义而富且贵，<u>于</u>我如浮云。”｜⑨子曰：“<u>三</u>人行，必有我师<u>焉</u>。择其善者而从之，其不善者而改之。”｜⑩子在川上曰：“逝者如斯<u>夫</u>，不舍昼夜。”｜⑪子曰：“三军可<u>夺</u>帅也，<u>匹夫</u>不可夺志也。”｜⑫子夏曰：“博学而<u>笃志</u>，<u>切</u>问而近思，仁在其中矣。”<br>
+  <strong>注释</strong> 〔子〕古代对男子的尊称，这里指孔子。　〔天命〕上天的意旨。　〔耳顺〕指能听得进不同的意见。　〔箪〕古代盛饭用的圆形竹器。　〔肱〕胳膊。　〔川上〕河边。<br>
+  <strong>常识</strong> 本文选自《论语》，共十二章，题目为后人所加。《论语》是儒家经典，记录孔子及其弟子言行。孔子（前551—前479），名丘，字仲尼，春秋末期鲁国人，儒家学派创始人。曾子名参(shēn)，字子舆；颜回字子渊；子夏即卜商——都是孔子的弟子。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 29 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 29 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“学而<span class="highlight">时</span>习之”中“<span class="highlight">时</span>”的意思是？',
+    options: ["按时（名词作状语）", "时间", "时常", "时候"], answer: 0,
+    explain: '“时”名词作状语，意为“按时”。学习了（知识）然后按时温习。' },
+  { tag: "字词释义", q: '“学而时<span class="highlight">习</span>之”中“<span class="highlight">习</span>”的意思是？',
+    options: ["温习，复习", "学习", "习惯", "练习"], answer: 0,
+    explain: '“习”意为“温习、复习”。按时温习所学的知识。' },
+  { tag: "字词释义", q: '“不亦<span class="highlight">说</span>乎”中“<span class="highlight">说</span>”的读音和意思是？',
+    options: ["yuè，同“悦”，愉快", "shuō，说话", "shuì，劝说", "yuè，说教"], answer: 0,
+    explain: '“说”读yuè，同“悦”，意为“愉快”。不也是令人愉快的吗？' },
+  { tag: "字词释义", q: '“人不知而不<span class="highlight">愠</span>”中“<span class="highlight">愠</span>”的意思是？',
+    options: ["生气，恼怒", "温暖", "蕴含", "怨恨"], answer: 0,
+    explain: '“愠”意为“生气、恼怒”。别人不理解自己也不恼怒。' },
+  { tag: "字词释义", q: '“吾<span class="highlight">日</span>三省吾身”中“<span class="highlight">日</span>”的意思是？',
+    options: ["每天（名词作状语）", "太阳", "日子", "一日"], answer: 0,
+    explain: '“日”名词作状语，意为“每天”。我每天多次反省自己。' },
+  { tag: "字词释义", q: '“吾日<span class="highlight">三</span>省吾身”中“<span class="highlight">三</span>”的意思是？',
+    options: ["多次（虚指，非确数）", "三次", "三件事", "第三个"], answer: 0,
+    explain: '“三”在古汉语中常表“多次”，是虚指，不是确数。' },
+  { tag: "字词释义", q: '“吾日三省吾<span class="highlight">身</span>”中“<span class="highlight">身</span>”的意思是？',
+    options: ["自己", "身体", "身份", "一生"], answer: 0,
+    explain: '“身”意为“自己”。我每天多次反省自己。' },
+  { tag: "字词释义", q: '“为人谋而不<span class="highlight">忠</span>乎”中“<span class="highlight">忠</span>”的意思是？',
+    options: ["尽心竭力", "忠心", "忠厚", "忠告"], answer: 0,
+    explain: '“忠”意为“尽心竭力”。为别人谋划事情是否尽心竭力了？' },
+  { tag: "字词释义", q: '“<span class="highlight">传</span>不习乎”中“<span class="highlight">传</span>”的意思是？',
+    options: ["老师传授的知识（动词作名词）", "传授", "传记", "传达"], answer: 0,
+    explain: '“传”动词作名词，指“老师传授的知识”。老师传授的知识温习了吗？' },
+  { tag: "字词释义", q: '“吾十<span class="highlight">有</span>五而志于学”中“<span class="highlight">有</span>”的读音和意思是？',
+    options: ["yòu，同“又”，用于整数和零数之间", "yǒu，有无的有", "yòu，右边", "yǒu，拥有"], answer: 0,
+    explain: '“有”读yòu，同“又”，用于整数和零数之间。“十有五”即十五岁。' },
+  { tag: "字词释义", q: '“吾十有五而<span class="highlight">志</span>于学”中“<span class="highlight">志</span>”的意思是？',
+    options: ["立志", "志向", "标志", "志愿"], answer: 0,
+    explain: '“志”意为“立志”。我十五岁立志于学问。' },
+  { tag: "字词释义", q: '“三十而<span class="highlight">立</span>”中“<span class="highlight">立</span>”的意思是？',
+    options: ["立身，能有所成就", "站立", "建立", "立刻"], answer: 0,
+    explain: '“立”意为“立身”，指能有所成就。三十岁能在社会上立足。' },
+  { tag: "字词释义", q: '“不<span class="highlight">逾</span>矩”中“<span class="highlight">逾</span>”的意思是？',
+    options: ["越过，超过", "逾期", "更加", "剩余"], answer: 0,
+    explain: '“逾”意为“越过、超过”。却不越过规矩。' },
+  { tag: "字词释义", q: '“温故<span class="highlight">而</span>知新”中“<span class="highlight">而</span>”表示什么关系？',
+    options: ["顺承（然后）", "转折（却）", "并列（并且）", "修饰（地）"], answer: 0,
+    explain: '“而”表顺承，意为“然后”。温习旧知识然后获得新理解。' },
+  { tag: "字词释义", q: '“学而不思则<span class="highlight">罔</span>”中“<span class="highlight">罔</span>”的意思是？',
+    options: ["迷惑", "欺骗", "枉费", "冤枉"], answer: 0,
+    explain: '“罔”意为“迷惑”，感到迷茫而无所得。只学习却不思考就会迷惑。' },
+  { tag: "字词释义", q: '“思<span class="highlight">而</span>不学则殆”中“<span class="highlight">而</span>”表示什么关系？',
+    options: ["转折（却）", "顺承（然后）", "并列（并且）", "修饰（地）"], answer: 0,
+    explain: '“而”表转折，意为“却”。只思考却不学习就会疑惑。' },
+  { tag: "字词释义", q: '“思而不学则<span class="highlight">殆</span>”中“<span class="highlight">殆</span>”的意思是？',
+    options: ["疑惑", "危险", "几乎", "大概"], answer: 0,
+    explain: '“殆”意为“疑惑”。只思考却不学习就会疑惑而无所适从。' },
+  { tag: "字词释义", q: '“人不<span class="highlight">堪</span>其忧”中“<span class="highlight">堪</span>”的意思是？',
+    options: ["能忍受", "难以", "可以", "胜任"], answer: 0,
+    explain: '“堪”意为“能忍受”。别人都无法忍受这种贫苦的忧愁。' },
+  { tag: "字词释义", q: '“好之者不如<span class="highlight">乐</span>之者”中“<span class="highlight">乐</span>”的意思是？',
+    options: ["以……为乐（意动用法）", "快乐", "音乐", "乐趣"], answer: 0,
+    explain: '“乐”意动用法，意为“以……为乐”。喜爱道理的人不如以践行道理为乐的人。' },
+  { tag: "字词释义", q: '“<span class="highlight">饭</span>疏食”中“<span class="highlight">饭</span>”的意思是？',
+    options: ["吃（名词作动词）", "米饭", "粮食", "厨师"], answer: 0,
+    explain: '“饭”名词作动词，意为“吃”。吃粗劣的食物。' },
+  { tag: "字词释义", q: '“饭<span class="highlight">疏食</span>”中“<span class="highlight">疏食</span>”的意思是？',
+    options: ["粗粮，粗劣的食物", "蔬菜和米饭", "稀疏的食物", "剩饭"], answer: 0,
+    explain: '“疏食”意为“粗粮、粗劣的食物”。' },
+  { tag: "字词释义", q: '“<span class="highlight">于</span>我如浮云”中“<span class="highlight">于</span>”的意思是？',
+    options: ["对于", "在", "到", "被"], answer: 0,
+    explain: '“于”意为“对于”。对我而言就像浮云一样。' },
+  { tag: "字词释义", q: '“<span class="highlight">三</span>人行”中“<span class="highlight">三</span>”的意思是？',
+    options: ["几个（约数，表多）", "三个", "三次", "第三"], answer: 0,
+    explain: '“三”在古汉语中常表“多”，是约数，不是确数。几个人同行。' },
+  { tag: "字词释义", q: '“必有我师<span class="highlight">焉</span>”中“<span class="highlight">焉</span>”的意思是？',
+    options: ["于此，在其中（兼词）", "哪里", "怎么", "语气词"], answer: 0,
+    explain: '“焉”是兼词，相当于“于此”，意为“在其中”。其中必定有值得我学习的人。' },
+  { tag: "字词释义", q: '“逝者如斯<span class="highlight">夫</span>”中“<span class="highlight">夫</span>”的意思是？',
+    options: ["语气词，表感叹", "丈夫", "夫子", "夫人"], answer: 0,
+    explain: '“夫”是句末语气词，表示感叹。消逝的事物就像这流水一样啊。' },
+  { tag: "字词释义", q: '“三军可<span class="highlight">夺</span>帅也”中“<span class="highlight">夺</span>”的意思是？',
+    options: ["改变", "夺取", "抢夺", "剥夺"], answer: 0,
+    explain: '“夺”意为“改变”。军队可以被夺走主帅（改变主帅），但普通人的志向不可改变。' },
+  { tag: "字词释义", q: '“<span class="highlight">匹夫</span>不可夺志也”中“<span class="highlight">匹夫</span>”的意思是？',
+    options: ["普通人，平民", "莽夫", "武夫", "一个人"], answer: 0,
+    explain: '“匹夫”意为“普通人、平民”。普通百姓的志向无法被强行改变。' },
+  { tag: "字词释义", q: '“博学而<span class="highlight">笃志</span>”中“<span class="highlight">笃志</span>”的意思是？',
+    options: ["志向坚定", "诚实守信", "专心学习", "志向远大"], answer: 0,
+    explain: '“笃”意为“坚定”，“笃志”即志向坚定。广泛学习且志向坚定。' },
+  { tag: "字词释义", q: '“<span class="highlight">切</span>问而近思”中“<span class="highlight">切</span>”的意思是？',
+    options: ["恳切", "急切", "确切", "密切"], answer: 0,
+    explain: '“切”意为“恳切”。恳切地发问且贴近现实思考。' }
+];
+
+const sentenceData = [
+  { original: "①子曰：“学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？”", notes: [{ word: "时", meaning: "按时" }, { word: "习", meaning: "温习，复习" }, { word: "说", meaning: "同“悦”，愉快" }, { word: "愠", meaning: "生气，恼怒" }], trans: "孔子说：“学习了（知识）然后按时温习实践，不也是令人愉悦的吗？有志同道合的朋友从远方来相聚，不也是令人快乐的吗？别人不理解自己也不恼怒，不正是君子的品格吗？”" },
+  { original: "②曾子曰：“吾日三省吾身：为人谋而不忠乎？与朋友交而不信乎？传不习乎？”", notes: [{ word: "日", meaning: "每天" }, { word: "三", meaning: "多次，虚指" }, { word: "身", meaning: "自己" }, { word: "忠", meaning: "尽心竭力" }, { word: "传", meaning: "老师传授的知识" }], trans: "曾子说：“我每天多次反省（我）自己：为别人谋划事情是否尽心竭力了？与朋友交往是否诚实守信了？老师传授的知识是否温习了？”" },
+  { original: "③子曰：“吾十有五而志于学，三十而立，四十而不惑，五十而知天命，六十而耳顺，七十而从心所欲，不逾矩。”", notes: [{ word: "有", meaning: "同“又”" }, { word: "志", meaning: "立志" }, { word: "立", meaning: "立身" }, { word: "逾", meaning: "越过，超过" }], trans: "孔子说：“我十五岁立志于学问，三十岁（能）立身（于世），四十岁对世事不再困惑，五十岁知晓天命的深意，六十岁能听得进不同的意见，七十岁随心所欲做事，却不越过规矩。”" },
+  { original: "④子曰：“温故而知新，可以为师矣。”", notes: [{ word: "而", meaning: "顺承" }], trans: "孔子说：“温习学过的知识，从中获得新的理解与体会，这样的人就可以（凭这一点）当老师了。”" },
+  { original: "⑤子曰：“学而不思则罔，思而不学则殆。”", notes: [{ word: "罔", meaning: "迷惑" }, { word: "而", meaning: "转折，却" }, { word: "殆", meaning: "疑惑" }], trans: "孔子说：“只学习却不思考，就会迷惑而无所得；只思考却不学习，就会疑惑而无所适从。”" },
+  { original: "⑥子曰：“贤哉，回也！一箪食，一瓢饮，在陋巷，人不堪其忧，回也不改其乐。贤哉，回也！”", notes: [{ word: "堪", meaning: "能忍受" }], trans: "多么贤德啊，颜回！一竹筐饭食，一瓢清水，住在简陋的小巷里。别人都无法忍受这种贫苦的忧愁，颜回却不改变他内心的快乐。多么贤德啊，颜回！" },
+  { original: "⑦子曰：“知之者不如好之者，好之者不如乐之者。”", notes: [{ word: "乐", meaning: "以……为乐" }], trans: "孔子说：“了解道理的人，不如喜爱道理的人；喜爱道理的人，不如以践行道理为乐的人。”" },
+  { original: "⑧子曰：“饭疏食，饮水，曲肱而枕之，乐亦在其中矣。不义而富且贵，于我如浮云。”", notes: [{ word: "饭", meaning: "吃" }, { word: "疏食", meaning: "粗粮" }, { word: "于", meaning: "对于" }], trans: "孔子说：“吃粗劣的食物，喝冷水，弯起胳膊当作枕头，乐趣也在这其中。用不正当的手段得到的富贵，对我而言就像浮云一样。”" },
+  { original: "⑨子曰：“三人行，必有我师焉。择其善者而从之，其不善者而改之。”", notes: [{ word: "三", meaning: "几个，约数" }, { word: "焉", meaning: "于此，在其中" }], trans: "孔子说：“几个人同行（“三”在古汉语中常表“多”，非确数），其中必定有值得我学习的人。选择他们的优点去效仿，看到他们的缺点就对照自身，反思并改正自己的不足。”" },
+  { original: "⑩子在川上曰：“逝者如斯夫，不舍昼夜。”", notes: [{ word: "夫", meaning: "语气词，表感叹" }], trans: "孔子在河边感叹道：“消逝的事物就像这流水一样啊，不分昼夜地向前奔流。”" },
+  { original: "⑪子曰：“三军可夺帅也，匹夫不可夺志也。”", notes: [{ word: "夺", meaning: "改变" }, { word: "匹夫", meaning: "普通人，平民" }], trans: "孔子说：“即便庞大的军队能被夺走主帅，普通百姓的志向也无法被强行改变。”" },
+  { original: "⑫子夏曰：“博学而笃志，切问而近思，仁在其中矣。”", notes: [{ word: "笃志", meaning: "志向坚定" }, { word: "切", meaning: "恳切" }], trans: "子夏说：“广泛学习且志向坚定，恳切发问且贴近现实思考，'仁'便在这过程中了。”" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'lunyu12_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  });
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
