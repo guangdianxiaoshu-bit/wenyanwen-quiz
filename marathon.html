@@ -38,23 +38,27 @@
 
   .sec { font-size: 15px; font-weight: 600; color: #b5533c; padding-bottom: 6px; border-bottom: 2px solid #e8d5cc; margin: 18px 0 12px; }
 
+  #pickList { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
   .pick {
 
-    display: flex; align-items: center; gap: 10px; background: #fff; padding: 12px 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 3px;
 
-    margin-bottom: 8px; border-radius: 10px; border: 1px solid #ede7dd; cursor: pointer; transition: all .15s;
+    background: #fff; padding: 14px 6px; border-radius: 10px; border: 1px solid #ede7dd; cursor: pointer; transition: all .15s; position: relative;
 
   }
+
+  @media (max-width: 480px) { #pickList { grid-template-columns: repeat(2, 1fr); } }
 
   .pick:hover { border-color: #d47a5e; }
 
   .pick.sel { border-color: #b5533c; background: #fdf0ec; }
 
-  .pick input { width: 18px; height: 18px; accent-color: #b5533c; flex-shrink: 0; }
+  .pick input { position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; accent-color: #b5533c; }
 
-  .pick .nm { flex: 1; font-size: 14px; font-weight: 600; color: #3d2b1a; }
+  .pick .nm { font-size: 13px; font-weight: 600; color: #3d2b1a; line-height: 1.4; }
 
-  .pick .ct { font-size: 11px; color: #b3926f; }
+  .pick .ct { font-size: 10px; color: #b3926f; }
 
   .tip { font-size: 12px; color: #999; margin: 4px 0 10px; }
 
