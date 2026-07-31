@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《狼》 · 26题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #25274d 0%, #464866 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #25274d; color: #d5d6e0;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #7a7da8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #7a7da8; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #d5d6e0; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #25274d, #a6a8c4); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5d6e0; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #25274d; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #464866; background: #d5d6e0; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #25274d; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5d6e0; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #a6a8c4; background: #ebecf2; }
+  .opts label.selected { border-color: #25274d; background: #d5d6e0; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d5d6e0; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #25274d; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #ebecf2; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #25274d; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #25274d, #464866); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #25274d; border: 2px solid #a6a8c4; }
+  .btn-secondary:hover { background: #ebecf2; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #25274d, #464866); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5d6e0; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #25274d; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d5d6e0; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #ebecf2; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #25274d; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #ebecf2; border: 1px solid #d5d6e0; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d5d6e0; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《狼》</h1>
+  <p>部编版七年级上册 · 《聊斋志异》</p>
+  
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 一屠晚归，担中肉尽，<u>止</u>有剩骨。途中两狼，<u>缀行</u>甚远。屠惧，<u>投以骨</u>。一狼得骨止，一狼仍从。复投之，后狼止而前狼又至。骨已尽矣，而两狼<u>之</u>并驱<u>如故</u>。屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，苫(shàn)蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，眈眈相向。<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露尻(kāo)尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。<br>
+  <strong>注释</strong> 〔苫(shàn)〕盖上。　〔尻(kāo)〕屁股。　〔眈眈〕凶狠注视的样子。<br>
+  <strong>常识</strong> 本文选自《聊斋志异》卷六（上海古籍出版社1986年版）。蒲松龄（1640—1715），字留仙，世称聊斋先生，淄川（今属山东淄博）人，清代文学家。著有文言小说集《聊斋志异》等。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 26 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 26 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“<span class="highlight">止</span>有剩骨”中“<span class="highlight">止</span>”的意思是？',
+    options: ["只，仅", "停止", "阻止", "制止"], answer: 0,
+    explain: '“止”意为“只、仅”。担子里只剩下骨头。' },
+  { tag: "字词释义", q: '“<span class="highlight">缀行</span>甚远”中“<span class="highlight">缀行</span>”的意思是？',
+    options: ["紧跟着走", "结伴行走", "慢慢行走", "绕道行走"], answer: 0,
+    explain: '“缀行”意为“紧跟着走”。“缀”是连接、紧跟的意思。' },
+  { tag: "字词释义", q: '“<span class="highlight">投以骨</span>”是什么特殊句式？',
+    options: ["状语后置（以骨投之）", "宾语前置", "省略句", "判断句"], answer: 0,
+    explain: '“投以骨”是状语后置句，正常语序为“以骨投之”，即把骨头投给（狼）。' },
+  { tag: "字词释义", q: '“而两狼<span class="highlight">之</span>并驱如故”中“<span class="highlight">之</span>”的作用是？',
+    options: ["取消句子独立性", "结构助词，的", "代词，它", "动词，去"], answer: 0,
+    explain: '“之”用在主谓之间，取消句子独立性，无实义。' },
+  { tag: "字词释义", q: '“并驱<span class="highlight">如故</span>”中“<span class="highlight">如故</span>”的意思是？',
+    options: ["像原来一样", "如同故人", "按照旧例", "装作没事"], answer: 0,
+    explain: '“如故”意为“像原来一样”。两只狼像原来一样一起追赶。' },
+  { tag: "字词释义", q: '“屠大<span class="highlight">窘</span>”中“<span class="highlight">窘</span>”的意思是？',
+    options: ["困迫", "贫穷", "害怕", "着急"], answer: 0,
+    explain: '“窘”意为“处境困迫、为难”。屠户十分困迫。' },
+  { tag: "字词释义", q: '“恐前后受其<span class="highlight">敌</span>”中“<span class="highlight">敌</span>”的意思是？',
+    options: ["攻击", "敌人", "敌对", "抵抗"], answer: 0,
+    explain: '“敌”名词作动词，意为“攻击”。担心前后受到狼的攻击。' },
+  { tag: "字词释义", q: '“<span class="highlight">顾</span>野有麦场”中“<span class="highlight">顾</span>”的意思是？',
+    options: ["看", "照顾", "回顾", "探望"], answer: 0,
+    explain: '“顾”意为“看”。（屠户）看见田野里有麦场。' },
+  { tag: "字词释义", q: '“场主积<span class="highlight">薪</span>其中”中“<span class="highlight">薪</span>”的意思是？',
+    options: ["柴草", "薪水", "植被", "木料"], answer: 0,
+    explain: '“薪”意为“柴草”。场主在麦场中堆了柴草。' },
+  { tag: "字词释义", q: '“屠<span class="highlight">乃</span>奔倚其下”中“<span class="highlight">乃</span>”的意思是？',
+    options: ["于是", "才", "竟然", "你的"], answer: 0,
+    explain: '“乃”意为“于是、就”。屠户于是跑过去倚在柴堆下。' },
+  { tag: "字词释义", q: '“<span class="highlight">弛</span>担持刀”中“<span class="highlight">弛</span>”的意思是？',
+    options: ["放下", "松弛", "放松", "奔驰"], answer: 0,
+    explain: '“弛”意为“解除、卸下”，这里指放下担子。放下担子拿起刀。' },
+  { tag: "字词释义", q: '“狼不敢<span class="highlight">前</span>”中“<span class="highlight">前</span>”的意思是？',
+    options: ["上前", "前方", "先前", "前进"], answer: 0,
+    explain: '“前”名词作动词，意为“上前”。狼不敢上前。' },
+  { tag: "字词释义", q: '“<span class="highlight">少时</span>”中“<span class="highlight">少</span>”的读音是？',
+    options: ["shǎo，一会儿", "shào，少年", "shǎo，缺少", "shào，年少"], answer: 0,
+    explain: '“少时”的“少”读shǎo，意为“一会儿、时间短暂”。' },
+  { tag: "字词释义", q: '“一狼<span class="highlight">径</span>去”中“<span class="highlight">径</span>”的意思是？',
+    options: ["径直", "直径", "小路", "路径"], answer: 0,
+    explain: '“径”意为“径直”。一只狼径直离开。' },
+  { tag: "字词释义", q: '“其一<span class="highlight">犬</span>坐于前”中“<span class="highlight">犬</span>”的意思是？',
+    options: ["像狗一样", "狗", "犬子", "猎犬"], answer: 0,
+    explain: '“犬”名词作状语，意为“像狗一样”。另一只像狗一样坐在前面。' },
+  { tag: "字词释义", q: '“目似<span class="highlight">瞑</span>”中“<span class="highlight">瞑</span>”的意思是？',
+    options: ["闭上眼睛", "昏暗", "睡觉", "困倦"], answer: 0,
+    explain: '“瞑”意为“闭上眼睛”。眼睛好像闭着。' },
+  { tag: "字词释义", q: '“意<span class="highlight">暇</span>甚”中“<span class="highlight">暇</span>”的意思是？',
+    options: ["从容", "空闲", "假日", "休息"], answer: 0,
+    explain: '“暇”意为“悠闲、从容”。神情悠闲极了。' },
+  { tag: "字词释义", q: '“屠<span class="highlight">暴</span>起”中“<span class="highlight">暴</span>”的意思是？',
+    options: ["突然", "暴躁", "暴力", "暴露"], answer: 0,
+    explain: '“暴”意为“突然”。屠户突然跳起。' },
+  { tag: "字词释义", q: '“<span class="highlight">方</span>欲行”中“<span class="highlight">方</span>”的意思是？',
+    options: ["正要", "方向", "方法", "方才"], answer: 0,
+    explain: '“方”意为“正、正要”。正要走。' },
+  { tag: "字词释义", q: '“一狼<span class="highlight">洞</span>其中”中“<span class="highlight">洞</span>”的意思是？',
+    options: ["打洞", "洞穴", "洞口", "洞察"], answer: 0,
+    explain: '“洞”名词作动词，意为“打洞”。一只狼正在其中打洞。' },
+  { tag: "字词释义", q: '“意将<span class="highlight">隧</span>入”中“<span class="highlight">隧</span>”的意思是？',
+    options: ["从隧道进入", "隧道", "地道", "挖洞"], answer: 0,
+    explain: '“隧”名词作状语，意为“从隧道（通道）进入”。想钻洞从背后攻击。' },
+  { tag: "字词释义", q: '“屠自后断其<span class="highlight">股</span>”中“<span class="highlight">股</span>”的意思是？',
+    options: ["大腿", "屁股", "股票", "股份"], answer: 0,
+    explain: '“股”是古今异义词，这里意为“大腿”。屠户从后面砍断它的大腿。' },
+  { tag: "字词释义", q: '“<span class="highlight">乃</span>悟前狼假寐”中“<span class="highlight">乃</span>”的意思是？',
+    options: ["才", "于是", "竟然", "你的"], answer: 0,
+    explain: '“乃”意为“才”。（屠户）才明白前狼假装睡觉。' },
+  { tag: "字词释义", q: '“<span class="highlight">盖</span>以诱敌”中“<span class="highlight">盖</span>”的意思是？',
+    options: ["原来是", "大概是", "应该是", "居然是"], answer: 0,
+    explain: '“盖”意为“原来是”，表示推断、说明原因。原来是用来诱惑敌人。' },
+  { tag: "字词释义", q: '“禽兽之变诈<span class="highlight">几何</span>哉”中“<span class="highlight">几何</span>”的意思是？',
+    options: ["多少", "几何学", "多久", "几个"], answer: 0,
+    explain: '“几何”意为“多少”。禽兽的诡诈能有多少呢？' },
+  { tag: "字词释义", q: '“止增笑<span class="highlight">耳</span>”中“<span class="highlight">耳</span>”的意思是？',
+    options: ["罢了", "耳朵", "耳目", "听闻"], answer: 0,
+    explain: '“耳”是语气词，意为“罢了”。只是增加笑料罢了。' }
+];
+
+const sentenceData = [
+  { original: "一屠晚归，担中肉尽，止有剩骨。途中两狼，缀行甚远。", notes: [{ word: "止", meaning: "只，仅" }, { word: "缀行", meaning: "紧跟着走" }], trans: "一个屠户傍晚回家，担子里的肉已经卖完，只剩下骨头。路上遇到两只狼，紧跟着（他）走了很远。" },
+  { original: "屠惧，投以骨。一狼得骨止，一狼仍从。复投之，后狼止而前狼又至。骨已尽矣，而两狼之并驱如故。", notes: [{ word: "投以骨", meaning: "状语后置，以骨投之" }, { word: "之", meaning: "取消句子独立性" }, { word: "如故", meaning: "像原来一样" }], trans: "屠户害怕，（就）把骨头投给狼。一只狼得到骨头停下，另一只狼仍跟着。再投骨头，后狼停下而前狼又追上。骨头已投完，而两只狼像原来一样一起追赶。" },
+  { original: "屠大窘，恐前后受其敌。顾野有麦场，场主积薪其中，苫蔽成丘。屠乃奔倚其下，弛担持刀。狼不敢前，眈眈相向。", notes: [{ word: "窘", meaning: "困迫，为难" }, { word: "敌", meaning: "攻击" }, { word: "顾", meaning: "看" }, { word: "薪", meaning: "柴草" }, { word: "乃", meaning: "于是" }, { word: "弛", meaning: "放下" }, { word: "前", meaning: "上前" }], trans: "屠户十分困迫，担心前后受到狼的攻击。看见田野里有麦场，场主在其中堆了柴草，覆盖成小山。屠户于是跑过去倚在柴堆下，放下担子拿起刀。狼不敢上前，瞪着眼朝着（他）。" },
+  { original: "少时，一狼径去，其一犬坐于前。久之，目似瞑，意暇甚。屠暴起，以刀劈狼首，又数刀毙之。方欲行，转视积薪后，一狼洞其中，意将隧入以攻其后也。身已半入，止露尻尾。屠自后断其股，亦毙之。乃悟前狼假寐，盖以诱敌。", notes: [{ word: "少时", meaning: "一会儿" }, { word: "径", meaning: "径直" }, { word: "犬", meaning: "像狗一样" }, { word: "瞑", meaning: "闭上眼睛" }, { word: "暇", meaning: "从容" }, { word: "暴", meaning: "突然" }, { word: "方", meaning: "正要" }, { word: "洞", meaning: "打洞" }, { word: "隧", meaning: "从隧道进入" }, { word: "股", meaning: "大腿" }, { word: "乃", meaning: "才" }, { word: "盖", meaning: "原来是" }], trans: "一会儿，一只狼径直离开，另一只像狗一样坐在前面。很久，（它的）眼睛好像闭着，神情悠闲极了。屠户突然跳起，用刀劈狼头，又连砍几刀杀死了它。正要走，转身看见柴堆后面，一只狼正在其中打洞，想要钻洞从背后攻击（他）。（狼）身体已经钻入一半，只露出屁股和尾巴。屠户从后面砍断它的大腿，也杀死了它。（屠户）才明白前狼假装睡觉，原来是用（这种方式）来诱惑敌人。" },
+  { original: "狼亦黠矣，而顷刻两毙，禽兽之变诈几何哉？止增笑耳。", notes: [{ word: "几何", meaning: "多少" }, { word: "耳", meaning: "罢了" }], trans: "狼也狡猾啊，但片刻之间两只狼都被杀死，禽兽的诡诈能有多少呢？只是增加笑料罢了。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'lang_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  });
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
