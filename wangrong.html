@@ -286,6 +286,9 @@ submitBtn.addEventListener('click', function() {
   renderTranslation(); translationPanel.classList.add('show');
   setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
   localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
 });
 resetBtn.addEventListener('click', function() {
   if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
