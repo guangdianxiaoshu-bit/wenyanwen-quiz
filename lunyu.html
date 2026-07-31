@@ -107,6 +107,26 @@
   .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
   .toast.show { opacity: 1; }
 
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(61,90,128,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #2a3f5c; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+
   @media (max-width: 400px) {
     .banner { padding: 24px 14px 18px; }
     .banner h1 { font-size: 19px; }
@@ -163,16 +183,17 @@
   <div class="footer">
     <div class="divider"></div>
     <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
-    <p><a href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/" style="color:#7fa8cc;text-decoration:none;font-size:12px;">← 返回目录</a></p>
   </div>
 </div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
 
 <script>
 const questions = [
   { tag: "字词释义", q: '“是<span class="highlight">知</span>也”中“<span class="highlight">知</span>”的意思是？',
-    options: ["知道", "同"智"，智慧", "知识", "知觉"], answer: 1,
+    options: ["知道", "同“智”，智慧", "知识", "知觉"], answer: 1,
     explain: '“知”是通假字，同“智”，意为“智慧”。知道就是知道，不知道就是不知道，这就是智慧。' },
   { tag: "字词释义", q: '“<span class="highlight">敏</span>而好学”中“<span class="highlight">敏</span>”的意思是？',
     options: ["聪敏", "敏捷", "敏感", "勤奋"], answer: 0,
@@ -213,7 +234,7 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "知之为知之，不知为不知，是知也。", notes: [{ word: "知", meaning: "同"智"，智慧" }], trans: "知道就是知道，不知道就是不知道，这就是智慧。" },
+  { original: "知之为知之，不知为不知，是知也。", notes: [{ word: "知", meaning: "同“智”，智慧" }], trans: "知道就是知道，不知道就是不知道，这就是智慧。" },
   { original: "敏而好学，不耻下问。", notes: [{ word: "敏", meaning: "聪敏" }, { word: "好", meaning: "喜好" }, { word: "耻", meaning: "以……为耻" }, { word: "下问", meaning: "向地位、学问不如自己的人请教" }], trans: "聪敏而又喜好学习，不以向地位、学问不如自己的人请教为耻。" },
   { original: "默而识之，学而不厌，诲人不倦。", notes: [{ word: "识", meaning: "记住" }, { word: "厌", meaning: "满足" }, { word: "诲", meaning: "教诲" }], trans: "默默地记住所学的知识，学习不知道满足，教诲别人不知疲倦。" },
   { original: "我非生而知之者，好古，敏以求之者也。", notes: [{ word: "敏", meaning: "勤勉" }], trans: "我不是生来就懂得知识的人，而是喜好古代文化，勤奋敏捷地去求得知识的人。" },
