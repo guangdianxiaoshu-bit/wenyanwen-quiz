@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《学弈》 · 16题</title>
+<title>《学弈》 · 15题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -160,7 +160,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 16 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 15 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -172,7 +172,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 16 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 15 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -216,9 +216,6 @@ const questions = [
   { tag: "字词释义", q: '“一心<span class="highlight">以为</span>有鸿鹄将至”中“<span class="highlight">以为</span>”的意思是？',
     options: ["认为", "作为", "因为", "可以"], answer: 0,
     explain: '“以为”意为“认为”。心里一直认为（想着）有天鹅要飞来。' },
-  { tag: "字词释义", q: '“一心以为有<span class="highlight">鸿鹄</span>将至”中“<span class="highlight">鸿鹄</span>”指的是？',
-    options: ["天鹅、大雁一类的鸟", "一种小虫", "孔雀", "老鹰"], answer: 0,
-    explain: '“鸿鹄”指天鹅、大雁一类的鸟。' },
   { tag: "字词释义", q: '“思<span class="highlight">援</span>弓缴而射之”中“<span class="highlight">援</span>”的意思是？',
     options: ["引，拉", "援助", "放弃", "举起"], answer: 0,
     explain: '“援”意为“引、拉”。想拉弓搭箭去射它。' },
@@ -228,9 +225,9 @@ const questions = [
   { tag: "字词释义", q: '“虽与之<span class="highlight">俱</span>学”中“<span class="highlight">俱</span>”的意思是？',
     options: ["一起，一同", "害怕", "聚集", "各自"], answer: 0,
     explain: '“俱”意为“一起、一同”。虽然他和前一个人一起学习。' },
-  { tag: "字词释义", q: '“<span class="highlight">弗若</span>之矣”中“<span class="highlight">弗若</span>”的意思是？',
-    options: ["不如", "不能", "假设", "好像"], answer: 0,
-    explain: '“弗若”意为“不如”。棋艺不如人家。' },
+  { tag: "字词释义", q: '“弗<span class="highlight">若</span>之矣”中“<span class="highlight">若</span>”的意思是？',
+    options: ["比得上", "好像", "仿佛", "如果"], answer: 0,
+    explain: '“若”意为“比得上”。“弗若”即“比不上”（不如）。' },
   { tag: "字词释义", q: '“<span class="highlight">为</span>是其智弗若与”中“<span class="highlight">为</span>”的意思是？',
     options: ["因为", "为了", "成为", "作为"], answer: 0,
     explain: '“为”意为“因为”。这是因为他的智力不如前一个人吗？' },
@@ -246,11 +243,11 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "弈秋，通国之善弈者也。", notes: [{ word: "通国", meaning: "全国" }, { word: "善", meaning: "善于，擅长" }, { word: "弈", meaning: "下棋" }], trans: "弈秋，是全国最擅长下棋的人。" },
-  { original: "使弈秋诲二人弈，其一人专心致志，惟弈秋之为听；", notes: [{ word: "使", meaning: "让，叫" }, { word: "诲", meaning: "教导" }, { word: "惟", meaning: "只" }], trans: "让弈秋教导两个人下棋，其中一人专心致志，只听弈秋的教导；" },
-  { original: "一人虽听之，一心以为有鸿鹄将至，思援弓缴而射之。", notes: [{ word: "以为", meaning: "认为" }, { word: "鸿鹄", meaning: "天鹅、大雁一类的鸟" }, { word: "援", meaning: "引，拉" }, { word: "缴(zhuó)", meaning: "带丝绳的箭" }], trans: "另一个人虽然也在听弈秋讲课，心里却一直想着有天鹅要飞来，想要拉弓搭箭去把它射下来。" },
-  { original: "虽与之俱学，弗若之矣。", notes: [{ word: "俱", meaning: "一起，一同" }, { word: "弗若", meaning: "不如" }], trans: "虽然他和前一个人一起学习下棋，但棋艺不如人家。" },
-  { original: "为是其智弗若与？曰：非然也。", notes: [{ word: "为", meaning: "因为" }, { word: "弗", meaning: "不" }, { word: "与(yú)", meaning: "同“欤”，语气词" }, { word: "然", meaning: "这样" }], trans: "这是因为他的智力不如前一个人吗？回答说：不是这样的。" }
+  { original: "弈秋，通国之善弈者也。", notes: [{ word: "通国", meaning: "全国" }, { word: "善", meaning: "善于，擅长" }, { word: "弈", meaning: "下棋" }], trans: "弈秋，（是）通国（中）善于下棋的人。" },
+  { original: "使弈秋诲二人弈，其一人专心致志，惟弈秋之为听；", notes: [{ word: "使", meaning: "让，叫" }, { word: "诲", meaning: "教导" }, { word: "惟", meaning: "只" }], trans: "让弈秋教导两个人下棋，其中一个人专心致志，（只）听弈秋的教导；" },
+  { original: "一人虽听之，一心以为有鸿鹄将至，思援弓缴而射之。", notes: [{ word: "以为", meaning: "认为" }, { word: "鸿鹄", meaning: "天鹅、大雁一类的鸟" }, { word: "援", meaning: "引，拉" }, { word: "缴(zhuó)", meaning: "带丝绳的箭" }], trans: "另一个人虽然也在听（弈秋讲课），（心里）一心认为有天鹅将要飞来，想拉弓取箭去射它。" },
+  { original: "虽与之俱学，弗若之矣。", notes: [{ word: "俱", meaning: "一起，一同" }, { word: "若", meaning: "比得上" }], trans: "虽然（他）和前一个人一起学习，（棋艺却）比不上（那个人）。" },
+  { original: "为是其智弗若与？曰：非然也。", notes: [{ word: "为", meaning: "因为" }, { word: "弗", meaning: "不" }, { word: "与(yú)", meaning: "同“欤”，语气词" }, { word: "然", meaning: "这样" }], trans: "（这）是因为他的智力比不上（前一个人）吗？（有人）回答说：不是这样的。" }
 ];
 
 const container = document.getElementById('questionsContainer');
