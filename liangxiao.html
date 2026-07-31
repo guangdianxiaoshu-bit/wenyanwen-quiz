@@ -199,7 +199,7 @@ const questions = [
     options: ["向东（名词作状语）", "东方", "东家（主人）", "东边"], answer: 0,
     explain: '“东”名词作状语，意为“向东、往东”。孔子向东游历。' },
   { tag: "字词释义", q: '“见两小儿<span class="highlight">辩斗</span>”中“<span class="highlight">辩斗</span>”的意思是？',
-    options: ["辩论，争论", "打斗", "辩解", "比赛"], answer: 0,
+    options: ["争论", "打斗", "辩解", "比赛"], answer: 0,
     explain: '“辩斗”意为“辩论、争论”。见到两个小孩在争辩。' },
   { tag: "字词释义", q: '“问其<span class="highlight">故</span>”中“<span class="highlight">故</span>”的意思是？',
     options: ["原因", "故事", "所以", "旧"], answer: 0,
@@ -211,13 +211,13 @@ const questions = [
     options: ["距离", "离开", "去除", "过去"], answer: 0,
     explain: '“去”意为“距离”。太阳刚升起时距离人近。' },
   { tag: "字词释义", q: '“<span class="highlight">及</span>日中则如盘盂”中“<span class="highlight">及</span>”的意思是？',
-    options: ["到，到了", "以及", "及时", "来得及"], answer: 0,
+    options: ["到", "以及", "及时", "来得及"], answer: 0,
     explain: '“及”意为“到、到了”。等到正午就像盘子一样小。' },
   { tag: "字词释义", q: '“如探<span class="highlight">汤</span>”中“<span class="highlight">汤</span>”的意思是？',
     options: ["热水", "菜汤", "茶水", "汤药"], answer: 0,
     explain: '“汤”是古今异义词，意为“热水”。像把手伸进热水里一样热。' },
   { tag: "字词释义", q: '“孔子不能<span class="highlight">决</span>也”中“<span class="highlight">决</span>”的意思是？',
-    options: ["判断，决断", "决定", "决战", "决心"], answer: 0,
+    options: ["判断", "决定", "决战", "决心"], answer: 0,
     explain: '“决”意为“判断、决断”。孔子不能判断谁对谁错。' },
   { tag: "字词释义", q: '“<span class="highlight">孰(shú)</span>为汝多知乎”中“<span class="highlight">孰(shú)</span>”的意思是？',
     options: ["谁", "什么", "为什么", "怎么"], answer: 0,
@@ -234,12 +234,12 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "孔子东游，见两小儿辩斗，问其故。", notes: [{ word: "东", meaning: "向东，名词作状语" }, { word: "辩斗", meaning: "辩论，争论" }, { word: "故", meaning: "原因" }], trans: "孔子向东游历，见到两个小孩在争辩，便问他们争辩的原因。" },
+  { original: "孔子东游，见两小儿辩斗，问其故。", notes: [{ word: "东", meaning: "向东，名词作状语" }, { word: "辩斗", meaning: "争论" }, { word: "故", meaning: "原因" }], trans: "孔子向东游历，见到两个小孩在争辩，便问他们争辩的原因。" },
   { original: "一儿曰：“我以日始出时去人近，而日中时远也。”", notes: [{ word: "以", meaning: "认为" }, { word: "去", meaning: "距离" }, { word: "日中", meaning: "正午" }], trans: "一个小孩说：“我认为太阳刚升起的时候距离人近，而到中午的时候距离人远。”" },
   { original: "一儿曰：“我以日初出远，而日中时近也。”", notes: [{ word: "日中", meaning: "正午" }], trans: "另一个小孩说：“我认为太阳刚升起的时候距离人远，而到中午的时候距离人近。”" },
-  { original: "一儿曰：“日初出大如车盖，及日中则如盘盂，此不为远者小而近者大乎？”", notes: [{ word: "及", meaning: "到，到了" }, { word: "盘盂", meaning: "盛物的器皿" }], trans: "一个小孩说：“太阳刚出来的时候像车盖一样大，等到正午就小得像一个盘子，这不是远处的看着小而近处的看着大吗？”" },
+  { original: "一儿曰：“日初出大如车盖，及日中则如盘盂，此不为远者小而近者大乎？”", notes: [{ word: "及", meaning: "到" }, { word: "盘盂", meaning: "盛物的器皿" }], trans: "一个小孩说：“太阳刚出来的时候像车盖一样大，等到正午就小得像一个盘子，这不是远处的看着小而近处的看着大吗？”" },
   { original: "一儿曰：“日初出沧沧凉凉，及其日中如探汤，此不为近者热而远者凉乎？”", notes: [{ word: "沧沧凉凉", meaning: "寒凉" }, { word: "汤", meaning: "热水" }], trans: "另一个小孩说：“太阳刚出来的时候有清凉的感觉，等到中午的时候像把手伸进热水里一样热，这不是近的时候感觉热而远的时候感觉凉吗？”" },
-  { original: "孔子不能决也。", notes: [{ word: "决", meaning: "判断，决断" }], trans: "孔子不能判决（谁对谁错）。" },
+  { original: "孔子不能决也。", notes: [{ word: "决", meaning: "判断" }], trans: "孔子不能判决（谁对谁错）。" },
   { original: "两小儿笑曰：“孰为汝多知乎？”", notes: [{ word: "孰(shú)", meaning: "谁" }, { word: "为", meaning: "同“谓”，说" }, { word: "汝", meaning: "你" }, { word: "知", meaning: "同“智”，智慧" }], trans: "两个小孩笑着说：“谁说你智慧多呢？”" }
 ];
 
