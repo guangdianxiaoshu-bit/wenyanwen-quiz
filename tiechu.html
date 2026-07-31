@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《铁杵成针》精读自测 · 12题</title>
+<title>《铁杵成针》精读自测 · 10题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -127,7 +127,7 @@
 <div class="banner">
   <h1>📖 《铁杵成针》精读自测</h1>
   <p>部编版四年级下册 · 《方舆胜览·眉州》</p>
-  <span class="badge">12 道选择题 · 测测你对这篇古文掌握得怎样</span>
+  <span class="badge">10 道选择题 · 测测你对这篇古文掌握得怎样</span>
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
@@ -138,7 +138,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 12 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 10 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -171,9 +171,6 @@
 
 <script>
 const questions = [
-  { tag: "文学常识", q: '“铁杵成针”这则故事出自哪部著作？',
-    options: ["《世说新语》", "《方舆胜览》", "《韩非子》", "《山海经》"], answer: 1,
-    explain: '“铁杵成针”选自宋代祝穆的《方舆胜览·眉州》。' },
   { tag: "字词释义", q: '“过<span class="highlight">是</span>溪”中“<span class="highlight">是</span>”的意思是？',
     options: ["这", "正确", "判断", "因为"], answer: 0,
     explain: '“是”意为“这”。路过这条小溪。' },
@@ -198,9 +195,6 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">还</span>卒业”中“<span class="highlight">还</span>”的意思是？',
     options: ["还是", "回去", "还给", "还有"], answer: 1,
     explain: '“还”读huán，意为“回去”。回去完成了学业。' },
-  { tag: "内容理解", q: '老妇人磨铁杵是为了做什么？',
-    options: ["磨成铁针", "磨成铁棒", "锻炼身体", "打磨兵器"], answer: 0,
-    explain: '老妇人回答说“欲作针”——想把它磨成一根针。' },
   { tag: "内容理解", q: '李白听了老妇人的话后怎么做？',
     options: ["继续放弃学习", "回去完成了学业", "去别处游玩", "帮老妇人磨针"], answer: 1,
     explain: '李白被老妇人的意志感动，“还卒业”——回去完成了学业。' },
@@ -213,7 +207,7 @@ const sentenceData = [
   { original: "磨针溪，在象耳山下。", notes: [], trans: "磨针溪，坐落在象耳山下。" },
   { original: "世传李太白读书山中，未成，弃去。", notes: [], trans: "世间传说李白在山中读书的时候，没有完成自己的学业，就放弃学习离开了。" },
   { original: "过是溪，逢老媪方磨铁杵。", notes: [{ word: "是", meaning: "这" }, { word: "方", meaning: "正在" }], trans: "他路过这条小溪，遇见一位老妇人正在磨铁棒。" },
-  { original: "问之，曰：\"欲作针。\"", notes: [], trans: "李白问她在做什么，老妇人回答说：\"我想把它磨成针。\"" },
+  { original: "问之，曰：\u201c欲作针。\u201d", notes: [], trans: "李白问她在做什么，老妇人回答说：\u201c我想把它磨成针。\u201d" },
   { original: "太白感其意，还卒业。", notes: [{ word: "感其意", meaning: "被她的意志感动" }, { word: "还卒业", meaning: "回去完成了学业" }], trans: "李白被她的意志感动，就回去完成了学业。" }
 ];
 
