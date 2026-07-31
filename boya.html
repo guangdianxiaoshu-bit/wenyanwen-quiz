@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《伯牙鼓琴》 · 12题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f8f5f0;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #3f6a8a 0%, #5f8aaa 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #3f6a8a; color: #dde8f0;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #c0d4e4; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #c0d4e4; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e0e8ee; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3f6a8a, #8fb2c8); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ede7dd; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #3f6a8a; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #3f6a8a; background: #e8eff5; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #3f6a8a; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e0e8ee; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #8fb2c8; background: #f0f6fa; }
+  .opts label.selected { border-color: #3f6a8a; background: #e8eff5; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e0e8ee; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #3f6a8a; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f0f6fa; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #3f6a8a; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #3f6a8a, #2a485e); color: #fff; box-shadow: 0 2px 8px rgba(63,106,138,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: #fff; color: #3f6a8a; border: 2px solid #8fb2c8; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #3f6a8a, #5f8aaa); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ede7dd; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #3f6a8a; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e0e8ee; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f0ebe3; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #3f6a8a; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f0f6fa; border: 1px solid #e0e8ee; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e0d5c5; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(63,106,138,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #2a485e; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《伯牙鼓琴》</h1>
+  <p>部编版六年级上册 · 《吕氏春秋·本味》</p>
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 伯牙<u>鼓</u>琴，锺子期听之。<u>方</u>鼓琴而<u>志</u>在太山，锺子期曰：“<u>善</u>哉乎鼓琴，巍巍乎<u>若</u>太山。”<u>少选</u>之间而志在流水，锺子期又曰：“善哉乎鼓琴，<u>汤汤</u>乎若流水。”锺子期死，伯牙破琴<u>绝</u>弦，终身不复鼓琴，<u>以为</u>世无<u>足</u>复为鼓琴者。<br>
+  <strong>常识</strong> 本文选自《吕氏春秋·本味》，讲伯牙与锺子期知音相惜的故事。“高山流水”的典故即源于此。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 12 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 12 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“伯牙<span class="highlight">鼓</span>琴”中“<span class="highlight">鼓</span>”的意思是？',
+    options: ["弹奏", "击鼓", "鼓动", "鼓励"], answer: 0,
+    explain: '“鼓”意为“弹奏”。“鼓琴”即弹琴。' },
+  { tag: "字词释义", q: '“<span class="highlight">方</span>鼓琴而志在太山”中“<span class="highlight">方</span>”的意思是？',
+    options: ["正，正在", "方向", "方法", "方才"], answer: 0,
+    explain: '“方”意为“正，正在”。正当伯牙弹琴时，心中想着泰山。' },
+  { tag: "字词释义", q: '“方鼓琴而<span class="highlight">志</span>在太山”中“<span class="highlight">志</span>”的意思是？',
+    options: ["心志，情志", "志向", "标志", "记录"], answer: 0,
+    explain: '“志”意为“心志，情志”，指心中所想的。伯牙弹琴时心中想着泰山。' },
+  { tag: "字词释义", q: '“<span class="highlight">善</span>哉乎鼓琴”中“<span class="highlight">善</span>”的意思是？',
+    options: ["善良", "好", "擅长", "善于"], answer: 1,
+    explain: '“善哉”意为“好啊”，“善”意为“好”。这是锺子期的赞叹。' },
+  { tag: "字词释义", q: '“巍巍乎<span class="highlight">若</span>太山”中“<span class="highlight">若</span>”的意思是？',
+    options: ["如果", "像", "假若", "若干"], answer: 1,
+    explain: '“若”意为“像”。琴音像大山一样高峻。' },
+  { tag: "字词释义", q: '“<span class="highlight">少选</span>之间而志在流水”中“<span class="highlight">少选</span>”的意思是？',
+    options: ["一会儿，不久", "少数", "选择", "很久"], answer: 0,
+    explain: '“少选”意为“一会儿，不久”。过了一会儿，伯牙心意转向流水。' },
+  { tag: "字词释义", q: '“<span class="highlight">汤汤</span>乎若流水”中“<span class="highlight">汤汤</span>”的读音和意思是？',
+    options: ["shāng shāng，水流大而急的样子", "tāng tāng，水很多", "shāng shāng，热水", "tāng tāng，浩浩荡荡"], answer: 0,
+    explain: '“汤汤”读shāng shāng，形容水流大而急的样子。琴音像流水一样浩荡。' },
+  { tag: "字词释义", q: '“伯牙破琴<span class="highlight">绝</span>弦”中“<span class="highlight">绝</span>”的意思是？',
+    options: ["断绝", "绝对", "绝妙", "尽头"], answer: 0,
+    explain: '“绝”意为“断绝”。伯牙摔破琴身、扯断琴弦。' },
+  { tag: "字词释义", q: '“<span class="highlight">以为</span>世无足复为鼓琴者”中“<span class="highlight">以为</span>”的意思是？',
+    options: ["认为", "因为", "所以", "把…当作"], answer: 0,
+    explain: '“以为”意为“认为”。认为世上再没有值得为之弹琴的人。' },
+  { tag: "字词释义", q: '“以为世无<span class="highlight">足</span>复为鼓琴者”中“<span class="highlight">足</span>”的意思是？',
+    options: ["脚", "值得", "足够", "满足"], answer: 1,
+    explain: '“足”意为“值得”。认为世上再没有值得为之弹琴的人了。' },
+  { tag: "内容理解", q: '锺子期死后，伯牙“破琴绝弦，终身不复鼓琴”是因为什么？',
+    options: ["琴坏了", "失去了知音，认为世上再没有值得为之弹琴的人", "不喜欢弹琴了", "琴弦断了"], answer: 1,
+    explain: '锺子期是伯牙的知音，能听懂他的琴声。知音已逝，伯牙认为世上再没有值得为之弹琴的人，所以破琴绝弦。' },
+  { tag: "内容理解", q: '“伯牙鼓琴”这个故事表达了什么？',
+    options: ["要爱护乐器", "知音难觅，朋友间深厚的情谊", "弹琴要专心", "伯牙琴艺高超"], answer: 1,
+    explain: '故事表达了知音难觅、朋友间深厚情谊的主题。“高山流水”也因此成为知音的代称。' }
+];
+
+const sentenceData = [
+  { original: "伯牙鼓琴，锺子期听之。", notes: [{ word: "鼓", meaning: "弹奏" }], trans: "伯牙弹琴，锺子期聆听。" },
+  { original: "方鼓琴而志在太山，锺子期曰：\u201c善哉乎鼓琴，巍巍乎若太山。\u201d", notes: [{ word: "方", meaning: "正，正在" }, { word: "志", meaning: "心志，情志" }, { word: "善", meaning: "好" }, { word: "若", meaning: "像" }], trans: "当伯牙弹琴时心中想着泰山，锺子期赞叹：\u201c弹得真好啊！琴音巍峨如同泰山耸立。\u201d" },
+  { original: "少选之间而志在流水，锺子期又曰：\u201c善哉乎鼓琴，汤汤乎若流水。\u201d", notes: [{ word: "少选", meaning: "一会儿，不久" }, { word: "汤汤", meaning: "水流大而急的样子" }], trans: "过了一会儿，伯牙心意转向流水，锺子期又说：\u201c弹得真好啊！琴音浩荡如同江河奔流。\u201d" },
+  { original: "锺子期死，伯牙破琴绝弦，终身不复鼓琴，", notes: [{ word: "绝", meaning: "断绝" }], trans: "锺子期死后，伯牙摔破琴身、扯断琴弦，终身不再弹琴，" },
+  { original: "以为世无足复为鼓琴者。", notes: [{ word: "以为", meaning: "认为" }, { word: "足", meaning: "值得" }], trans: "认为世上再没有值得为之弹琴的人了。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'boya_';
+
+let submitted = false;
+let shuffles = {};
+
+function shuffleArray(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() {
+  for (let i = 0; i < questions.length; i++) { shuffles[i] = shuffleArray([0, 1, 2, 3]); }
+  localStorage.setItem(STORAGE_PREFIX + 's', JSON.stringify(shuffles));
+  localStorage.removeItem(STORAGE_PREFIX + 'a');
+  localStorage.removeItem(STORAGE_PREFIX + 'd');
+  localStorage.removeItem(STORAGE_PREFIX + 'sub');
+}
+
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  for (let si = 0; si < sentenceData.length; si++) { const s = sentenceData[si];
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  }
+}
+
+function renderQuestions() {
+  container.innerHTML = '';
+  for (let qi = 0; qi < questions.length; qi++) { const q = questions[qi];
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q' + qi;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[qi] || [0, 1, 2, 3];
+    let oh = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">';
+    for (let oi = 0; oi < 4; oi++) { const d = order[oi]; oh += '<label data-q="' + qi + '" data-o="' + d + '" onclick="selectOption(' + qi + ', ' + d + ')"><input type="radio" name="q' + qi + '" value="' + d + '"><span class="opt-letter">' + letters[oi] + '</span>' + q.options[d] + '</label>'; }
+    oh += '</div><div class="explanation" id="exp' + qi + '"><span class="result-tag" id="tag' + qi + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    card.innerHTML = oh;
+    container.appendChild(card);
+  }
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  const labels = document.querySelectorAll('label[data-q="' + qIdx + '"]'); for (let i = 0; i < labels.length; i++) { labels[i].classList.remove('selected'); }
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-o="' + optIdx + '"]'); if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'a', JSON.stringify(answers));
+  const done = getAnswered();
+  if (done.indexOf(qIdx) == -1) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'd', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'a')) || {}; } catch (e) { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'd')) || []; } catch (e) { return []; } }
+
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done == total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+
+submitBtn.addEventListener('click', function() {
+  if (submitted) return;
+  if (submitBtn.disabled) { toast.textContent = '请先完成所有题目再提交'; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function() { toast.classList.remove('show'); }, 2000); return; }
+  submitted = true;
+  const answers = getStoredAnswers(); let correct = 0;
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i]; const ua = answers[i]; const isCorrect = ua === q.answer; if (isCorrect) correct++;
+    document.getElementById('q' + i).classList.add(isCorrect ? 'correct' : 'wrong');
+    const labels = document.querySelectorAll('label[data-q="' + i + '"]'); for (let li = 0; li < labels.length; li++) { labels[li].classList.add('disabled'); }
+    const cl = document.querySelector('label[data-q="' + i + '"][data-o="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && ua !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-o="' + ua + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  }
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = ''; let comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改';
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'sub', 'true');
+});
+
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false;
+  ['a', 'd', 'sub', 's'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; const r = l.querySelector('input'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改';
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
