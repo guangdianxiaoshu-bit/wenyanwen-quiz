@@ -108,6 +108,7 @@
     <div>🏁 连打完成</div>
     <div class="rate" id="rateNum">0%</div>
     <div class="sub" id="rateDetail"></div>
+    <div class="sub" id="timeUsed" style="margin-top:4px;font-size:13px;opacity:.85"></div>
     <div class="cm" id="rateComment"></div>
   </div>
   <div class="btn-bar">
@@ -161,7 +162,9 @@ var seq = [];   // flattened question list: {title, tag, q, o, a}
 var cur = 0;    // current index
 var correct = 0;
 
+var startTime = 0;
 startBtn.addEventListener('click', function(){
+  startTime = Date.now();
   seq = [];
   titles.forEach(function(t){
     var cb = document.querySelector('input[value="' + t + '"]');
@@ -212,6 +215,9 @@ function finish(){
   var rate = Math.round(correct / total * 100);
   document.getElementById('rateNum').textContent = rate + '%';
   document.getElementById('rateDetail').textContent = '答对 ' + correct + ' / ' + total + ' 题';
+  var used = Math.round((Date.now() - startTime) / 1000);
+  var mm = Math.floor(used / 60), ss = used % 60;
+  document.getElementById('timeUsed').textContent = '用时 ' + mm + '分' + (ss < 10 ? '0' : '') + ss + '秒';
   var cm;
   if (rate >= 90) cm = '🏆 太厉害了！连打高手！';
   else if (rate >= 75) cm = '👏 掌握得很扎实！';
