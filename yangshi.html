@@ -187,7 +187,7 @@
 <script>
 const questions = [
   { tag: "字词释义", q: '“<span class="highlight">甚</span>聪惠”中“<span class="highlight">甚</span>”的意思是？',
-    options: ["很，非常", "甚至", "擅长", "过分"], answer: 0,
+    options: ["很", "甚至", "擅长", "过分"], answer: 0,
     explain: '“甚”意为“很，非常”。这个孩子非常聪明。' },
   { tag: "字词释义", q: '“孔君平<span class="highlight">诣</span>其父”中“<span class="highlight">诣</span>”的读音和意思是？',
     options: ["zhǐ，拜访", "yì，拜访", "zhǐ，造诣", "yì，造诣"], answer: 1,
@@ -196,10 +196,10 @@ const questions = [
     options: ["代词，他的", "其中", "其他", "尤其"], answer: 0,
     explain: '“其”是代词，指代杨氏之子，意为“他的”。来拜访他的父亲。' },
   { tag: "字词释义", q: '“<span class="highlight">乃</span>呼儿出”中“<span class="highlight">乃</span>”的意思是？',
-    options: ["竟然", "就，于是", "才", "你的"], answer: 1,
+    options: ["竟然", "就", "才", "你的"], answer: 1,
     explain: '“乃”意为“就，于是”。父亲不在家，于是就把孩子叫了出来。' },
   { tag: "字词释义", q: '“为<span class="highlight">设</span>果”中“<span class="highlight">设</span>”的意思是？',
-    options: ["设计", "假设", "摆放，摆设", "设立"], answer: 2,
+    options: ["设计", "假设", "摆放", "设立"], answer: 2,
     explain: '“设”意为“摆放，摆设”。孩子给孔君平端来了水果。' },
   { tag: "字词释义", q: '“孔<span class="highlight">指</span>以示儿曰”中“<span class="highlight">指</span>”的意思是？',
     options: ["手指", "指出", "指导", "指着"], answer: 3,
@@ -222,9 +222,9 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "梁国杨氏子九岁，甚聪惠。", notes: [{ word: "甚", meaning: "很，非常" }], trans: "梁国姓杨人家的儿子九岁，非常聪明。" },
-  { original: "孔君平诣其父，父不在，乃呼儿出。", notes: [{ word: "诣", meaning: "拜访" }, { word: "其", meaning: "代词，他的" }, { word: "乃", meaning: "就，于是" }], trans: "孔君平来拜访他的父亲，父亲不在家，于是就把这个孩子叫了出来。" },
-  { original: "为设果，果有杨梅。", notes: [{ word: "设", meaning: "摆放，摆设" }], trans: "孩子给孔君平端来了水果，水果中有杨梅。" },
+  { original: "梁国杨氏子九岁，甚聪惠。", notes: [{ word: "甚", meaning: "很" }], trans: "梁国姓杨人家的儿子九岁，非常聪明。" },
+  { original: "孔君平诣其父，父不在，乃呼儿出。", notes: [{ word: "诣", meaning: "拜访" }, { word: "其", meaning: "代词，他的" }, { word: "乃", meaning: "就" }], trans: "孔君平来拜访他的父亲，父亲不在家，于是就把这个孩子叫了出来。" },
+  { original: "为设果，果有杨梅。", notes: [{ word: "设", meaning: "摆放" }], trans: "孩子给孔君平端来了水果，水果中有杨梅。" },
   { original: "孔指以示儿曰：\u201c此是君家果。\u201d", notes: [{ word: "指", meaning: "指着" }, { word: "示", meaning: "给……看" }], trans: "孔君平指着杨梅给孩子看，对他说：\u201c这是你家的水果。\u201d" },
   { original: "儿应声答曰：\u201c未闻孔雀是夫子家禽。\u201d", notes: [{ word: "应声", meaning: "随声而动" }], trans: "孩子马上回答道：\u201c我可没有听说孔雀是先生您家的鸟。\u201d" }
 ];
