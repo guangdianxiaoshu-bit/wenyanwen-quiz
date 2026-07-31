@@ -344,10 +344,7 @@ resetBtn.addEventListener('click', function() {
   scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-loadShuffles(); renderQuestions();
-const wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'sub');
-if (wasSubmitted === 'true') { setTimeout(function() { submitted = false; submitBtn.click(); }, 100); }
-else { restoreFromStorage(); }
+generateShuffles(); renderQuestions();
 </script>
 </body>
 </html>
