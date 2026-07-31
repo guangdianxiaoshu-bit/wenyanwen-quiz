@@ -347,6 +347,9 @@ submitBtn.addEventListener('click', function() {
   renderTranslation(); translationPanel.classList.add('show');
   setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
   localStorage.setItem(STORAGE_PREFIX + 'sub', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'a');
+  localStorage.removeItem(STORAGE_PREFIX + 'd');
+  localStorage.removeItem(STORAGE_PREFIX + 'sub');
 });
 
 resetBtn.addEventListener('click', function() {
