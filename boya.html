@@ -190,10 +190,10 @@ const questions = [
     options: ["弹奏", "击鼓", "鼓动", "鼓励"], answer: 0,
     explain: '“鼓”意为“弹奏”。“鼓琴”即弹琴。' },
   { tag: "字词释义", q: '“<span class="highlight">方</span>鼓琴而志在太山”中“<span class="highlight">方</span>”的意思是？',
-    options: ["正，正在", "方向", "方法", "方才"], answer: 0,
+    options: ["正在", "方向", "方法", "方才"], answer: 0,
     explain: '“方”意为“正，正在”。正当伯牙弹琴时，心中想着泰山。' },
   { tag: "字词释义", q: '“方鼓琴而<span class="highlight">志</span>在太山”中“<span class="highlight">志</span>”的意思是？',
-    options: ["心志，情志", "志向", "标志", "记录"], answer: 0,
+    options: ["心志", "志向", "标志", "记录"], answer: 0,
     explain: '“志”意为“心志，情志”，指心中所想的。伯牙弹琴时心中想着泰山。' },
   { tag: "字词释义", q: '“<span class="highlight">善</span>哉乎鼓琴”中“<span class="highlight">善</span>”的意思是？',
     options: ["善良", "好", "擅长", "善于"], answer: 1,
@@ -202,7 +202,7 @@ const questions = [
     options: ["如果", "像", "假若", "若干"], answer: 1,
     explain: '“若”意为“像”。琴音像大山一样高峻。' },
   { tag: "字词释义", q: '“<span class="highlight">少选</span>之间而志在流水”中“<span class="highlight">少选</span>”的意思是？',
-    options: ["一会儿，不久", "少数", "选择", "很久"], answer: 0,
+    options: ["不久", "少数", "选择", "很久"], answer: 0,
     explain: '“少选”意为“一会儿，不久”。过了一会儿，伯牙心意转向流水。' },
   { tag: "字词释义", q: '“<span class="highlight">汤汤</span>乎若流水”中“<span class="highlight">汤汤</span>”的读音和意思是？',
     options: ["shāng shāng，水流大而急的样子", "tāng tāng，水很多", "shāng shāng，热水", "tāng tāng，浩浩荡荡"], answer: 0,
@@ -226,8 +226,8 @@ const questions = [
 
 const sentenceData = [
   { original: "伯牙鼓琴，锺子期听之。", notes: [{ word: "鼓", meaning: "弹奏" }], trans: "伯牙弹琴，锺子期聆听。" },
-  { original: "方鼓琴而志在太山，锺子期曰：\u201c善哉乎鼓琴，巍巍乎若太山。\u201d", notes: [{ word: "方", meaning: "正，正在" }, { word: "志", meaning: "心志，情志" }, { word: "善", meaning: "好" }, { word: "若", meaning: "像" }], trans: "当伯牙弹琴时心中想着泰山，锺子期赞叹：\u201c弹得真好啊！琴音巍峨如同泰山耸立。\u201d" },
-  { original: "少选之间而志在流水，锺子期又曰：\u201c善哉乎鼓琴，汤汤乎若流水。\u201d", notes: [{ word: "少选", meaning: "一会儿，不久" }, { word: "汤汤", meaning: "水流大而急的样子" }], trans: "过了一会儿，伯牙心意转向流水，锺子期又说：\u201c弹得真好啊！琴音浩荡如同江河奔流。\u201d" },
+  { original: "方鼓琴而志在太山，锺子期曰：\u201c善哉乎鼓琴，巍巍乎若太山。\u201d", notes: [{ word: "方", meaning: "正在" }, { word: "志", meaning: "心志" }, { word: "善", meaning: "好" }, { word: "若", meaning: "像" }], trans: "当伯牙弹琴时心中想着泰山，锺子期赞叹：\u201c弹得真好啊！琴音巍峨如同泰山耸立。\u201d" },
+  { original: "少选之间而志在流水，锺子期又曰：\u201c善哉乎鼓琴，汤汤乎若流水。\u201d", notes: [{ word: "少选", meaning: "不久" }, { word: "汤汤", meaning: "水流大而急的样子" }], trans: "过了一会儿，伯牙心意转向流水，锺子期又说：\u201c弹得真好啊！琴音浩荡如同江河奔流。\u201d" },
   { original: "锺子期死，伯牙破琴绝弦，终身不复鼓琴，", notes: [{ word: "绝", meaning: "断绝" }], trans: "锺子期死后，伯牙摔破琴身、扯断琴弦，终身不再弹琴，" },
   { original: "以为世无足复为鼓琴者。", notes: [{ word: "以为", meaning: "认为" }, { word: "足", meaning: "值得" }], trans: "认为世上再没有值得为之弹琴的人了。" }
 ];
