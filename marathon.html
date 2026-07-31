@@ -69,6 +69,15 @@
     display: flex; align-items: center; gap: 6px; transition: all .2s;
   }
   .float-home:hover { background: #8f3d2b; transform: translateY(-2px); }
+  .float-start {
+    position: fixed; right: 16px; bottom: 84px; z-index: 900;
+    background: rgba(181,83,60,0.95); color: #fff; padding: 10px 18px;
+    border: none; border-radius: 24px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit; box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    transition: all .2s;
+  }
+  .float-start:hover { background: #8f3d2b; transform: translateY(-2px); }
+  .float-start:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 </style>
 </head>
 <body>
@@ -84,7 +93,7 @@
   <div class="sec">选择篇目（最多 5 篇）</div>
   <div id="pickList"></div>
   <div class="tip" id="tip"></div>
-  <div class="btn-bar">
+  <div style="display:none">
     <button class="btn btn-p" id="startBtn" disabled>开始连打</button>
   </div>
 </div>
@@ -121,6 +130,7 @@
 <div class="footer"><div class="d"></div><p>📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p></div>
 </div>
 
+<button class="float-start" id="floatStart" disabled>🔥 开始连打</button>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <script>
@@ -129,6 +139,7 @@ var QDATA = {"司马光": [{"tag": "字词释义", "q": "“群儿<span class=\"
 (function(){
 var pickList = document.getElementById('pickList');
 var startBtn = document.getElementById('startBtn');
+var floatStart = document.getElementById('floatStart');
 var tip = document.getElementById('tip');
 var s1 = document.getElementById('s1'), s2 = document.getElementById('s2'), s3 = document.getElementById('s3');
 var titles = Object.keys(QDATA);
@@ -151,7 +162,7 @@ titles.forEach(function(t){
     }
     tip.textContent = count ? '已选择 ' + count + ' 篇' : '';
     div.classList.toggle('sel', e.target.checked);
-    startBtn.disabled = count < 1;
+    startBtn.disabled = count < 1; floatStart.disabled = count < 1;
   });
   pickList.appendChild(div);
 });
@@ -177,7 +188,7 @@ startBtn.addEventListener('click', function(){
     }
   });
   cur = 0; correct = 0;
-  s1.style.display = 'none'; s3.style.display = 'none'; s2.style.display = 'block';
+  s1.style.display = 'none'; s3.style.display = 'none'; s2.style.display = 'block'; floatStart.style.display = 'none';
   renderQ();
 });
 
@@ -239,8 +250,12 @@ document.getElementById('againBtn').addEventListener('click', function(){
   var cbs = document.querySelectorAll('.pick input');
   for (var i=0;i<cbs.length;i++){ cbs[i].checked=false; }
   document.querySelectorAll('.pick').forEach(function(d){ d.classList.remove('sel'); });
-  tip.textContent = ''; startBtn.disabled = true;
-  s3.style.display='none'; s2.style.display='none'; s1.style.display='block';
+  tip.textContent = ''; startBtn.disabled = true; floatStart.disabled = true;
+  s3.style.display='none'; s2.style.display='none'; s1.style.display='block'; floatStart.style.display='block';
+});
+floatStart.addEventListener('click', function(){
+  if (startBtn.disabled) { tip.textContent = '请先选择至少一篇'; return; }
+  startBtn.click();
 });
 })();
 </script>
