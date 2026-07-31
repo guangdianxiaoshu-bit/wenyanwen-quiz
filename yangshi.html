@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《杨氏之子》 · 8题</title>
+<title>《杨氏之子》 · 11题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -145,14 +145,14 @@
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 梁国杨氏子九岁，甚聪<u>惠</u>。孔君平<u>诣</u>其父，父不在，<u>乃</u>呼儿出。为设果，果有杨梅。孔指以<u>示</u>儿曰：“此是君家果。”儿应声答曰：“未闻孔雀是<u>夫子</u>家禽。”<br>
+  <strong>原文</strong> 梁国杨氏子九岁，<u>甚</u>聪惠。孔君平<u>诣</u><u>其</u>父，父不在，<u>乃</u>呼儿出。为<u>设</u>果，果有杨梅。孔<u>指</u>以<u>示</u>儿曰：“此是君家果。”儿<u>应</u>声答曰：“未闻孔雀是夫子家禽。”<br>
   <strong>常识</strong> 本文选自《世说新语·言语》，讲九岁的杨氏之子机智应答孔君平的故事。
 </div>
 
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 8 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 11 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -164,7 +164,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 8 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 11 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -186,21 +186,30 @@
 
 <script>
 const questions = [
-  { tag: "字词释义", q: '“甚聪<span class="highlight">惠</span>”中“<span class="highlight">惠</span>”的意思是？',
-    options: ["恩惠", "同"慧"，聪明", "优惠", "贤惠"], answer: 1,
-    explain: '“惠”是通假字，同“慧”，意为“聪明”。这个孩子非常聪明。' },
-  { tag: "字词释义", q: '“孔君平<span class="highlight">诣</span>其父”中“<span class="highlight">诣</span>”的意思是？',
-    options: ["造诣", "拜访", "到达", "拜见"], answer: 1,
-    explain: '“诣”意为“拜访”。孔君平来拜访他的父亲。' },
+  { tag: "字词释义", q: '“<span class="highlight">甚</span>聪惠”中“<span class="highlight">甚</span>”的意思是？',
+    options: ["很，非常", "甚至", "擅长", "过分"], answer: 0,
+    explain: '“甚”意为“很，非常”。这个孩子非常聪明。' },
+  { tag: "字词释义", q: '“孔君平<span class="highlight">诣</span>其父”中“<span class="highlight">诣</span>”的读音和意思是？',
+    options: ["zhǐ，拜访", "yì，拜访", "zhǐ，造诣", "yì，造诣"], answer: 1,
+    explain: '“诣”读yì，意为“拜访”。孔君平来拜访他的父亲。' },
+  { tag: "字词释义", q: '“孔君平诣<span class="highlight">其</span>父”中“<span class="highlight">其</span>”的意思是？',
+    options: ["代词，他的", "其中", "其他", "尤其"], answer: 0,
+    explain: '“其”是代词，指代杨氏之子，意为“他的”。来拜访他的父亲。' },
   { tag: "字词释义", q: '“<span class="highlight">乃</span>呼儿出”中“<span class="highlight">乃</span>”的意思是？',
     options: ["竟然", "就，于是", "才", "你的"], answer: 1,
     explain: '“乃”意为“就，于是”。父亲不在家，于是就把孩子叫了出来。' },
+  { tag: "字词释义", q: '“为<span class="highlight">设</span>果”中“<span class="highlight">设</span>”的意思是？',
+    options: ["设计", "假设", "摆放，摆设", "设立"], answer: 2,
+    explain: '“设”意为“摆放，摆设”。孩子给孔君平端来了水果。' },
+  { tag: "字词释义", q: '“孔<span class="highlight">指</span>以示儿曰”中“<span class="highlight">指</span>”的意思是？',
+    options: ["手指", "指出", "指导", "指着"], answer: 3,
+    explain: '“指”意为“指着”。孔君平指着杨梅给孩子看。' },
   { tag: "字词释义", q: '“孔指以<span class="highlight">示</span>儿曰”中“<span class="highlight">示</span>”的意思是？',
-    options: ["表示", "给……看", "示意", "出示"], answer: 1,
+    options: ["给……看", "表示", "示意", "出示"], answer: 0,
     explain: '“示”意为“给……看”。孔君平指着杨梅给孩子看。' },
-  { tag: "字词释义", q: '“未闻孔雀是<span class="highlight">夫子</span>家禽”中“<span class="highlight">夫子</span>”的意思是？',
-    options: ["老师", "古时对男子的敬称，这里指孔君平", "丈夫", "读书人"], answer: 1,
-    explain: '“夫子”是古时对男子的敬称，这里指孔君平。孩子称孔君平为“夫子”，既礼貌又巧妙。' },
+  { tag: "字词释义", q: '“儿<span class="highlight">应</span>声答曰”中“<span class="highlight">应</span>”的意思是？',
+    options: ["应该", "应声，随即", "答应", "相应"], answer: 1,
+    explain: '“应”读yìng，“应声”意为“随着声音，随即”。孩子随即回答。' },
   { tag: "内容理解", q: '孔君平说“此是君家果”是什么意思？',
     options: ["杨梅确实是杨家的果子", "因为"杨梅"的"杨"和孩子姓杨相同，故意开玩笑", "杨梅很珍贵", "杨梅只能杨家吃"], answer: 1,
     explain: '孔君平利用“杨梅”的“杨”字和孩子姓“杨”相同，开玩笑说杨梅是杨家的果子。' },
@@ -213,11 +222,11 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "梁国杨氏子九岁，甚聪惠。", notes: [{ word: "惠", meaning: "同"慧"，聪明" }], trans: "在梁国，有一户姓杨的人家，家里有个九岁的儿子，他非常聪明。" },
-  { original: "孔君平诣其父，父不在，乃呼儿出。", notes: [{ word: "诣", meaning: "拜访" }, { word: "乃", meaning: "就，于是" }], trans: "孔君平来拜访他的父亲，父亲不在家，于是就把这个孩子叫了出来。" },
-  { original: "为设果，果有杨梅。", notes: [], trans: "孩子给孔君平端来了水果，水果中有杨梅。" },
-  { original: "孔指以示儿曰：\u201c此是君家果。\u201d", notes: [{ word: "示", meaning: "给……看" }], trans: "孔君平指着杨梅给孩子看，对他说：\u201c这是你家的水果。\u201d" },
-  { original: "儿应声答曰：\u201c未闻孔雀是夫子家禽。\u201d", notes: [{ word: "夫子", meaning: "古时对男子的敬称，这里指孔君平" }], trans: "孩子马上回答道：\u201c我可没有听说孔雀是先生您家的鸟。\u201d" }
+  { original: "梁国杨氏子九岁，甚聪惠。", notes: [{ word: "甚", meaning: "很，非常" }], trans: "在梁国，有一户姓杨的人家，家里有个九岁的儿子，他非常聪明。" },
+  { original: "孔君平诣其父，父不在，乃呼儿出。", notes: [{ word: "诣", meaning: "拜访" }, { word: "其", meaning: "代词，他的" }, { word: "乃", meaning: "就，于是" }], trans: "孔君平来拜访他的父亲，父亲不在家，于是就把这个孩子叫了出来。" },
+  { original: "为设果，果有杨梅。", notes: [{ word: "设", meaning: "摆放，摆设" }], trans: "孩子给孔君平端来了水果，水果中有杨梅。" },
+  { original: "孔指以示儿曰：\u201c此是君家果。\u201d", notes: [{ word: "指", meaning: "指着" }, { word: "示", meaning: "给……看" }], trans: "孔君平指着杨梅给孩子看，对他说：\u201c这是你家的水果。\u201d" },
+  { original: "儿应声答曰：\u201c未闻孔雀是夫子家禽。\u201d", notes: [{ word: "应", meaning: "应声，随即" }], trans: "孩子马上回答道：\u201c我可没有听说孔雀是先生您家的鸟。\u201d" }
 ];
 
 const container = document.getElementById('questionsContainer');
