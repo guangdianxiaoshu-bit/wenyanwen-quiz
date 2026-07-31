@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《孙权劝学》 · 18题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f2fbfc;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #006d77 0%, #219ebc 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #006d77; color: #c4f1f5;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #48cae4; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #48cae4; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #c4f1f5; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #006d77, #99e2ef); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #c4f1f5; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #006d77; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #219ebc; background: #c4f1f5; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #006d77; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #c4f1f5; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #99e2ef; background: #eafafb; }
+  .opts label.selected { border-color: #006d77; background: #c4f1f5; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #c4f1f5; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #006d77; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #eafafb; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #006d77; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #006d77, #219ebc); color: #fff; box-shadow: 0 2px 8px rgba(0,109,119,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,109,119,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #006d77; border: 2px solid #99e2ef; }
+  .btn-secondary:hover { background: #eafafb; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #006d77, #219ebc); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #c4f1f5; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #006d77; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #c4f1f5; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eafafb; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #006d77; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #eafafb; border: 1px solid #c4f1f5; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #c4f1f5; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(0,109,119,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #004f59; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《孙权劝学》</h1>
+  <p>部编版七年级下册 · 《资治通鉴》</p>
+  
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 初，权<u>谓</u>吕蒙曰：“<u>卿(qīng)</u>今当涂掌事，不可不学！”蒙<u>辞</u>以军中多务。权曰：“<u>孤</u>岂欲卿<u>治经</u>为<u>博士</u>邪(yé)！<u>但</u>当<u>涉猎</u>，见往事耳。卿言多务<u>孰</u><u>若</u>孤孤常读书自<u>以为</u>大有所益。”蒙<u>乃</u>始就学。<u>及</u>鲁肃过寻阳，与蒙论议，大惊曰：“卿今者<u>才略</u>，非复吴下阿蒙！”蒙曰：“士别三日，即<u>更(gēng)</u>刮目相待，大兄何见事之晚乎！”肃<u>遂</u>拜蒙母，结友而别。<br>
+  <strong>注释</strong> 〔当涂〕当道，当权。　〔阿蒙〕吕蒙的小名。<br>
+  <strong>常识</strong> 本文节选自《资治通鉴》卷六十六（中华书局1956年版），题目是编者加的。《资治通鉴》是北宋司马光主持编纂的一部编年体通史，记载了从战国到五代共1362年间的史事。司马光（1019—1086），字君实，北宋政治家、史学家。孙权（182—252），字仲谋，三国时吴国的创建者。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 18 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 18 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“权<span class="highlight">谓</span>吕蒙曰”中“<span class="highlight">谓</span>”的意思是？',
+    options: ["对……说", "认为", "叫做", "称谓"], answer: 0,
+    explain: '“谓”意为“对……说”。孙权对吕蒙说。' },
+  { tag: "字词释义", q: '“<span class="highlight">卿(qīng)</span>今当涂掌事”中“卿(qīng)”的意思是？',
+    options: ["君对臣的爱称（你）", "臣对君的敬称", "宰相", "夫妻互称"], answer: 0,
+    explain: '“卿”是古代君对臣的爱称，这里相当于“你”。' },
+  { tag: "字词释义", q: '“蒙<span class="highlight">辞</span>以军中多务”中“<span class="highlight">辞</span>”的意思是？',
+    options: ["推辞", "言辞", "告别", "口才"], answer: 0,
+    explain: '“辞”意为“推辞、推托”。吕蒙用军中事务多来推辞。' },
+  { tag: "字词释义", q: '“<span class="highlight">孤</span>岂欲卿治经为博士邪”中“<span class="highlight">孤</span>”的意思是？',
+    options: ["古代王侯的自称", "孤独", "孤儿", "孤单"], answer: 0,
+    explain: '“孤”是古代王侯的自称，相当于“我”。' },
+  { tag: "字词释义", q: '“岂欲卿<span class="highlight">治经</span>为博士邪”中“<span class="highlight">治经</span>”的意思是？',
+    options: ["研究儒家经典", "管理经书", "整理经典", "诵读经文"], answer: 0,
+    explain: '“治经”意为“研究儒家经典”。难道想要你研究儒家经典吗？' },
+  { tag: "字词释义", q: '“为<span class="highlight">博士</span>邪”中“<span class="highlight">博士</span>”的意思是？',
+    options: ["专掌经学传授的学官", "学位称号", "博学的人", "博士研究生"], answer: 0,
+    explain: '“博士”是古今异义词，这里指专掌经学传授的学官。' },
+  { tag: "字词释义", q: '“<span class="highlight">但</span>当涉猎”中“<span class="highlight">但</span>”的意思是？',
+    options: ["只", "但是", "竟然", "况且"], answer: 0,
+    explain: '“但”意为“只、只是”（古今异义，今义“但是”）。只是应当粗略地阅读。' },
+  { tag: "字词释义", q: '“但当<span class="highlight">涉猎</span>”中“<span class="highlight">涉猎</span>”的意思是？',
+    options: ["粗略地阅读", "深入研读", "涉水打猎", "广泛猎取"], answer: 0,
+    explain: '“涉猎”意为“粗略地阅读”。只是应当粗略地阅读。' },
+  { tag: "字词释义", q: '“卿言多务<span class="highlight">孰</span>若孤”中“<span class="highlight">孰</span>”的意思是？',
+    options: ["谁", "什么", "为什么", "怎么"], answer: 0,
+    explain: '“孰”意为“谁”。你说事务多，谁比得上我呢？' },
+  { tag: "字词释义", q: '“孰<span class="highlight">若</span>孤”中“<span class="highlight">若</span>”的意思是？',
+    options: ["比得上", "像", "如果", "你"], answer: 0,
+    explain: '“若”意为“比得上”。“孰若”即哪里比得上。' },
+  { tag: "字词释义", q: '“自<span class="highlight">以为</span>大有所益”中“<span class="highlight">以为</span>”的意思是？',
+    options: ["认为", "作为", "因为", "可以"], answer: 0,
+    explain: '“以为”意为“认为”。自己认为大有好处。' },
+  { tag: "字词释义", q: '“蒙<span class="highlight">乃</span>始就学”中“<span class="highlight">乃</span>”的意思是？',
+    options: ["于是", "才", "竟然", "你的"], answer: 0,
+    explain: '“乃”意为“于是、就”。吕蒙于是开始学习。' },
+  { tag: "字词释义", q: '“<span class="highlight">及</span>鲁肃过寻阳”中“<span class="highlight">及</span>”的意思是？',
+    options: ["等到", "以及", "到达", "及时"], answer: 0,
+    explain: '“及”意为“到了……的时候”（等到）。等到鲁肃经过寻阳。' },
+  { tag: "字词释义", q: '“卿今者<span class="highlight">才略</span>”中“<span class="highlight">才略</span>”的意思是？',
+    options: ["才干谋略", "聪明才智", "远大志向", "文学才华"], answer: 0,
+    explain: '“才略”意为“才干和谋略”。以你现在的才干谋略来看。' },
+  { tag: "字词释义", q: '“即<span class="highlight">更(gēng)</span>刮目相待”中“更(gēng)”的意思是？',
+    options: ["另外", "更加", "更换", "反而"], answer: 0,
+    explain: '“更”读gēng，意为“另、另外”（重新）。就要另外用新的眼光看待。' },
+  { tag: "字词释义", q: '“肃<span class="highlight">遂</span>拜蒙母”中“<span class="highlight">遂</span>”的意思是？',
+    options: ["于是", "终于", "顺遂", "满足"], answer: 0,
+    explain: '“遂”意为“于是、就”。鲁肃于是拜见吕蒙的母亲。' },
+  { tag: "字词释义", q: '“<span class="highlight">蒙辞以军中多务</span>”是什么特殊句式？',
+    options: ["状语后置", "宾语前置", "省略句", "判断句"], answer: 0,
+    explain: '“蒙辞以军中多务”是状语后置句，正常语序为“蒙以军中多务辞”，即吕蒙用军中事务多来推辞。' },
+  { tag: "内容理解", q: '“卿言多务孰若孤孤常读书自以为大有所益”断句正确的一项是？',
+    options: ["卿言多务，孰若孤？孤常读书，自以为大有所益。", "卿言多务孰，若孤孤常读书，自以为大有所益。", "卿言多务孰若孤孤，常读书自以为，大有所益。", "卿言多务，孰若孤孤，常读书自，以为大有所益。"], answer: 0,
+    explain: '正确断句为“卿言多务，孰若孤？孤常读书，自以为大有所益。”意思是：你说事务多，谁比得上我呢？我经常读书，自己认为大有好处。' }
+];
+
+const sentenceData = [
+  { original: "初，权谓吕蒙曰：“卿今当涂掌事，不可不学！”", notes: [{ word: "谓", meaning: "对……说" }, { word: "卿", meaning: "君对臣的爱称" }, { word: "当涂", meaning: "当权" }], trans: "当初，孙权对吕蒙说：“你现在当权管事了，不可不学习！”" },
+  { original: "蒙辞以军中多务。", notes: [{ word: "辞", meaning: "推辞" }, { word: "以军中多务", meaning: "状语后置" }], trans: "吕蒙用军中事务多（来）推辞。" },
+  { original: "权曰：“孤岂欲卿治经为博士邪！但当涉猎，见往事耳。卿言多务孰若孤孤常读书自以为大有所益。”", notes: [{ word: "孤", meaning: "王侯自称" }, { word: "治经", meaning: "研究儒家经典" }, { word: "博士", meaning: "学官" }, { word: "但", meaning: "只" }, { word: "涉猎", meaning: "粗略地阅读" }, { word: "孰", meaning: "谁" }, { word: "若", meaning: "比得上" }, { word: "以为", meaning: "认为" }], trans: "孙权说：“我难道想要你研究儒家经典，成为专掌经学传授的学官吗！只是应当粗略地阅读，了解历史罢了。你说事务多，谁比得上我（事务多）呢？我经常读书，自己认为大有好处。”" },
+  { original: "蒙乃始就学。", notes: [{ word: "乃", meaning: "于是" }], trans: "吕蒙于是开始学习。" },
+  { original: "及鲁肃过寻阳，与蒙论议，大惊曰：“卿今者才略，非复吴下阿蒙！”", notes: [{ word: "及", meaning: "等到" }, { word: "才略", meaning: "才干谋略" }, { word: "阿蒙", meaning: "吕蒙的小名" }], trans: "等到鲁肃经过寻阳，和吕蒙谈论议事，（鲁肃）十分惊奇地说：“以你现在的才干、谋略来看，你不再是原来那个吴地的阿蒙了！”" },
+  { original: "蒙曰：“士别三日，即更刮目相待，大兄何见事之晚乎！”", notes: [{ word: "更", meaning: "另外" }], trans: "吕蒙说：“读书人分别多日，就要另外用新的眼光看待，长兄你认清事物怎么这么晚呢！”" },
+  { original: "肃遂拜蒙母，结友而别。", notes: [{ word: "遂", meaning: "于是" }], trans: "鲁肃于是拜见吕蒙的母亲，与吕蒙结为朋友后就分别了。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'sunquan_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  });
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
