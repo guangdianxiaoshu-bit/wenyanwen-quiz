@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《穿井得一人》 · 9题</title>
+<title>《穿井得一人》 · 10题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -159,7 +159,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 9 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 10 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -171,7 +171,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 9 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 10 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -207,7 +207,7 @@ const questions = [
     options: ["国都的居民", "宋国人", "全国人民", "国家的人"], answer: 0,
     explain: '“国人”意为“国都的居民”。国都的居民都谈论这件事。' },
   { tag: "字词释义", q: '“<span class="highlight">闻之于宋君</span>”是什么特殊句式？',
-    options: ["状语后置（于宋君闻之）", "宾语前置", "判断句", "省略句"], answer: 0,
+    options: ["状语后置", "宾语前置", "判断句", "省略句"], answer: 0,
     explain: '“闻之于宋君”是状语后置句，正常语序为“于宋君闻之”，即把这件事报告给宋国国君。' },
   { tag: "字词释义", q: '“得一人之<span class="highlight">使</span>”中“<span class="highlight">使</span>”的意思是？',
     options: ["使唤", "使者", "让", "即使"], answer: 0,
@@ -218,6 +218,9 @@ const questions = [
   { tag: "字词释义", q: '“不<span class="highlight">若</span>无闻也”中“<span class="highlight">若</span>”的意思是？',
     options: ["比得上", "像", "如果", "假如"], answer: 0,
     explain: '“若”意为“比得上”。“不若”即不如。不如没有听到（传闻）啊。' },
+  { tag: "内容理解", q: '这则寓言告诉我们的道理是？',
+    options: ["对待传闻要仔细辨别，不能轻信、以讹传讹", "打井可以节省人力", "宋国人都喜欢传闲话", "丁家人口多才打井"], answer: 0,
+    explain: '“穿井得一人”的传闻以讹传讹，告诉我们：对待传闻要仔细辨别，不能轻信、更不能以讹传讹。' },
   { tag: "内容理解", q: '下列句子中不是倒装句的是？',
     options: ["吾穿井得一人", "闻之于宋君", "宋君令人问之于丁氏", "非得一人于井中也"], answer: 0,
     explain: '“闻之于宋君”（于宋君闻之）、“宋君令人问之于丁氏”（于丁氏问之）、“非得一人于井中也”（于井中得一人）都是状语后置；“吾穿井得一人”是正常语序。' }
