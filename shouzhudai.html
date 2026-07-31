@@ -354,10 +354,7 @@ resetBtn.addEventListener('click', function() {
 
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), 2000); }
 
-loadShuffles(); renderQuestions();
-const wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'submitted');
-if (wasSubmitted === 'true') { setTimeout(() => { submitted = false; submitBtn.click(); }, 100); }
-else { restoreFromStorage(); }
+generateShuffles(); renderQuestions();
 </script>
 </body>
 </html>
