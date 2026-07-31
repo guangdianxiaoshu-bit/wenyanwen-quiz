@@ -199,7 +199,7 @@ const questions = [
     options: ["约定", "期限", "期望", "日期"], answer: 0,
     explain: '“期”意为“约定”。陈太丘和友人约定同行。' },
   { tag: "字词释义", q: '“太丘<span class="highlight">舍</span>去”中“<span class="highlight">舍</span>”的意思是？',
-    options: ["舍弃，丢下", "房舍", "施舍", "舍不得"], answer: 0,
+    options: ["舍弃", "房舍", "施舍", "舍不得"], answer: 0,
     explain: '“舍”意为“舍弃、丢下”。陈太丘丢下（友人）离开了。' },
   { tag: "字词释义", q: '“太丘舍<span class="highlight">去</span>”中“<span class="highlight">去</span>”的意思是？',
     options: ["离开", "距离", "去除", "过去"], answer: 0,
@@ -208,7 +208,7 @@ const questions = [
     options: ["才", "于是", "竟然", "你的"], answer: 0,
     explain: '“乃”意为“才”。太丘走后友人才到。' },
   { tag: "字词释义", q: '“门外<span class="highlight">戏</span>”中“<span class="highlight">戏</span>”的意思是？',
-    options: ["玩耍，游戏", "戏曲", "戏弄", "演戏"], answer: 0,
+    options: ["玩耍", "戏曲", "戏弄", "演戏"], answer: 0,
     explain: '“戏”意为“玩耍、游戏”。元方在门外玩耍。' },
   { tag: "字词释义", q: '“<span class="highlight">尊君</span>在不”中“<span class="highlight">尊君</span>”的意思是？',
     options: ["对别人父亲的尊称", "对人谦称自己的父亲", "尊敬的君主", "年长的君子"], answer: 0,
@@ -217,10 +217,10 @@ const questions = [
     options: ["fǒu，同“否”，表示疑问", "bù，不，否定", "fǒu，否定", "bù，没有"], answer: 0,
     explain: '“不”读fǒu，同“否”，用在句末表示疑问。你父亲在吗？' },
   { tag: "字词释义", q: '“相<span class="highlight">委</span>而去”中“<span class="highlight">委</span>”的意思是？',
-    options: ["丢下，舍弃", "委托", "委屈", "委员"], answer: 0,
+    options: ["丢下", "委托", "委屈", "委员"], answer: 0,
     explain: '“委”意为“丢下、舍弃”。却丢下我离开了。' },
   { tag: "字词释义", q: '“下车<span class="highlight">引</span>之”中“<span class="highlight">引</span>”的意思是？',
-    options: ["拉，牵", "引导", "引用", "吸引"], answer: 0,
+    options: ["拉", "引导", "引用", "吸引"], answer: 0,
     explain: '“引”意为“拉、牵”。友人下车想拉元方（表示歉意）。' },
   { tag: "字词释义", q: '“元方入门不<span class="highlight">顾</span>”中“<span class="highlight">顾</span>”的意思是？',
     options: ["回头看", "照顾", "探望", "理睬"], answer: 0,
@@ -229,12 +229,12 @@ const questions = [
 
 const sentenceData = [
   { original: "陈太丘与友期行，期日中。", notes: [{ word: "期", meaning: "约定" }], trans: "陈太丘和友人约定同行，约定（在）正午。" },
-  { original: "过中不至，太丘舍去，去后乃至。", notes: [{ word: "舍", meaning: "舍弃，丢下" }, { word: "去", meaning: "离开" }, { word: "乃", meaning: "才" }], trans: "（友人）过了正午还没到，陈太丘便舍弃（友人）离开了，（太丘）走后（友人）才到。" },
+  { original: "过中不至，太丘舍去，去后乃至。", notes: [{ word: "舍", meaning: "舍弃" }, { word: "去", meaning: "离开" }, { word: "乃", meaning: "才" }], trans: "（友人）过了正午还没到，陈太丘便舍弃（友人）离开了，（太丘）走后（友人）才到。" },
   { original: "元方时年七岁，门外戏。", notes: [{ word: "戏", meaning: "玩耍" }], trans: "元方当时七岁，（在）门外玩耍。" },
   { original: "客问元方：“尊君在不？”答曰：“待君久不至，已去。”", notes: [{ word: "尊君", meaning: "对别人父亲的尊称" }, { word: "不", meaning: "同“否”，表疑问" }], trans: "（友人）问元方：“你父亲在吗？”（元方）回答说：“（父亲）等您很久（您）都没来，（他）已经离开了。”" },
-  { original: "友人便怒曰：“非人哉！与人期行，相委而去。”", notes: [{ word: "委", meaning: "丢下，舍弃" }], trans: "友人便发怒说：“真不是人啊！（他）和别人约定同行，却丢下（我）离开了。”" },
+  { original: "友人便怒曰：“非人哉！与人期行，相委而去。”", notes: [{ word: "委", meaning: "丢下" }], trans: "友人便发怒说：“真不是人啊！（他）和别人约定同行，却丢下（我）离开了。”" },
   { original: "元方曰：“君与家君期日中。日中不至，则是无信；对子骂父，则是无礼。”", notes: [{ word: "家君", meaning: "对人谦称自己的父亲" }], trans: "元方说：“您与我父亲约定（在）正午。（您）正午不到，就是不讲信用；对着儿子骂他的父亲，就是没有礼貌。”" },
-  { original: "友人惭，下车引之。元方入门不顾。", notes: [{ word: "引", meaning: "拉，牵" }, { word: "顾", meaning: "回头看" }], trans: "友人感到惭愧，下车拉（元方）。元方（走）进门去，不回头看。" }
+  { original: "友人惭，下车引之。元方入门不顾。", notes: [{ word: "引", meaning: "拉" }, { word: "顾", meaning: "回头看" }], trans: "友人感到惭愧，下车拉（元方）。元方（走）进门去，不回头看。" }
 ];
 
 const container = document.getElementById('questionsContainer');
