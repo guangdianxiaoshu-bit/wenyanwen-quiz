@@ -199,10 +199,10 @@ const questions = [
     options: ["全国", "各国", "通行全国", "全国统一"], answer: 0,
     explain: '“通国”意为“全国”。弈秋是全国最擅长下棋的人。' },
   { tag: "字词释义", q: '“通国之<span class="highlight">善</span>弈者也”中“<span class="highlight">善</span>”的意思是？',
-    options: ["善良", "善于，擅长", "好事", "喜爱"], answer: 1,
+    options: ["善良", "擅长", "好事", "喜爱"], answer: 1,
     explain: '“善”意为“善于、擅长”。善于下棋的人。' },
   { tag: "字词释义", q: '“<span class="highlight">使</span>弈秋诲二人弈”中“<span class="highlight">使</span>”的意思是？',
-    options: ["使者", "让，叫", "使用", "如果"], answer: 1,
+    options: ["使者", "让", "使用", "如果"], answer: 1,
     explain: '“使”意为“让、叫”。让弈秋教导两个人下棋。' },
   { tag: "字词释义", q: '“使弈秋<span class="highlight">诲</span>二人弈”中“<span class="highlight">诲</span>”的意思是？',
     options: ["后悔", "教导", "劝告", "训斥"], answer: 1,
@@ -217,13 +217,13 @@ const questions = [
     options: ["认为", "作为", "因为", "可以"], answer: 0,
     explain: '“以为”意为“认为”。心里一直认为（想着）有天鹅要飞来。' },
   { tag: "字词释义", q: '“思<span class="highlight">援</span>弓缴而射之”中“<span class="highlight">援</span>”的意思是？',
-    options: ["引，拉", "援助", "放弃", "举起"], answer: 0,
+    options: ["拉", "援助", "放弃", "举起"], answer: 0,
     explain: '“援”意为“引、拉”。想拉弓搭箭去射它。' },
   { tag: "字词释义", q: '“思援弓<span class="highlight">缴(zhuó)</span>而射之”中“缴(zhuó)”的意思是？',
     options: ["系在箭上的丝绳，指带丝绳的箭", "缴纳", "缴获", "弓箭"], answer: 0,
     explain: '“缴(zhuó)”指系在箭上的丝绳，这里指带有丝绳的箭，射出后可以收回。' },
   { tag: "字词释义", q: '“虽与之<span class="highlight">俱</span>学”中“<span class="highlight">俱</span>”的意思是？',
-    options: ["一起，一同", "害怕", "聚集", "各自"], answer: 0,
+    options: ["一起", "害怕", "聚集", "各自"], answer: 0,
     explain: '“俱”意为“一起、一同”。虽然他和前一个人一起学习。' },
   { tag: "字词释义", q: '“弗<span class="highlight">若</span>之矣”中“<span class="highlight">若</span>”的意思是？',
     options: ["比得上", "好像", "仿佛", "如果"], answer: 0,
@@ -235,7 +235,7 @@ const questions = [
     options: ["不", "非常", "难道", "没有"], answer: 0,
     explain: '“弗”意为“不”。智力不如（前一个人）。' },
   { tag: "字词释义", q: '“弗若<span class="highlight">与(yú)</span>”中“<span class="highlight">与(yú)</span>”的意思是？',
-    options: ["同“欤”，句末语气词，表疑问", "和，跟", "给", "参与"], answer: 0,
+    options: ["同“欤”，句末语气词，表疑问", "和", "给", "参与"], answer: 0,
     explain: '“与”同“欤”，读yú，是句末语气词，表示疑问。是智力不如吗？' },
   { tag: "字词释义", q: '“曰：非<span class="highlight">然</span>也”中“<span class="highlight">然</span>”的意思是？',
     options: ["这样", "然而", "然后", "燃烧"], answer: 0,
@@ -243,10 +243,10 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "弈秋，通国之善弈者也。", notes: [{ word: "通国", meaning: "全国" }, { word: "善", meaning: "善于，擅长" }, { word: "弈", meaning: "下棋" }], trans: "弈秋，（是）通国（中）善于下棋的人。" },
-  { original: "使弈秋诲二人弈，其一人专心致志，惟弈秋之为听；", notes: [{ word: "使", meaning: "让，叫" }, { word: "诲", meaning: "教导" }, { word: "惟", meaning: "只" }], trans: "让弈秋教导两个人下棋，其中一个人专心致志，（只）听弈秋的教导；" },
-  { original: "一人虽听之，一心以为有鸿鹄将至，思援弓缴而射之。", notes: [{ word: "以为", meaning: "认为" }, { word: "鸿鹄", meaning: "天鹅、大雁一类的鸟" }, { word: "援", meaning: "引，拉" }, { word: "缴(zhuó)", meaning: "带丝绳的箭" }], trans: "另一个人虽然也在听（弈秋讲课），（心里）一心认为有天鹅将要飞来，想拉弓取箭去射它。" },
-  { original: "虽与之俱学，弗若之矣。", notes: [{ word: "俱", meaning: "一起，一同" }, { word: "若", meaning: "比得上" }], trans: "虽然（他）和前一个人一起学习，（棋艺却）比不上（那个人）。" },
+  { original: "弈秋，通国之善弈者也。", notes: [{ word: "通国", meaning: "全国" }, { word: "善", meaning: "擅长" }, { word: "弈", meaning: "下棋" }], trans: "弈秋，（是）通国（中）善于下棋的人。" },
+  { original: "使弈秋诲二人弈，其一人专心致志，惟弈秋之为听；", notes: [{ word: "使", meaning: "让" }, { word: "诲", meaning: "教导" }, { word: "惟", meaning: "只" }], trans: "让弈秋教导两个人下棋，其中一个人专心致志，（只）听弈秋的教导；" },
+  { original: "一人虽听之，一心以为有鸿鹄将至，思援弓缴而射之。", notes: [{ word: "以为", meaning: "认为" }, { word: "鸿鹄", meaning: "天鹅、大雁一类的鸟" }, { word: "援", meaning: "拉" }, { word: "缴(zhuó)", meaning: "带丝绳的箭" }], trans: "另一个人虽然也在听（弈秋讲课），（心里）一心认为有天鹅将要飞来，想拉弓取箭去射它。" },
+  { original: "虽与之俱学，弗若之矣。", notes: [{ word: "俱", meaning: "一起" }, { word: "若", meaning: "比得上" }], trans: "虽然（他）和前一个人一起学习，（棋艺却）比不上（那个人）。" },
   { original: "为是其智弗若与？曰：非然也。", notes: [{ word: "为", meaning: "因为" }, { word: "弗", meaning: "不" }, { word: "与(yú)", meaning: "同“欤”，语气词" }, { word: "然", meaning: "这样" }], trans: "（这）是因为他的智力比不上（前一个人）吗？（有人）回答说：不是这样的。" }
 ];
 
