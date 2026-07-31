@@ -334,10 +334,7 @@ resetBtn.addEventListener('click', function() {
   scrollTo({ top: 0, behavior: 'smooth' });
 });
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
-loadShuffles(); renderQuestions();
-var wasSubmitted = localStorage.getItem(STORAGE_PREFIX + 'submitted');
-if (wasSubmitted === 'true') { setTimeout(function() { submitted = false; submitBtn.click(); }, 100); }
-else { restoreFromStorage(); }
+generateShuffles(); renderQuestions();
 </script>
 </body>
 </html>
