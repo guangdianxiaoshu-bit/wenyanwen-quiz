@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《诫子书》 · 13题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f6f8f8;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #34495e 0%, #5d6d7e 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #34495e; color: #d5dbdb;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #85929e; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #85929e; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #d5dbdb; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #34495e, #aeb6bf); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5dbdb; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #34495e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #5d6d7e; background: #d5dbdb; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #34495e; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5dbdb; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #aeb6bf; background: #ebf0f0; }
+  .opts label.selected { border-color: #34495e; background: #d5dbdb; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d5dbdb; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #34495e; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #ebf0f0; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #34495e; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #34495e, #5d6d7e); color: #fff; box-shadow: 0 2px 8px rgba(52,73,94,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(52,73,94,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #34495e; border: 2px solid #aeb6bf; }
+  .btn-secondary:hover { background: #ebf0f0; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #34495e, #5d6d7e); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5dbdb; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #34495e; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d5dbdb; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #ebf0f0; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #34495e; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #ebf0f0; border: 1px solid #d5dbdb; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d5dbdb; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(52,73,94,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #212f3c; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《诫子书》</h1>
+  <p>部编版七年级上册 · 《诸葛亮集》</p>
+  
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> <u>夫</u>君子之行，静<u>以</u>修身，俭以养德。非淡泊无以<u>明</u>志，非宁静无以<u>致远</u>。夫学须静也，才须学也，非学无以<u>广</u>才，非志无以成学。<u>淫慢</u>则不能<u>励精</u>，<u>险躁</u>则不能<u>治</u>性。年与时<u>驰</u>，意与日去，遂成<u>枯落</u>，多不<u>接世</u>，悲守穷庐，将复何<u>及</u>！<br>
+  <strong>常识</strong> 本文选自《诸葛亮集·文集》卷一（中华书局2012年版）。诸葛亮（181—234），字孔明，琅玡阳都（今山东沂南）人，三国时蜀汉政治家、军事家。“诫”是告诫、劝勉的意思；“子”一般指诸葛亮的儿子诸葛瞻；“书”即书信。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 13 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 13 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“<span class="highlight">夫</span>君子之行”中“<span class="highlight">夫</span>”的意思是？',
+    options: ["句首发语词，无实义", "丈夫", "夫子", "夫人"], answer: 0,
+    explain: '“夫”是句首发语词，用在句首表示要发议论，无实义。' },
+  { tag: "字词释义", q: '“静<span class="highlight">以</span>修身”中“<span class="highlight">以</span>”的意思是？',
+    options: ["来，用来（表目的）", "因为", "认为", "可以"], answer: 0,
+    explain: '“以”是连词，表目的，意为“来、用来”。屏除杂念来修养身心。' },
+  { tag: "字词释义", q: '“非淡泊无以<span class="highlight">明</span>志”中“<span class="highlight">明</span>”的意思是？',
+    options: ["明确", "明亮", "明白", "明智"], answer: 0,
+    explain: '“明”形容词作动词，意为“明确、坚定”（使……明确）。不内心恬淡就无法明确志向。' },
+  { tag: "字词释义", q: '“非宁静无以<span class="highlight">致远</span>”中“<span class="highlight">致远</span>”的意思是？',
+    options: ["达到远大目标", "到达远方", "走向远方", "远大志向"], answer: 0,
+    explain: '“致”是“达到”，“远”指远大目标（形容词作名词）。“致远”即达到远大目标。' },
+  { tag: "字词释义", q: '“非学无以<span class="highlight">广</span>才”中“<span class="highlight">广</span>”的意思是？',
+    options: ["增长", "广大", "广泛", "宽广"], answer: 0,
+    explain: '“广”形容词作动词，意为“增长、扩充”（使……增长）。不学习就无法增长才干。' },
+  { tag: "字词释义", q: '“<span class="highlight">淫慢</span>则不能励精”中“<span class="highlight">淫慢</span>”的意思是？',
+    options: ["放纵懈怠", "傲慢", "缓慢", "懒惰"], answer: 0,
+    explain: '“淫慢”意为“放纵懈怠”。“淫”是放纵，“慢”是懈怠。' },
+  { tag: "字词释义", q: '“淫慢则不能<span class="highlight">励精</span>”中“<span class="highlight">励精</span>”的意思是？',
+    options: ["振奋精神", "鼓励", "勤奋", "精密"], answer: 0,
+    explain: '“励精”意为“振奋精神”。“励”是振奋，“精”指精神。' },
+  { tag: "字词释义", q: '“<span class="highlight">险躁</span>则不能治性”中“<span class="highlight">险躁</span>”的意思是？',
+    options: ["轻薄浮躁", "危险急躁", "谨慎小心", "缓慢迟钝"], answer: 0,
+    explain: '“险躁”意为“轻薄浮躁”。“险”是轻薄，“躁”是浮躁。' },
+  { tag: "字词释义", q: '“险躁则不能<span class="highlight">治</span>性”中“<span class="highlight">治</span>”的意思是？',
+    options: ["修养", "治理", "治疗", "整治"], answer: 0,
+    explain: '“治”意为“修养”。“治性”即修养性情。' },
+  { tag: "字词释义", q: '“年与时<span class="highlight">驰</span>”中“<span class="highlight">驰</span>”的意思是？',
+    options: ["疾速逝去", "奔驰", "驰骋", "松弛"], answer: 0,
+    explain: '“驰”本义是奔驰，这里意为“疾速逝去”。年纪随同时光疾速逝去。' },
+  { tag: "字词释义", q: '“遂成<span class="highlight">枯落</span>”中“<span class="highlight">枯落</span>”的意思是？',
+    options: ["枯枝落叶，比喻年老志衰", "枯萎凋落", "落叶", "干枯"], answer: 0,
+    explain: '“枯落”指枯枝落叶，这里比喻人年老志衰、没有用处。' },
+  { tag: "字词释义", q: '“多不<span class="highlight">接世</span>”中“<span class="highlight">接世</span>”的意思是？',
+    options: ["接触社会，为社会所用", "接受现实", "连接世界", "继承传统"], answer: 0,
+    explain: '“接世”意为“接触社会，为社会所用”。大多对社会没有贡献。' },
+  { tag: "字词释义", q: '“将复何<span class="highlight">及</span>”中“<span class="highlight">及</span>”的意思是？',
+    options: ["来得及", "以及", "到达", "及格"], answer: 0,
+    explain: '“及”意为“来得及”。到那时悔恨又怎么来得及！' }
+];
+
+const sentenceData = [
+  { original: "夫君子之行，静以修身，俭以养德。非淡泊无以明志，非宁静无以致远。", notes: [{ word: "夫", meaning: "句首发语词" }, { word: "以", meaning: "来，用来" }, { word: "明", meaning: "使……明确" }, { word: "致远", meaning: "达到远大目标" }], trans: "君子的行为操守，（依靠）宁静来修养身心，（依靠）节俭培养品德。不内心恬淡就无法明确志向，不宁静专一就无法实现远大目标。" },
+  { original: "夫学须静也，才须学也，非学无以广才，非志无以成学。", notes: [{ word: "广", meaning: "增长，扩充" }], trans: "学习必须静心专一，才干来源于学习；不学习就无法增长才干，没有志向就不能使学习有所成就。" },
+  { original: "淫慢则不能励精，险躁则不能治性。", notes: [{ word: "淫慢", meaning: "放纵懈怠" }, { word: "励精", meaning: "振奋精神" }, { word: "险躁", meaning: "轻薄浮躁" }, { word: "治", meaning: "修养" }], trans: "放纵懈怠，就不能振奋精神；轻薄浮躁，就不能修养性情。" },
+  { original: "年与时驰，意与日去，遂成枯落，多不接世，悲守穷庐，将复何及！", notes: [{ word: "驰", meaning: "疾速逝去" }, { word: "枯落", meaning: "比喻年老志衰" }, { word: "接世", meaning: "接触社会，为社会所用" }, { word: "及", meaning: "来得及" }], trans: "年纪随同时光疾速逝去，意志随同岁月慢慢丧失，最终人年老志衰，大多对社会没有贡献，悲伤地困守在简陋的屋舍中，到那时悔恨又怎么来得及！" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'jiezishu_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  });
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
