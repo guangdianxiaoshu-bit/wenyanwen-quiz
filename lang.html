@@ -54,7 +54,7 @@
   .q-text .highlight { color: #25274d; font-weight: 600; }
 
   .opts { margin-top: 4px; }
-  .seg-orig {
+    .seg-orig {
     position: sticky; top: 0; z-index: 50;
     background: #e9ecf2; border-left: 4px solid #464866;
     padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
@@ -62,6 +62,7 @@
   }
   .seg-orig strong { color: #7a7da8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
   .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7a7da8; }
+  .seg-orig small { font-size: 10px; color: #7a7da8; opacity: 0.9; }
 
   .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5d6e0; font-size: 14px; cursor: pointer; transition: all 0.15s; }
   .opts label:hover { border-color: #a6a8c4; background: #ebecf2; }
@@ -122,7 +123,7 @@
     .banner h1 { font-size: 19px; }
     .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
     .q-card { padding: 14px; }
-    .seg-orig {
+      .seg-orig {
     position: sticky; top: 0; z-index: 50;
     background: #e9ecf2; border-left: 4px solid #464866;
     padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
@@ -130,6 +131,7 @@
   }
   .seg-orig strong { color: #7a7da8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
   .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7a7da8; }
+  .seg-orig small { font-size: 10px; color: #7a7da8; opacity: 0.9; }
 
   .opts label { padding: 9px 12px; font-size: 13px; }
     .result-panel .score-num { font-size: 42px; }
@@ -170,6 +172,10 @@
 </div>
 
 
+
+<div style="text-align:center;background:#e9ecf2;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #d5d8e0">
+  <strong>常识</strong> 本文选自《聊斋志异》卷六（上海古籍出版社1986年版）。蒲松龄（1640—1715），字留仙，世称聊斋先生，淄川（今属山东淄博）人，清代文学家。著有文言小说集《聊斋志异》等。
+</div>
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
@@ -195,8 +201,6 @@
     <div id="translationContent"></div>
   </div>
 
-    <div style="background:#e9ecf2;border-left:4px solid #464866;border-radius:4px;padding:10px 14px;margin:16px 0 8px;font-size:13px;line-height:1.8;color:#555"><strong>注释</strong> 〔苫(shàn)〕盖上。　〔尻(kāo)〕屁股。　〔眈眈〕凶狠注视的样子。</div>
-    <div style="background:#e9ecf2;border-left:4px solid #464866;border-radius:4px;padding:10px 14px;margin:8px 0;font-size:13px;line-height:1.8;color:#555"><strong>常识</strong> 本文选自《聊斋志异》卷六（上海古籍出版社1986年版）。蒲松龄（1640—1715），字留仙，世称聊斋先生，淄川（今属山东淄博）人，清代文学家。著有文言小说集《聊斋志异》等。</div>
   <div class="footer">
     <div class="divider"></div>
     <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
@@ -226,7 +230,7 @@ const questions = [
   { tag: "字词释义", q: '“并驱<span class="highlight">如故</span>”中“<span class="highlight">如故</span>”的意思是？',
     options: ["像原来一样", "如同故人", "按照旧例", "装作没事"], answer: 0,
     explain: '“如故”意为“像原来一样”。两只狼像原来一样一起追赶。' },
-    { seg: "屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，苫蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，眈眈相向。" },
+  { seg: "屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，苫<small>shàn，盖上</small>蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，眈眈<small>凶狠注视的样子</small>相向。" },
   { tag: "字词释义", q: '“屠大<span class="highlight">窘</span>”中“<span class="highlight">窘</span>”的意思是？',
     options: ["困迫", "贫穷", "害怕", "着急"], answer: 0,
     explain: '“窘”意为“处境困迫、为难”。屠户十分困迫。' },
@@ -248,7 +252,7 @@ const questions = [
   { tag: "字词释义", q: '“狼不敢<span class="highlight">前</span>”中“<span class="highlight">前</span>”的意思是？',
     options: ["上前", "前方", "先前", "前进"], answer: 0,
     explain: '“前”名词作动词，意为“上前”。狼不敢上前。' },
-    { seg: "<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露尻尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。" },
+  { seg: "<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露尻<small>kāo，屁股</small>尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。" },
   { tag: "字词释义", q: '“<span class="highlight">少时</span>”中“<span class="highlight">少</span>”的读音是？',
     options: ["shāo", "sháo", "shǎo", "shào"], answer: 2,
     explain: '“少时”的“少”读shǎo，意为“一会儿、时间短暂”。' },
