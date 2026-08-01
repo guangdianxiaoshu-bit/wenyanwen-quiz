@@ -281,8 +281,8 @@ var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
 let submitted = false;
 let shuffles = {};
 function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
-function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
 function renderTranslation() {
   translationContent.innerHTML = '';
   sentenceData.forEach(s => {
@@ -343,8 +343,8 @@ submitBtn.addEventListener('click', function() {
     const exp = document.getElementById('exp-' + i); exp.classList.add('show');
     const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
   });
-  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
-  const pct = correct / questions.length; let stars = '', comment = '';
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
   if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
   else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
   else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
