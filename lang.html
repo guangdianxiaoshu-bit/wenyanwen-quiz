@@ -319,12 +319,13 @@ const toast = document.getElementById('toast');
 const translationPanel = document.getElementById('translationPanel');
 const translationContent = document.getElementById('translationContent');
 const STORAGE_PREFIX = 'lang_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
 
 let submitted = false;
 let shuffles = {};
 function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
-function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
 function renderTranslation() {
   translationContent.innerHTML = '';
   sentenceData.forEach(s => {
@@ -372,8 +373,8 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
-function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
   submitted = true; const answers = getStoredAnswers(); let correct = 0;
@@ -385,8 +386,8 @@ submitBtn.addEventListener('click', function() {
     const exp = document.getElementById('exp-' + i); exp.classList.add('show');
     const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
   });
-  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
-  const pct = correct / questions.length; let stars = '', comment = '';
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
   if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
   else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
   else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
