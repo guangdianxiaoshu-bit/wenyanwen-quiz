@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《爱莲说》 · 20题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f9fef2;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #4d7c0f 0%, #84cc16 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #4d7c0f; color: #d9f99d;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #a3e635; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #a3e635; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #d9f99d; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #4d7c0f, #bef264); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d9f99d; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #4d7c0f; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #84cc16; background: #d9f99d; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #4d7c0f; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d9f99d; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #bef264; background: #f7fee7; }
+  .opts label.selected { border-color: #4d7c0f; background: #d9f99d; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d9f99d; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #4d7c0f; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f7fee7; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #4d7c0f; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #4d7c0f, #84cc16); color: #fff; box-shadow: 0 2px 8px rgba(77,124,15,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(77,124,15,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #4d7c0f; border: 2px solid #bef264; }
+  .btn-secondary:hover { background: #f7fee7; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #4d7c0f, #84cc16); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d9f99d; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #4d7c0f; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d9f99d; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f7fee7; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #4d7c0f; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f7fee7; border: 1px solid #d9f99d; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d9f99d; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(77,124,15,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #365314; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《爱莲说》</h1>
+  <p>部编版七年级下册 · 《周敦颐集》</p>
+  
+</div>
+
+<div class="sticky-original" id="stickyOriginal">
+  <strong>原文</strong> 水陆草木之花，<u>可爱</u>者甚<u>蕃(fán)</u>。晋陶渊明<u>独</u>爱菊。自李唐来，世人甚爱牡丹。<u>予</u>独爱莲<u>之</u>出淤泥<u>而</u>不染，<u>濯</u>清涟而不<u>妖</u>，中通外直，不<u>蔓</u>不<u>枝</u>，香远<u>益</u>清，亭亭净植，可远观而不可<u>亵</u>玩焉。予<u>谓</u>菊花之隐逸者也牡丹花之富贵者也莲花之君子者也。噫！菊之爱，陶后<u>鲜</u>有闻。莲之爱，同予者何人？牡丹之爱，<u>宜</u>乎众矣。<br>
+  <strong>常识</strong> 本文选自《周敦颐集》卷三（中华书局2009年版）。周敦颐（1017—1073），字茂叔，道州营道（今湖南道县）人，北宋哲学家，著有《太极图说》《通书》等。“说”是古代的一种议论性文体，多借事物阐述道理。
+</div>
+
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 20 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 20 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { tag: "字词释义", q: '“<span class="highlight">可爱</span>者甚蕃”中“可爱”的意思是？',
+    options: ["值得喜爱", "讨人喜欢", "可爱的人", "喜爱"], answer: 0,
+    explain: '“可爱”是古今异义词，意为“值得喜爱”。值得喜爱的非常多。' },
+  { tag: "字词释义", q: '“可爱者甚<span class="highlight">蕃(fán)</span>”中“蕃”的意思是？',
+    options: ["多", "茂盛", "繁殖", "稀少"], answer: 0,
+    explain: '“蕃”读fán，意为“多”。值得喜爱的非常多。' },
+  { tag: "字词释义", q: '“晋陶渊明<span class="highlight">独</span>爱菊”中“<span class="highlight">独</span>”的意思是？',
+    options: ["只", "独自", "孤独", "独特"], answer: 0,
+    explain: '“独”意为“只、唯独”。晋代的陶渊明只喜爱菊花。' },
+  { tag: "字词释义", q: '“<span class="highlight">予</span>独爱莲”中“<span class="highlight">予</span>”的读音和意思是？',
+    options: ["yú，我", "yǔ，给予", "yú，语气词", "yǔ，参与"], answer: 0,
+    explain: '“予”读yú，意为“我”。我唯独喜爱莲花。' },
+  { tag: "字词释义", q: '“莲<span class="highlight">之</span>出淤泥而不染”中“<span class="highlight">之</span>”的作用是？',
+    options: ["取消句子独立性，不译", "结构助词，的", "代词，它", "动词，去"], answer: 0,
+    explain: '“之”用在主谓之间，取消句子独立性，不译。莲花从淤泥中长出却不被污染。' },
+  { tag: "字词释义", q: '“出淤泥<span class="highlight">而</span>不染”中“<span class="highlight">而</span>”表示什么关系？',
+    options: ["转折（却）", "顺承（然后）", "并列（并且）", "修饰（地）"], answer: 0,
+    explain: '“而”表转折，意为“却”。从淤泥中长出却不被污染。' },
+  { tag: "字词释义", q: '“<span class="highlight">濯</span>清涟而不妖”中“<span class="highlight">濯</span>”的意思是？',
+    options: ["洗", "沐浴", "浇灌", "沾染"], answer: 0,
+    explain: '“濯”意为“洗”。经过清水的洗涤却不显得妖艳。' },
+  { tag: "字词释义", q: '“濯清涟而不<span class="highlight">妖</span>”中“<span class="highlight">妖</span>”的意思是？',
+    options: ["妖艳", "妖怪", "妖气", "端庄"], answer: 0,
+    explain: '“妖”意为“妖艳、艳丽”（美丽而不端庄）。经过清水洗涤却不显得妖艳。' },
+  { tag: "字词释义", q: '“不<span class="highlight">蔓</span>不枝”中“<span class="highlight">蔓</span>”的意思是？',
+    options: ["生枝蔓", "藤蔓", "蔓延", "缠绕"], answer: 0,
+    explain: '“蔓”名词作动词，意为“生枝蔓”。不生枝蔓，不长枝节。' },
+  { tag: "字词释义", q: '“不蔓不<span class="highlight">枝</span>”中“<span class="highlight">枝</span>”的意思是？',
+    options: ["长枝节", "树枝", "蔓延", "缠绕"], answer: 0,
+    explain: '“枝”名词作动词，意为“长枝节”。不生枝蔓，不长枝节。' },
+  { tag: "字词释义", q: '“香远<span class="highlight">益</span>清”中“<span class="highlight">益</span>”的意思是？',
+    options: ["更加", "益处", "增加", "有益"], answer: 0,
+    explain: '“益”意为“更加”。香气远播更加清香。' },
+  { tag: "字词释义", q: '“可远观而不可<span class="highlight">亵</span>玩焉”中“<span class="highlight">亵</span>”的意思是？',
+    options: ["亲近而不庄重", "轻浮", "亵渎", "玩耍"], answer: 0,
+    explain: '“亵”意为“亲近而不庄重”。只能远远地观赏而不能靠近赏玩它。' },
+  { tag: "字词释义", q: '“予<span class="highlight">谓</span>菊”中“<span class="highlight">谓</span>”的意思是？',
+    options: ["认为", "对……说", "叫做", "称谓"], answer: 0,
+    explain: '“谓”意为“认为”。我认为菊花是花中的隐士。' },
+  { tag: "字词释义", q: '“陶后<span class="highlight">鲜</span>有闻”中“<span class="highlight">鲜</span>”的意思是？',
+    options: ["少", "新鲜", "鲜艳", "鲜美"], answer: 0,
+    explain: '“鲜”读xiǎn，意为“少”。在陶渊明以后很少听到了。' },
+  { tag: "字词释义", q: '“<span class="highlight">宜</span>乎众矣”中“<span class="highlight">宜</span>”的意思是？',
+    options: ["应当", "适宜", "便宜", "适合"], answer: 0,
+    explain: '“宜”意为“应当”。应当（喜爱牡丹的人）很多了。' },
+  { tag: "内容理解", q: '“予谓菊花之隐逸者也牡丹花之富贵者也莲花之君子者也”断句正确的一项是？',
+    options: ["予谓菊，花之隐逸者也；牡丹，花之富贵者也；莲，花之君子者也。", "予谓菊花，之隐逸者也；牡丹花，之富贵者也；莲花，之君子者也。", "予谓菊，花之隐逸者，也牡丹花之富贵者，也莲花之君子者也。", "予谓菊花之，隐逸者也；牡丹花之，富贵者也；莲花之，君子者也。"], answer: 0,
+    explain: '正确断句为“予谓菊，花之隐逸者也；牡丹，花之富贵者也；莲，花之君子者也。”即我认为菊花是花中的隐士，牡丹是花中的富贵者，莲花是花中品德高尚的君子。' },
+  { tag: "内容理解", q: '下列对莲花特点与君子品行的搭配中，错误的是？',
+    options: ["出淤泥而不染——不与世俗同流合污", "濯清涟而不妖——孤高自傲、哗众取宠", "中通外直——内心通达，行为正直", "不蔓不枝——不结党营私"], answer: 1,
+    explain: 'B项搭配不当。“濯清涟而不妖”比喻君子不孤高自傲、不哗众取宠，B项“孤高自傲、哗众取宠”恰好说反了。' },
+  { tag: "内容理解", q: '文中写菊、牡丹有什么作用？',
+    options: ["衬托莲，突出莲的高洁（菊正衬、牡丹反衬）", "说明菊和牡丹也很美", "介绍三种花的习性", "表达对菊和牡丹的喜爱"], answer: 0,
+    explain: '写菊、牡丹是为了衬托莲：用菊（隐逸）正衬莲，用牡丹（富贵）反衬莲，突出莲高洁、不慕名利的特点。' },
+  { tag: "内容理解", q: '“莲之爱，同予者何人？”表达了作者怎样的情感？',
+    options: ["感叹知音稀少，表达洁身自好、不慕名利的情操", "抱怨没人陪自己赏莲", "疑问是否有人爱莲", "表达对牡丹的厌恶"], answer: 0,
+    explain: '“同予者何人”感叹世上像自己一样爱莲（洁身自好）的人很少，知音难觅，表达作者不慕名利、洁身自好的高洁情操。' },
+  { tag: "内容理解", q: '如何理解“出淤泥而不染”？',
+    options: ["比喻君子身处污浊环境却能洁身自好、不同流合污", "说明莲花长在淤泥里", "表达对淤泥的厌恶", "指莲花出淤泥但很干净"], answer: 0,
+    explain: '“出淤泥而不染”比喻君子虽身处污浊的环境，却能洁身自好、不与世俗同流合污。' }
+];
+
+const sentenceData = [
+  { original: "水陆草木之花，可爱者甚蕃。", notes: [{ word: "可爱", meaning: "值得喜爱" }, { word: "蕃(fán)", meaning: "多" }], trans: "水上、陆地上各种草本木本的花，值得喜爱的非常多。" },
+  { original: "晋陶渊明独爱菊。自李唐来，世人甚爱牡丹。", notes: [{ word: "独", meaning: "只" }], trans: "晋代的陶渊明只喜爱菊花。从李氏唐朝以来，世上的人十分喜爱牡丹。" },
+  { original: "予独爱莲之出淤泥而不染，濯清涟而不妖，中通外直，不蔓不枝，香远益清，亭亭净植，可远观而不可亵玩焉。", notes: [{ word: "予", meaning: "我" }, { word: "之", meaning: "取消句子独立性" }, { word: "而", meaning: "转折，却" }, { word: "濯", meaning: "洗" }, { word: "妖", meaning: "妖艳" }, { word: "蔓", meaning: "生枝蔓" }, { word: "枝", meaning: "长枝节" }, { word: "益", meaning: "更加" }, { word: "亵", meaning: "亲近而不庄重" }], trans: "我唯独喜爱莲花从淤泥中长出却不被污染，经过清水的洗涤却不显得妖艳；它的茎内空外直，不生蔓不长枝，香气远播更加清香，笔直洁净地立在水中，人们只能远远地观赏而不能靠近赏玩它。" },
+  { original: "予谓菊，花之隐逸者也；牡丹，花之富贵者也；莲，花之君子者也。", notes: [{ word: "谓", meaning: "认为" }], trans: "我认为菊花，是花中的隐士；牡丹，是花中的富贵者；莲花，是花中品德高尚的君子。" },
+  { original: "噫！菊之爱，陶后鲜有闻。莲之爱，同予者何人？牡丹之爱，宜乎众矣。", notes: [{ word: "鲜", meaning: "少" }, { word: "宜", meaning: "应当" }], trans: "唉！对于菊花的喜爱，在陶渊明以后很少听到了。对于莲花的喜爱，像我一样的还有什么人呢？对于牡丹的喜爱，应当（喜爱的人）很多了！" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'ailian_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+  });
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
