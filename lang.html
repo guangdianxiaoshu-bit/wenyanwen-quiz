@@ -332,20 +332,20 @@ function renderTranslation() {
 function renderQuestions() {
   container.innerHTML = '';
   var qi = 0;
-  questions.forEach((q, i) => {
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
     if (q.seg) {
       var s = document.createElement('div'); s.className = 'seg-orig';
       s.innerHTML = '<strong>原文</strong> ' + q.seg;
       container.appendChild(s);
-      return;
+      continue;
     }
-    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
-    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[qi] || [0, 1, 2, 3];
-    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
     container.appendChild(card);
     qi++;
-    qi++;
-  });
+  }
 }
 function selectOption(qIdx, optIdx) {
   if (submitted) return;
