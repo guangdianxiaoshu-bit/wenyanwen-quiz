@@ -54,6 +54,14 @@
   .q-text .highlight { color: #25274d; font-weight: 600; }
 
   .opts { margin-top: 4px; }
+  .seg-orig {
+    background: #e9ecf2; border-left: 4px solid #464866;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #25274d; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7a7da8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7a7da8; }
+
   .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5d6e0; font-size: 14px; cursor: pointer; transition: all 0.15s; }
   .opts label:hover { border-color: #a6a8c4; background: #ebecf2; }
   .opts label.selected { border-color: #25274d; background: #d5d6e0; }
@@ -113,7 +121,15 @@
     .banner h1 { font-size: 19px; }
     .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
     .q-card { padding: 14px; }
-    .opts label { padding: 9px 12px; font-size: 13px; }
+    .seg-orig {
+    background: #e9ecf2; border-left: 4px solid #464866;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #25274d; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7a7da8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7a7da8; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
     .result-panel .score-num { font-size: 42px; }
   }
   @media (min-width: 600px) {
@@ -151,11 +167,6 @@
   
 </div>
 
-<div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 一屠晚归，担中肉尽，<u>止</u>有剩骨。途中两狼，<u>缀行</u>甚远。屠惧，<u>投以骨</u>。一狼得骨止，一狼仍从。复投之，后狼止而前狼又至。骨已尽矣，而两狼<u>之</u>并驱<u>如故</u>。屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，苫(shàn)蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，眈眈相向。<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露尻(kāo)尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。<br>
-  <strong>注释</strong> 〔苫(shàn)〕盖上。　〔尻(kāo)〕屁股。　〔眈眈〕凶狠注视的样子。<br>
-  <strong>常识</strong> 本文选自《聊斋志异》卷六（上海古籍出版社1986年版）。蒲松龄（1640—1715），字留仙，世称聊斋先生，淄川（今属山东淄博）人，清代文学家。著有文言小说集《聊斋志异》等。
-</div>
 
 <div class="container">
 
@@ -182,6 +193,8 @@
     <div id="translationContent"></div>
   </div>
 
+    <div style="background:#e9ecf2;border-left:4px solid #464866;border-radius:4px;padding:10px 14px;margin:16px 0 8px;font-size:13px;line-height:1.8;color:#555"><strong>注释</strong> 〔苫(shàn)〕盖上。　〔尻(kāo)〕屁股。　〔眈眈〕凶狠注视的样子。</div>
+    <div style="background:#e9ecf2;border-left:4px solid #464866;border-radius:4px;padding:10px 14px;margin:8px 0;font-size:13px;line-height:1.8;color:#555"><strong>常识</strong> 本文选自《聊斋志异》卷六（上海古籍出版社1986年版）。蒲松龄（1640—1715），字留仙，世称聊斋先生，淄川（今属山东淄博）人，清代文学家。著有文言小说集《聊斋志异》等。</div>
   <div class="footer">
     <div class="divider"></div>
     <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
@@ -195,6 +208,7 @@
 
 <script>
 const questions = [
+  { seg: "一屠晚归，担中肉尽，<u>止</u>有剩骨。途中两狼，<u>缀行</u>甚远。屠惧，<u>投以骨</u>。一狼得骨止，一狼仍从。复投之，后狼止而前狼又至。骨已尽矣，而两狼<u>之</u>并驱<u>如故</u>。" },
   { tag: "字词释义", q: '“<span class="highlight">止</span>有剩骨”中“<span class="highlight">止</span>”的意思是？',
     options: ["只，仅", "停止", "阻止", "制止"], answer: 0,
     explain: '“止”意为“只、仅”。担子里只剩下骨头。' },
@@ -315,9 +329,16 @@ function renderTranslation() {
 }
 function renderQuestions() {
   container.innerHTML = '';
+  var qi = 0;
   questions.forEach((q, i) => {
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      return;
+    }
     const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
-    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[qi] || [0, 1, 2, 3];
     card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
     container.appendChild(card);
     qi++;
