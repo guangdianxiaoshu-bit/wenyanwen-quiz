@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《陋室铭》 · 11题</title>
+<title>《陋室铭》 · 13题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -159,7 +159,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 11 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 13 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -171,7 +171,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 11 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 13 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -226,7 +226,13 @@ const questions = [
     explain: '“劳”使动用法，意为“使……劳累”。没有官府的公文使（我的）身体劳累。' },
   { tag: "字词释义", q: '“<span class="highlight">何陋之有</span>”是什么特殊句式？',
     options: ["宾语前置", "状语后置", "判断句", "省略句"], answer: 0,
-    explain: '“何陋之有”是宾语前置句，正常语序为“有何陋”，即有什么简陋的呢？' }
+    explain: '“何陋之有”是宾语前置句，正常语序为“有何陋”，即有什么简陋的呢？' },
+  { tag: "内容理解", q: '本文表达了作者怎样的思想感情？',
+    options: ["安贫乐道、高洁傲岸的情操", "对诸葛亮的仰慕", "对自然景色的喜爱", "对官场生活的向往"], answer: 0,
+    explain: '作者身居陋室却不以为陋，因为“惟吾德馨”，表达了安贫乐道、高洁傲岸的情操。' },
+  { tag: "内容理解", q: '文中提到“南阳诸葛庐，西蜀子云亭”的作用是？',
+    options: ["类比自比，表明自己品德高尚、安贫乐道", "说明这些房子都很简陋", "表达对古代贤人的怀念", "表明自己想去南阳西蜀居住"], answer: 0,
+    explain: '以诸葛亮的草庐、扬子云的亭子自比（类比），表明自己同古代贤人一样，虽居陋室但品德高尚、不慕荣利。' }
 ];
 
 const sentenceData = [
