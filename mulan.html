@@ -213,7 +213,7 @@
 
 <script>
 const questions = [
-  { seg: "唧唧复唧唧，木兰<u>当户</u>织。不闻<u>机杼</u>声，<u>唯</u>闻女叹息。问女<u>何所思</u><small>〔何所思〕宾语前置，想什么</small>，问女何所忆。女亦无所思，女亦无所忆。昨夜见<u>军帖</u>，<u>可汗(kè hán)</u>大点兵，军书<u>十二</u>卷，卷卷有爷名。阿爷无大儿，木兰无长兄，愿为<u>市</u>鞍马，从此替爷征。" },
+  { seg: "唧唧复唧唧，木兰<u>当户</u>织。不闻<u>机杼</u>声，<u>唯</u>闻女叹息。问女<u>何所思</u>，问女何所忆。女亦无所思，女亦无所忆。昨夜见<u>军帖</u>，<u>可汗(kè hán)</u>大点兵，军书<u>十二</u>卷，卷卷有爷名。阿爷无大儿，木兰无长兄，愿为<u>市</u>鞍马，从此替爷征。" },
   { tag: "字词释义", q: '“<span class="highlight">唧唧</span>复唧唧”中“<span class="highlight">唧唧</span>”的意思是？', options: ["叹息声", "织布声", "哭泣声", "鸟叫声"], answer: 0, explain: '“唧唧”是叹息声。木兰对着门织布，听不到织布声，只听到她的叹息声。' },
   { tag: "字词释义", q: '“木兰<span class="highlight">当户</span>织”中“<span class="highlight">当户</span>”的意思是？', options: ["对着门", "在户外", "抵挡门户", "在屋内"], answer: 0, explain: '“当”意为“对着”，“户”是“门”。“当户织”即对着门织布。' },
   { tag: "字词释义", q: '“不闻<span class="highlight">机杼</span>声”中“<span class="highlight">机杼</span>”的意思是？', options: ["织布机", "纺锤", "机敏", "机关"], answer: 0, explain: '“机杼”指织布机。“杼”是织布机的梭子。' },
@@ -221,7 +221,7 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">唯</span>闻女叹息”中“<span class="highlight">唯</span>”的意思是？', options: ["只", "唯一", "因为", "虽然"], answer: 0, explain: '“唯（同’惟‘）”意为“只”。只听到木兰在叹息。' },
   { tag: "字词释义", q: '“愿为<span class="highlight">市</span>鞍马”中“<span class="highlight">市</span>”的意思是？', options: ["买", "市场", "出售", "集市"], answer: 0, explain: '“市”名词作动词，意为“买”。木兰愿意去买鞍马，替父出征。' },
   { tag: "字词释义", q: '“军书<span class="highlight">十二</span>卷”中“<span class="highlight">十二</span>”的意思是？', options: ["虚指，表多数", "确指十二", "十加二", "十二次"], answer: 0, explain: '“十二”是虚指，表示多数（与下文“壮士十年归”“同行十二年”中的“十、十二”均为虚数）。' },
-  { seg: "东<u>市</u>买骏马，西市买鞍鞯<small>〔鞍鞯〕jiān，马鞍下的垫子</small>，南市买辔头<small>〔辔(pèi)头〕驾驭牲口的嚼子和缰绳</small>，北市买长鞭。<u>旦</u>辞爷娘去，暮宿黄河边，不闻爷娘唤女声，但闻黄河流水鸣溅溅<small>〔溅溅〕jiān，水流声</small>。<u>旦</u>辞黄河去，暮至黑山头，不闻爷娘唤女声，但闻燕山<small>〔燕(yān)山〕北方山名</small>胡骑鸣啾啾<small>〔啾啾〕jiū，马叫的声音</small>。" },
+  { seg: "东<u>市</u>买骏马，西市买鞍鞯<small>〔鞍鞯〕jiān，马鞍下的垫子</small>，南市买辔头<small>〔辔(pèi)头〕驾驭牲口的嚼子和缰绳</small>，北市买长鞭。<u>旦</u>辞爷娘去，暮宿黄河边，不闻爷娘唤女声，但闻黄河流水鸣溅溅。<u>旦</u>辞黄河去，暮至黑山头，不闻爷娘唤女声，但闻燕山胡骑鸣啾啾<small>〔啾啾〕jiū，马叫的声音</small>。" },
   { tag: "字词释义", q: '“<span class="highlight">旦</span>辞爷娘去”中“<span class="highlight">旦</span>”的意思是？', options: ["早晨", "白天", "天亮", "明日"], answer: 0, explain: '“旦”意为“早晨”。早晨告别爹娘出发。' },
   { tag: "内容理解", q: '“东市买骏马……北市买长鞭”四句使用了什么修辞？', options: ["排比和互文", "比喻", "拟人", "夸张"], answer: 0, explain: '“互文”指上下文各举一端，合起来表达完整意思——去各处市场置办出征装备。“排比”指结构相似的四句并列。' },
   { tag: "字词释义", q: '“<span class="highlight">但</span>闻黄河流水鸣溅溅”中“<span class="highlight">但</span>”的意思是？', options: ["只", "但是", "然而", "不过"], answer: 0, explain: '“但”意为“只、只是”，与“不闻”形成对比——听不到爹娘唤女声，只听到黄河水声。' },
@@ -276,6 +276,7 @@ const toast = document.getElementById('toast');
 const translationPanel = document.getElementById('translationPanel');
 const translationContent = document.getElementById('translationContent');
 const STORAGE_PREFIX = 'mulan_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
 
 let submitted = false;
 let shuffles = {};
@@ -329,8 +330,8 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
-function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
   submitted = true; const answers = getStoredAnswers(); let correct = 0;
