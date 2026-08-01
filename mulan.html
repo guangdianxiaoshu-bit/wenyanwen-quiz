@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《木兰诗》 · 30题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #fcf6f9;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #9d4e89 0%, #c272a6 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #9d4e89; color: #f0dbe8;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #d291bc; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #d291bc; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #f0dbe8; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #9d4e89, #e0b4cf); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0dbe8; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #9d4e89; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #c272a6; background: #f0dbe8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #9d4e89; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f0dbe8; border-left: 4px solid #c272a6;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #6d2f5f; border-radius: 4px;
+  }
+  .seg-orig strong { color: #d291bc; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #d291bc; }
+  .seg-orig small { font-size: 10px; color: #d291bc; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #f0dbe8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #e0b4cf; background: #faf0f6; }
+  .opts label.selected { border-color: #9d4e89; background: #f0dbe8; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #f0dbe8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #9d4e89; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #faf0f6; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #9d4e89; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #9d4e89, #c272a6); color: #fff; box-shadow: 0 2px 8px rgba(157,78,137,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(157,78,137,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #9d4e89; border: 2px solid #e0b4cf; }
+  .btn-secondary:hover { background: #faf0f6; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #9d4e89, #c272a6); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0dbe8; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #9d4e89; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f0dbe8; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #faf0f6; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #9d4e89; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #faf0f6; border: 1px solid #f0dbe8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #f0dbe8; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f0dbe8; border-left: 4px solid #c272a6;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #6d2f5f; border-radius: 4px;
+  }
+  .seg-orig strong { color: #d291bc; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #d291bc; }
+  .seg-orig small { font-size: 10px; color: #d291bc; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(157,78,137,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #6d2f5f; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《木兰诗》</h1>
+  <p>部编版七年级下册 · 《乐府诗集》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f0dbe8;color:#6d2f5f;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e0b4cf"><strong>常识</strong> 本文选自《乐府诗集》卷二十五（中华书局1979年版）。这是南北朝时北方的一首乐府民歌，与《孔雀东南飞》并称“乐府双璧”。
+</div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 30 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 30 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "唧唧复唧唧，木兰<u>当户</u>织。不闻<u>机杼</u>声，<u>唯</u>闻女叹息。问女<u>何所思</u><small>〔何所思〕宾语前置，想什么</small>，问女何所忆。女亦无所思，女亦无所忆。昨夜见<u>军帖</u>，<u>可汗(kè hán)</u>大点兵，军书<u>十二</u>卷，卷卷有爷名。阿爷无大儿，木兰无长兄，愿为<u>市</u>鞍马，从此替爷征。" },
+  { tag: "字词释义", q: '“<span class="highlight">唧唧</span>复唧唧”中“<span class="highlight">唧唧</span>”的意思是？', options: ["叹息声", "织布声", "哭泣声", "鸟叫声"], answer: 0, explain: '“唧唧”是叹息声。木兰对着门织布，听不到织布声，只听到她的叹息声。' },
+  { tag: "字词释义", q: '“木兰<span class="highlight">当户</span>织”中“<span class="highlight">当户</span>”的意思是？', options: ["对着门", "在户外", "抵挡门户", "在屋内"], answer: 0, explain: '“当”意为“对着”，“户”是“门”。“当户织”即对着门织布。' },
+  { tag: "字词释义", q: '“不闻<span class="highlight">机杼</span>声”中“<span class="highlight">机杼</span>”的意思是？', options: ["织布机", "纺锤", "机敏", "机关"], answer: 0, explain: '“机杼”指织布机。“杼”是织布机的梭子。' },
+  { tag: "内容理解", q: '“<span class="highlight">问女何所思</span>”是什么特殊句式？', options: ["宾语前置", "状语后置", "判断句", "省略句"], answer: 0, explain: '“何所思”即“所思何”（想的是什么），疑问代词“何”作宾语前置。' },
+  { tag: "字词释义", q: '“<span class="highlight">唯</span>闻女叹息”中“<span class="highlight">唯</span>”的意思是？', options: ["只", "唯一", "因为", "虽然"], answer: 0, explain: '“唯（同’惟‘）”意为“只”。只听到木兰在叹息。' },
+  { tag: "字词释义", q: '“愿为<span class="highlight">市</span>鞍马”中“<span class="highlight">市</span>”的意思是？', options: ["买", "市场", "出售", "集市"], answer: 0, explain: '“市”名词作动词，意为“买”。木兰愿意去买鞍马，替父出征。' },
+  { tag: "字词释义", q: '“军书<span class="highlight">十二</span>卷”中“<span class="highlight">十二</span>”的意思是？', options: ["虚指，表多数", "确指十二", "十加二", "十二次"], answer: 0, explain: '“十二”是虚指，表示多数（与下文“壮士十年归”“同行十二年”中的“十、十二”均为虚数）。' },
+  { seg: "东<u>市</u>买骏马，西市买鞍鞯<small>〔鞍鞯〕jiān，马鞍下的垫子</small>，南市买辔头<small>〔辔(pèi)头〕驾驭牲口的嚼子和缰绳</small>，北市买长鞭。<u>旦</u>辞爷娘去，暮宿黄河边，不闻爷娘唤女声，但闻黄河流水鸣溅溅<small>〔溅溅〕jiān，水流声</small>。<u>旦</u>辞黄河去，暮至黑山头，不闻爷娘唤女声，但闻燕山<small>〔燕(yān)山〕北方山名</small>胡骑鸣啾啾<small>〔啾啾〕jiū，马叫的声音</small>。" },
+  { tag: "字词释义", q: '“<span class="highlight">旦</span>辞爷娘去”中“<span class="highlight">旦</span>”的意思是？', options: ["早晨", "白天", "天亮", "明日"], answer: 0, explain: '“旦”意为“早晨”。早晨告别爹娘出发。' },
+  { tag: "内容理解", q: '“东市买骏马……北市买长鞭”四句使用了什么修辞？', options: ["排比和互文", "比喻", "拟人", "夸张"], answer: 0, explain: '“互文”指上下文各举一端，合起来表达完整意思——去各处市场置办出征装备。“排比”指结构相似的四句并列。' },
+  { tag: "字词释义", q: '“<span class="highlight">但</span>闻黄河流水鸣溅溅”中“<span class="highlight">但</span>”的意思是？', options: ["只", "但是", "然而", "不过"], answer: 0, explain: '“但”意为“只、只是”，与“不闻”形成对比——听不到爹娘唤女声，只听到黄河水声。' },
+  { tag: "字词释义", q: '“鸣<span class="highlight">溅溅</span>”中“<span class="highlight">溅溅</span>”的读音是？', options: ["jiān jiān", "jiàn jiàn", "jiǎn jiǎn", "jiān jiàn"], answer: 0, explain: '“溅溅”读 jiān jiān，形容水流声。（纯读音题，四声调辨析）' },
+  { tag: "字词释义", q: '“<span class="highlight">燕</span>山胡骑鸣啾啾”中“<span class="highlight">燕</span>”的读音是？', options: ["yān", "yàn", "yǎn", "yán"], answer: 0, explain: '“燕山”的“燕”读 yān（地名专用读法）。' },
+  { seg: "万里赴<u>戎机</u>，关山<u>度</u>若飞。<u>朔气</u>传金柝<small>〔金柝(tuò)〕古时军中守夜打更用的器具</small>，寒光照<u>铁衣</u>。将军百战死，壮士十年归。归来见天子，天子坐明堂。<u>策勋</u>十二转<small>〔十二转〕勋级每升一级叫一转，“十二”表多数</small>，赏赐百千<u>强</u>。可汗问所欲，木兰<u>不用</u>尚书郎，愿驰<u>千里足</u>，送儿还故乡。" },
+  { tag: "字词释义", q: '“万里赴<span class="highlight">戎机</span>”中“<span class="highlight">戎机</span>”的意思是？', options: ["战事", "军机", "军事", "战争"], answer: 0, explain: '课本注释：“戎机”即“战事”。不远万里奔赴战场参加战事。' },
+  { tag: "字词释义", q: '“关山<span class="highlight">度</span>若飞”中“<span class="highlight">度</span>”的意思是？', options: ["越过", "度过", "衡量", "速度"], answer: 0, explain: '“度”意为“越过”。像飞一样越过关隘和山岭。' },
+  { tag: "字词释义", q: '“<span class="highlight">朔气</span>传金柝”中“<span class="highlight">朔气</span>”的意思是？', options: ["北方的寒气", "寒气", "天气", "初春的气息"], answer: 0, explain: '“朔”常指北方，“朔气”即北方的寒气。北方的寒气传来打更的声音。' },
+  { tag: "字词释义", q: '“寒光照<span class="highlight">铁衣</span>”中“<span class="highlight">铁衣</span>”的意思是？', options: ["铠甲", "铁匠的衣服", "战袍", "金属衣服"], answer: 0, explain: '“铁衣”指铠甲（将士的护身服装）。冷冷的月光照在将士的铠甲上。' },
+  { tag: "字词释义", q: '“<span class="highlight">策勋</span>十二转”中“<span class="highlight">策勋</span>”的意思是？', options: ["记功", "策略", "鞭策", "功劳"], answer: 0, explain: '“策”意为“记”（写在简策上），“勋”意为“功勋”。“策勋”即在功劳簿上记功。' },
+  { tag: "字词释义", q: '“赏赐百千<span class="highlight">强</span>”中“<span class="highlight">强</span>”的含义是？', options: ["有余", "强大", "勉强", "强盛"], answer: 0, explain: '“强”意为“有余、不止”。赏赐的财物成百上千还有余。' },
+  { tag: "字词释义", q: '“木兰<span class="highlight">不用</span>尚书郎”中“<span class="highlight">不用</span>”的意思是？', options: ["不愿做", "不使用", "用不着", "不可以"], answer: 0, explain: '“不用”是古今异义词，意为“不愿做、不做”。木兰不愿做尚书郎的官职。' },
+  { tag: "字词释义", q: '“愿驰<span class="highlight">千里足</span>”中“<span class="highlight">千里足</span>”的意思是？', options: ["千里马", "远行", "走一千里路", "日行千里的脚"], answer: 0, explain: '“千里足”指千里马（日行千里的良马）。希望骑上千里马回家乡。' },
+  { tag: "内容理解", q: '“将军百战死，壮士十年归”使用了什么修辞？', options: ["互文", "比喻", "夸张", "排比"], answer: 0, explain: '“互文”——将军和壮士有的战死沙场，有的经历十年征战凯旋。不可拆开理解为“将军都战死、壮士都归来”。' },
+  { tag: "内容理解", q: '诗歌为什么略写十年征战、详写战前准备与还乡场景？', options: ["突出木兰女儿本色、重亲情不热衷功名", "缺少战争素材", "战争场面不好描写", "为了节省诗歌篇幅"], answer: 0, explain: '详略安排服务于主题——诗歌重在塑造木兰勤劳孝顺、不慕荣利的形象。详写战前（替父从军体现孝）和战后（辞官还乡体现淡泊），略写战争（一笔带过），突出木兰的女儿本色。' },
+  { seg: "爷娘闻女来，出<u>郭</u>相扶将；阿姊闻妹来，当户理<u>红妆</u>；小弟闻姊来，磨刀<u>霍霍</u>向猪羊。开我东阁门，坐我西阁床，脱我战时袍，<u>著(zhuó)</u>我旧时裳。当窗理云鬓，<u>帖(tiē)</u>花黄。出门看<u>火伴</u>，火伴皆惊忙：同行十二年，不知木兰是女郎。雄兔脚<u>扑朔</u>，雌兔眼<u>迷离</u>；双兔傍地走，安能辨我是雄雌？" },
+  { tag: "字词释义", q: '“出<span class="highlight">郭</span>相扶将”中“<span class="highlight">郭</span>”的意思是？', options: ["外城", "城门", "城墙", "城郭姓"], answer: 0, explain: '“郭”指外城（古代城有内外两重，内城为“城”，外城为“郭”）。' },
+  { tag: "字词释义", q: '“当户理<span class="highlight">红妆</span>”中“<span class="highlight">红妆</span>”的意思是？', options: ["古代女子的艳丽装束", "红色的衣裳", "红花", "红粉"], answer: 0, explain: '“红妆”指古代女子艳丽的装束和打扮。对着门整理打扮。' },
+  { tag: "字词释义", q: '“磨刀<span class="highlight">霍霍</span>向猪羊”中“<span class="highlight">霍霍</span>”的意思是？', options: ["磨刀的声音", "快速的样子", "光亮闪闪", "众多"], answer: 0, explain: '“霍霍”是拟声词，形容磨刀的声音。' },
+  { tag: "字词释义", q: '“<span class="highlight">著</span>我旧时裳”中“<span class="highlight">著</span>”的读音和意思是？', options: ["zhuó，穿", "zhù，著作", "zhù，穿着", "zhe，助词"], answer: 0, explain: '“著”读 zhuó，意为“穿”。穿上我旧时的衣裳。' },
+  { tag: "字词释义", q: '“对镜<span class="highlight">帖</span>花黄”中“<span class="highlight">帖</span>”的意思是？', options: ["通“贴”，粘贴", "帖子", "涂贴", "帖附"], answer: 0, explain: '“帖”通“贴”，意为“粘贴”。对着镜子贴上花黄（面部装饰）。' },
+  { tag: "字词释义", q: '“出门看<span class="highlight">火伴</span>”中“<span class="highlight">火伴</span>”的意思是？', options: ["同伍的士兵", "火把", "伙伴的火", "伙夫"], answer: 0, explain: '“火”是古代兵制单位，十人为一“火”。“火伴”即同伍的士兵，后写作“伙伴”。' },
+  { tag: "字词释义", q: '“雄兔脚<span class="highlight">扑朔</span>”中“<span class="highlight">扑朔</span>”的意思是？', options: ["动弹", "扑腾", "迷失", "迅速"], answer: 0, explain: '“扑朔”指兔子前脚不停动弹的样子。雄兔前脚总在动弹。' },
+  { tag: "内容理解", q: '木兰形象的核心特点是？', options: ["勤劳孝顺、勇敢坚毅、不慕荣利", "武艺高强、争强好胜", "温柔贤淑、不爱武装", "机智狡黠、善于伪装"], answer: 0, explain: '全文刻画了木兰勤劳（当户织）、孝顺（替父征）、勇敢（万里赴戎机）、不慕荣利（不用尚书郎）、机智（安能辨我是雄雌）的多元形象。' },
+];
+
+const sentenceData = [
+  { original: "唧唧复唧唧，木兰当户织。不闻机杼声，唯闻女叹息。", notes: [{ word: "唧唧", meaning: "叹息声" }, { word: "当户", meaning: "对着门" }, { word: "机杼", meaning: "织布机" }, { word: "唯", meaning: "只" }], trans: "叹息声一声接着一声，木兰对着门在织布。听不到织布机的响声，只听到木兰在叹息。" },
+  { original: "问女何所思，问女何所忆。女亦无所思，女亦无所忆。昨夜见军帖，可汗大点兵，军书十二卷，卷卷有爷名。", notes: [{ word: "何所思", meaning: "宾语前置，想什么" }, { word: "军帖", meaning: "军中文告" }, { word: "十二", meaning: "虚指，表多数" }], trans: "问木兰在想什么，问木兰在思念什么。木兰也没有想什么，也没有思念什么。昨夜看到军中的文告，可汗大规模征兵，征兵的名册有很多卷，每卷都有父亲的名字。" },
+  { original: "阿爷无大儿，木兰无长兄，愿为市鞍马，从此替爷征。", notes: [{ word: "市", meaning: "买（名作动）" }], trans: "父亲没有大儿子，木兰没有哥哥，（她）愿意去买鞍马，从此代替父亲出征。" },
+  { original: "东市买骏马，西市买鞍鞯，南市买辔头，北市买长鞭。", notes: [{ word: "互文排比" }], trans: "（到）各处市场购置骏马、马鞍垫、嚼子缰绳和长鞭。（互文排比）" },
+  { original: "旦辞爷娘去，暮宿黄河边，不闻爷娘唤女声，但闻黄河流水鸣溅溅。旦辞黄河去，暮至黑山头，不闻爷娘唤女声，但闻燕山胡骑鸣啾啾。", notes: [{ word: "旦", meaning: "早晨" }, { word: "但", meaning: "只" }, { word: "溅溅", meaning: "水流声" }, { word: "啾啾", meaning: "马叫声" }], trans: "早晨告别爹娘出发，傍晚宿营在黄河边，听不到爹娘呼唤女儿的声音，只听到黄河水哗哗作响。早晨辞别黄河，傍晚到达黑山脚下，听不到爹娘唤女声，只听到燕山胡人的战马嘶鸣。" },
+  { original: "万里赴戎机，关山度若飞。朔气传金柝，寒光照铁衣。将军百战死，壮士十年归。", notes: [{ word: "戎机", meaning: "战事" }, { word: "度", meaning: "越过" }, { word: "朔气", meaning: "北方的寒气" }, { word: "铁衣", meaning: "铠甲" }], trans: "不远万里奔赴战事，像飞一样越过关隘山岭。北方的寒气传来打更声，冷冷的月光照在铠甲上。（有的）将军和壮士战死沙场，（有的）经历多年征战胜利归来。（互文）" },
+  { original: "归来见天子，天子坐明堂。策勋十二转，赏赐百千强。可汗问所欲，木兰不用尚书郎，愿驰千里足，送儿还故乡。", notes: [{ word: "策勋", meaning: "记功" }, { word: "强", meaning: "有余" }, { word: "不用", meaning: "不愿做" }, { word: "千里足", meaning: "千里马" }], trans: "归来拜见天子，天子坐在明堂上。（天子）给木兰记了很高的功勋，赏赐的财物成百上千还有余。可汗问（木兰）想要什么，木兰不愿做尚书郎，希望骑上千里马回家乡。" },
+  { original: "爷娘闻女来，出郭相扶将；阿姊闻妹来，当户理红妆；小弟闻姊来，磨刀霍霍向猪羊。", notes: [{ word: "郭", meaning: "外城" }, { word: "红妆", meaning: "女子艳丽装束" }, { word: "霍霍", meaning: "磨刀声" }], trans: "爹娘听说女儿回来，互相扶持着到外城迎接；姐姐听说妹妹回来，对着门整理艳丽的装束；小弟听说姐姐回来，霍霍地磨刀向着猪羊。" },
+  { original: "开我东阁门，坐我西阁床，脱我战时袍，著我旧时裳。当窗理云鬓，对镜帖花黄。", notes: [{ word: "著(zhuó)", meaning: "穿" }, { word: "帖", meaning: "通“贴”" }], trans: "打开我东阁的门，坐我西阁的床，脱下打仗时的战袍，穿上旧时的衣裳。对着窗户梳理如云般美丽的鬓发，对着镜子贴上花黄。" },
+  { original: "出门看火伴，火伴皆惊忙：同行十二年，不知木兰是女郎。雄兔脚扑朔，雌兔眼迷离；双兔傍地走，安能辨我是雄雌？", notes: [{ word: "火伴", meaning: "同伍的士兵" }, { word: "扑朔", meaning: "动弹" }, { word: "迷离", meaning: "眯着眼" }], trans: "出门去见同伍的士兵，伙伴们都非常惊讶：同行多年，竟不知木兰是女郎。雄兔前脚不停动弹，雌兔两眼总是眯着；两只兔子贴着地面跑，怎能辨别哪只是雄兔、哪只是雌兔呢？（比喻木兰女扮男装难以辨别）" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'mulan_';
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+  const pct = correct / questions.length; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
