@@ -22,8 +22,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif
 .empty { text-align: center; padding: 60px 20px; color: #999; }
 .empty .big { font-size: 48px; margin-bottom: 10px; }
 .paper-group { margin-bottom: 16px; }
-.paper-title { font-size: 15px; font-weight: 600; color: #0c4a6e; padding: 8px 4px; border-bottom: 2px solid #bae6fd; display: flex; justify-content: space-between; }
+.paper-title { font-size: 15px; font-weight: 600; color: #0c4a6e; padding: 8px 4px; border-bottom: 2px solid #bae6fd; display: flex; justify-content: space-between; cursor: pointer; user-select: none; }
+.paper-title .arr { color: #0284c7; transition: transform .2s; }
+.paper-group.open .paper-title .arr { transform: rotate(90deg); }
 .paper-title .cnt { font-size: 12px; color: #0284c7; }
+.paper-group .wq { display: none; }
+.paper-group.open .wq { display: block; }
 .wq { background: #fff; border-radius: 10px; padding: 12px 14px; margin: 8px 0; border: 1px solid #e0eaf2; }
 .wq .tag { font-size: 11px; color: #fff; background: #0284c7; border-radius: 4px; padding: 1px 6px; }
 .wq .q { font-size: 14px; font-weight: 500; margin: 8px 0 6px; line-height: 1.6; }
@@ -83,7 +87,7 @@ function render() {
   var grouped = {};
   list.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
   Object.keys(grouped).forEach(function(paper){
-    html += '<div class="paper-group"><div class="paper-title"><span>📄 ' + paper + '</span><span class="cnt">' + grouped[paper].length + ' 题</span></div>';
+    html += '<div class="paper-group" onclick="this.classList.toggle(\'open\')"><div class="paper-title"><span><span class="arr">▶</span> 📄 ' + paper + '</span><span class="cnt">' + grouped[paper].length + ' 题</span></div>';
     grouped[paper].forEach(function(w, idx){
       html += '<div class="wq">';
       html += '<span class="tag">' + (w.tag || '字词释义') + '</span>';
@@ -92,7 +96,7 @@ function render() {
       var ca = (typeof w.correct === 'number' && w.options) ? w.options[w.correct] : '';
       html += '<div class="a">你的答案：<span class="wrong">' + ua + '</span>　正确答案：<span class="right">' + ca + '</span></div>';
       if (w.explain) html += '<div class="exp"><strong>解析：</strong>' + w.explain + '</div>';
-      html += '<div class="meta"><span>' + (w.time || '') + '</span><button class="del" onclick="removeOne(' + list.indexOf(w) + ')">删除</button></div>';
+      html += '<div class="meta"><span>' + (w.time || '') + '</span><button class="del" onclick="event.stopPropagation();removeOne(' + list.indexOf(w) + ')">删除</button></div>';
       html += '</div>';
     });
     html += '</div>';
