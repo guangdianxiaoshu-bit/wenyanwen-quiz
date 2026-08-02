@@ -468,7 +468,7 @@ window.pick = function(optIdx, el){
 
   el.classList.add('picked');
 
-  if (optIdx === q.a) { correct++; } else { perTitle[q.title] = (perTitle[q.title] || 0) + 1; }
+  if (optIdx === q.a) { correct++; } else { perTitle[q.title] = (perTitle[q.title] || 0) + 1; try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《' + q.title + '》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.o, userAns: optIdx, correct: q.a, explain: '' }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
 
   setTimeout(nextQ, 350);
 
