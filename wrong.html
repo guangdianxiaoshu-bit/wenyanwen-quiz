@@ -114,12 +114,14 @@ function getWrong() {
 function saveWrong(list) { localStorage.setItem(KEY, JSON.stringify(list)); }
 function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1500); }
 function shf(a){ var b=[].concat(a); for(var i=b.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=b[i];b[i]=b[j];b[j]=t; } return b; }
+// 去 HTML 标签，用于题干归一化比较（错题记录含 <span>，题库纯文本）
+function norm(s){ return String(s || '').replace(/<[^>]+>/g, ''); }
 
 // 合并重复错题（按 篇目+题干 去重，统计次数；保留最近一次的答案和时间）
 function mergeWrong(list) {
   var merged = [], seen = {};
   list.forEach(function(w){
-    var key = w.paper + '||' + (w.q || '');
+    var key = w.paper + '||' + norm(w.q);
     if (seen[key] !== undefined) {
       merged[seen[key]].count++;
       merged[seen[key]].userAns = w.userAns;
@@ -168,10 +170,11 @@ function render() {
   listEl.innerHTML = html;
 }
 
-// 按 key 删除该题全部记录
+// 按 key 删除该题全部记录（paper||q，q 归一化比较）
 function removeOne(key) {
   var list = getWrong();
-  var newList = list.filter(function(x){ return !(x.paper + '||' + (x.q || '') === key); });
+  var kp = key.split('||')[0], kq = key.split('||')[1];
+  var newList = list.filter(function(x){ return x.paper === kp && norm(x.q) === norm(kq); });
   if (newList.length === list.length) return;
   saveWrong(newList); render(); toast('已删除该错题');
 }
@@ -214,8 +217,8 @@ function startRedo(paper){
   if (!merged.length) { toast('该篇目暂无错题'); return; }
   var all = (TIKU && TIKU[paper]) || [];
   var wrongKeys = {};
-  merged.forEach(function(w){ wrongKeys[w.paper + '||' + w.q] = true; });
-  var extras = all.filter(function(q){ return !wrongKeys[paper + '||' + q.q]; });
+  merged.forEach(function(w){ wrongKeys[w.paper + '||' + norm(w.q)] = true; });
+  var extras = all.filter(function(q){ return !wrongKeys[paper + '||' + norm(q.q)]; });
   extras = shf(extras).slice(0, 5);
   var items = [];
   merged.forEach(function(w){
