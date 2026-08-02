@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《活板》 · 22题</title>
+<title>《活板》 · 23题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -178,7 +178,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 22 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 23 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -190,7 +190,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 22 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 23 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -225,6 +225,7 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">火</span>烧令坚”中“<span class="highlight">火</span>”的意思是？', options: ["用火（名词作状语）", "火焰", "火烧", "火烤"], answer: 0, explain: '“火”名词作状语，意为“用火”。用火烧使它坚硬。' },
   { tag: "字词释义", q: '“以松脂、蜡和纸灰之类<span class="highlight">冒</span>之”中“<span class="highlight">冒</span>”的意思是？', options: ["覆盖", "冒犯", "冒出", "冒充"], answer: 0, explain: '“冒”意为“覆盖”。用松脂、蜡混合纸灰这类东西覆盖（铁板）。' },
   { tag: "字词释义", q: '“持<span class="highlight">就</span>火炀之”中“<span class="highlight">就</span>”的意思是？', options: ["靠近", "完成", "立即", "于是"], answer: 0, explain: '“就”意为“靠近”。拿着（铁板）靠近火烘烤。' },
+  { tag: "字词释义", q: '“持就火<span class="highlight">炀(yáng)</span>之”中“<span class="highlight">炀(yáng)</span>”的意思是？', options: ["烤", "加热", "烧灼", "点火"], answer: 0, explain: '“炀”读yáng，意为“烤”。拿着（铁板）靠近火烘烤。' },
   { tag: "字词释义", q: '“则字平如<span class="highlight">砥</span>”中“<span class="highlight">砥</span>”的意思是？', options: ["磨刀石", "地面", "平地", "基础"], answer: 0, explain: '“砥”意为“磨刀石”。字模平整得像磨刀石一样。' },
   { seg: "若<u>止</u>印三二本，未为简易；若印数十百千本，则极为神速。常作二铁板，一板印刷，一板已自<u>布字</u>，此印者才毕，则第二板已<u>具</u>，<u>更互</u>用之，瞬息可<u>就</u>。" },
   { tag: "字词释义", q: '“若<span class="highlight">止</span>印三二本”中“<span class="highlight">止</span>”的意思是？', options: ["只", "停止", "阻止", "还是"], answer: 0, explain: '“止”意为“只、仅”。如果只印两三本。' },
