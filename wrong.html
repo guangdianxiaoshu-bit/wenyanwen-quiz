@@ -230,11 +230,11 @@ function startRedo(paper){
   document.getElementById('mainView').style.display = 'none';
   document.getElementById('redoView').style.display = 'block';
   document.getElementById('redoTitle').textContent = '📝 错题重做 · ' + paper;
-  document.getElementById('redoInfo').textContent = '共 ' + items.length + ' 题（含错题 ' + merged.length + ' 题 + 补充 ' + extras.length + ' 题），顺序已打乱';
+  document.getElementById('redoInfo').textContent = '共 ' + items.length + ' 题，顺序已打乱';
   var h = '';
   items.forEach(function(it, idx){
     h += '<div class="rq" id="rq' + idx + '">';
-    h += '<div class="rt"><span class="num">' + (idx + 1) + '</span><span class="rtag">' + (it.tag || '字词释义') + '</span>' + (it.wrong ? '<span class="rmark">错题</span>' : '') + '</div>';
+    h += '<div class="rt"><span class="num">' + (idx + 1) + '</span><span class="rtag">' + (it.tag || '字词释义') + '</span></div>';
     h += '<div class="q">' + it.q + '</div>';
     h += '<div class="opts">';
     it.options.forEach(function(o, oi){
@@ -285,14 +285,14 @@ function submitRedo(){
       else if (i === it.pick && it.pick !== it.answer) labels[i].classList.add('no');
     }
   });
-  // 收集：本次答错的题都进错题本（含补充题；原错题再错 → 合并计数+1）
-  newWrong.forEach(function(it){ collectWrong(it.paper, it.tag, it.q, it.options, it.pick, it.answer, it.explain); });
-  // 若原错题全部答对 → 从错题本删除该篇所有错题记录
+  // 原错题全对 → 先从错题本删除该篇全部错题记录
   if (wrongPartOK) {
     var list = getWrong();
     var newList = list.filter(function(x){ return x.paper !== redoState.paper; });
     saveWrong(newList);
   }
+  // 再收集本次答错的题（含补充题；原错题再错 → 合并计数+1）——必须在删除之后，否则刚收集的补充题错题会被一并删除
+  newWrong.forEach(function(it){ collectWrong(it.paper, it.tag, it.q, it.options, it.pick, it.answer, it.explain); });
   var result = document.getElementById('redoResult');
   var h = '';
   if (wrongPartOK) {
