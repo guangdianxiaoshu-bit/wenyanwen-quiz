@@ -1104,7 +1104,7 @@ submitBtn.addEventListener('click', function() {
 
     const isCorrect = userAns === q.answer;
 
-    if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《《咏雪》》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《咏雪》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
 
     const card = document.getElementById(`q-${i}`);
 
