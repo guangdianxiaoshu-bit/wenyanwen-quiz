@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>我的错题本</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; background: #f6fbff; color: #333; padding: 0 0 60px; }
+.container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+.banner { background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; text-align: center; padding: 32px 20px 24px; }
+.banner h1 { font-size: 20px; }
+.banner .sub { font-size: 12px; opacity: 0.85; margin-top: 6px; }
+.stats { display: flex; gap: 8px; margin: 14px 0; }
+.stat { flex: 1; background: #fff; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #e0eaf2; }
+.stat .n { font-size: 22px; font-weight: 700; color: #0284c7; }
+.stat .l { font-size: 11px; color: #888; margin-top: 2px; }
+.actions { display: flex; gap: 8px; margin: 0 0 14px; }
+.btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; }
+.btn-clear { background: #fee2e2; color: #b91c1c; }
+.btn-export { background: #dcfce7; color: #15803d; }
+.empty { text-align: center; padding: 60px 20px; color: #999; }
+.empty .big { font-size: 48px; margin-bottom: 10px; }
+.paper-group { margin-bottom: 16px; }
+.paper-title { font-size: 15px; font-weight: 600; color: #0c4a6e; padding: 8px 4px; border-bottom: 2px solid #bae6fd; display: flex; justify-content: space-between; }
+.paper-title .cnt { font-size: 12px; color: #0284c7; }
+.wq { background: #fff; border-radius: 10px; padding: 12px 14px; margin: 8px 0; border: 1px solid #e0eaf2; }
+.wq .tag { font-size: 11px; color: #fff; background: #0284c7; border-radius: 4px; padding: 1px 6px; }
+.wq .q { font-size: 14px; font-weight: 500; margin: 8px 0 6px; line-height: 1.6; }
+.wq .a { font-size: 13px; line-height: 1.7; }
+.wq .a .wrong { color: #dc2626; }
+.wq .a .right { color: #16a34a; }
+.wq .exp { font-size: 12px; color: #555; background: #f0f9ff; border-radius: 6px; padding: 8px; margin-top: 8px; }
+.wq .meta { font-size: 11px; color: #aaa; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; }
+.wq .del { background: none; border: none; color: #dc2626; font-size: 12px; cursor: pointer; padding: 2px 4px; }
+.float-home { position: fixed; right: 14px; bottom: 18px; background: #0284c7; color: #fff; padding: 10px 16px; border-radius: 20px; font-size: 13px; text-decoration: none; box-shadow: 0 2px 8px rgba(2,132,199,0.3); }
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 8px 18px; border-radius: 20px; font-size: 13px; opacity: 0; transition: opacity .3s; z-index: 99; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="banner">
+  <h1>📒 我的错题本</h1>
+  <div class="sub">做错的题都在这里 · 本机保存</div>
+</div>
+<div class="container">
+  <div class="stats">
+    <div class="stat"><div class="n" id="totalCount">0</div><div class="l">错题总数</div></div>
+    <div class="stat"><div class="n" id="paperCount">0</div><div class="l">涉及篇目</div></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-export" onclick="exportWrong()">📤 导出错题</button>
+    <button class="btn btn-clear" onclick="clearAll()">🗑 清空错题本</button>
+  </div>
+  <div id="list"></div>
+</div>
+<a class="float-home" href="index.html">📚 返回目录</a>
+<div class="toast" id="toast"></div>
+
+<script>
+var KEY = 'gd_wrong';
+
+function getWrong() {
+  try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; }
+}
+function saveWrong(list) { localStorage.setItem(KEY, JSON.stringify(list)); }
+function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1500); }
+
+function render() {
+  var list = getWrong();
+  var totalEl = document.getElementById('totalCount');
+  var paperEl = document.getElementById('paperCount');
+  var listEl = document.getElementById('list');
+  totalEl.textContent = list.length;
+  var papers = {};
+  list.forEach(function(w){ papers[w.paper] = (papers[w.paper] || 0) + 1; });
+  paperEl.textContent = Object.keys(papers).length;
+  if (!list.length) {
+    listEl.innerHTML = '<div class="empty"><div class="big">🎉</div>暂无错题<br>做完自测题后，做错的题会自动收集到这里</div>';
+    return;
+  }
+  var html = '';
+  var grouped = {};
+  list.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
+  Object.keys(grouped).forEach(function(paper){
+    html += '<div class="paper-group"><div class="paper-title"><span>📄 ' + paper + '</span><span class="cnt">' + grouped[paper].length + ' 题</span></div>';
+    grouped[paper].forEach(function(w, idx){
+      html += '<div class="wq">';
+      html += '<span class="tag">' + (w.tag || '字词释义') + '</span>';
+      html += '<div class="q">' + (w.q || '') + '</div>';
+      var ua = (typeof w.userAns === 'number' && w.options) ? w.options[w.userAns] : '未作答';
+      var ca = (typeof w.correct === 'number' && w.options) ? w.options[w.correct] : '';
+      html += '<div class="a">你的答案：<span class="wrong">' + ua + '</span>　正确答案：<span class="right">' + ca + '</span></div>';
+      if (w.explain) html += '<div class="exp"><strong>解析：</strong>' + w.explain + '</div>';
+      html += '<div class="meta"><span>' + (w.time || '') + '</span><button class="del" onclick="removeOne(' + list.indexOf(w) + ')">删除</button></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  listEl.innerHTML = html;
+}
+
+function removeOne(i) {
+  var list = getWrong();
+  if (i >= 0 && i < list.length) { list.splice(i, 1); saveWrong(list); render(); toast('已删除该错题'); }
+}
+function clearAll() {
+  if (!getWrong().length) return;
+  if (!confirm('确定清空所有错题吗？')) return;
+  saveWrong([]); render(); toast('错题本已清空');
+}
+function exportWrong() {
+  var list = getWrong();
+  if (!list.length) { toast('暂无可导出的错题'); return; }
+  var txt = '光点小塾 · 我的错题本\n' + new Date().toLocaleString() + '\n共 ' + list.length + ' 题\n\n';
+  var grouped = {};
+  list.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
+  Object.keys(grouped).forEach(function(p){
+    txt += '【' + p + '】\n';
+    grouped[p].forEach(function(w){
+      txt += (w.q || '') + '\n';
+      txt += '  你的答案：' + ((typeof w.userAns === 'number' && w.options) ? w.options[w.userAns] : '未作答') + '\n';
+      txt += '  正确答案：' + ((typeof w.correct === 'number' && w.options) ? w.options[w.correct] : '') + '\n';
+      if (w.explain) txt += '  解析：' + w.explain + '\n';
+      txt += '\n';
+    });
+  });
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(function(){ toast('已复制到剪贴板'); });
+  } else {
+    var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); toast('已复制到剪贴板');
+  }
+}
+
+render();
+</script>
+</body>
+</html>
