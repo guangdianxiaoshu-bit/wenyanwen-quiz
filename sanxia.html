@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《三峡》 · 20题</title>
+<title>《三峡》 · 21题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -178,7 +178,7 @@
 <div class="container">
 
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">已答 0 / 20 题</div>
+  <div class="progress-text" id="progressText">已答 0 / 21 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -190,7 +190,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 20 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 21 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -223,7 +223,7 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">或</span>王命急宣”中“<span class="highlight">或</span>”的意思是？', options: ["有时", "或者", "或许", "某人"], answer: 0, explain: '“或”意为“有时”。有时遇到皇帝的命令要急速传达。' },
   { tag: "字词释义", q: '“<span class="highlight">虽</span>乘奔御风”中“<span class="highlight">虽</span>”的意思是？', options: ["即使", "虽然", "虽然……但是", "纵然"], answer: 0, explain: '“虽”意为“即使”（古今异义，今义“虽然”）。即使骑着飞奔的马。' },
   { tag: "字词释义", q: '“虽乘<span class="highlight">奔</span>御风”中“<span class="highlight">奔</span>”的意思是？', options: ["飞奔的马（动词作名词）", "奔跑", "奔驰", "奔跑的人"], answer: 0, explain: '“奔”动词作名词，意为“飞奔的马”。骑着飞奔的马。' },
-  { tag: "字词释义", q: '“不以<span class="highlight">疾</span>也”中“<span class="highlight">疾</span>”的意思是？', options: ["快", "疾病", "痛苦", "急速"], answer: 0, explain: '“疾”意为“快”。也不认为（比这）快。' },
+  { tag: "字词释义", q: '“不<span class="highlight">以</span>疾也”中“<span class="highlight">以</span>”的意思是？', options: ["认为", "用来", "因为", "可以"], answer: 0, explain: '“以”意为“认为”。也不认为（比这）快。' },
   { tag: "内容理解", q: '“虽乘奔御风，不以疾也。”翻译正确的一项是？', options: ["即使骑着飞奔的马，驾着疾风，也没有这么快。", "虽然骑着飞奔的马，驾着疾风，也没有这么快。", "即使骑着飞奔的马，驾着疾风，也不认为（比这）慢。", "虽然骑着奔驰的快马，乘着疾风，也不觉得这么快。"], answer: 0, explain: 'A正确。“虽”应译“即使”，B、D误译“虽然”；“疾”是“快”，C误译“慢”。' },
   { tag: "内容理解", q: '“<span class="highlight">朝发白帝</span>”与下列哪句的特殊句式相同？', options: ["蒙辞以军中多务（状语后置）", "何陋之有（宾语前置）", "莲，花之君子者也（判断句）", "其印为余群从所得（被动句）"], answer: 0, explain: '“朝发白帝”即“朝于白帝发”，状语后置句，与《孙权劝学》“蒙辞以军中多务”（以军中多务辞）句式相同，都是状语后置。' },
   { seg: "春冬之时，则<u>素</u><u>湍</u>绿潭，回清倒影，<u>绝巘(yǎn)</u>多生怪柏，悬泉瀑布，<u>飞漱</u>其间，清荣峻茂，<u>良</u>多趣味。" },
@@ -233,6 +233,7 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">良</span>多趣味”中“<span class="highlight">良</span>”的意思是？', options: ["确实，很", "良好", "善良", "优良"], answer: 0, explain: '“良”意为“确实、很”。确实有很多趣味。' },
   { seg: "每至晴初霜旦林寒涧肃常有高猿长啸属引凄异空谷传响哀转久绝。故渔者歌曰：“巴东三峡巫峡长，猿鸣三声泪沾裳。”" },
   { tag: "字词释义", q: '“<span class="highlight">属</span>引凄异”中“<span class="highlight">属</span>”的意思是？', options: ["连接", "属于", "嘱咐", "跟随"], answer: 0, explain: '“属”意为“连接”。声音连续不断。' },
+  { tag: "字词释义", q: '“属<span class="highlight">引</span>凄异”中“<span class="highlight">引</span>”的意思是？', options: ["延长", "引导", "牵引", "引用"], answer: 0, explain: '“引”意为“延长”。声音连续不断、延长。（属=连接，引=延长）' },
   { tag: "字词释义", q: '“哀转久<span class="highlight">绝</span>”中“<span class="highlight">绝</span>”的意思是？', options: ["消失", "断绝", "绝对", "极高"], answer: 0, explain: '“绝”意为“消失”。悲哀婉转，很久才消失。（与“沿溯阻绝”的“绝=断绝”对比）' },
   { tag: "内容理解", q: '“<span class="highlight">林寒涧肃</span>”使用了什么修辞？', options: ["互文（树林和山涧都清寒寂静）", "比喻", "拟人", "夸张"], answer: 0, explain: '“林寒涧肃”是互文，意为“树林和山涧都清寒寂静”，不能拆开理解为“树林寒、山涧肃”。' },
   { tag: "内容理解", q: '“每至晴初霜旦林寒涧肃常有高猿长啸属引凄异空谷传响哀转久绝”断句正确的一项是？', options: ["每至晴初霜旦，林寒涧肃，常有高猿长啸，属引凄异，空谷传响，哀转久绝。", "每至晴初，霜旦林寒，涧肃常有，高猿长啸属引，凄异空谷，传响哀转，久绝。", "每至晴初霜旦林寒，涧肃常有高猿，长啸属引凄异，空谷传响哀转，久绝。", "每至晴初霜旦，林寒涧肃常有，高猿长啸属，引凄异空谷，传响哀转久绝。"], answer: 0, explain: '正确断句为“每至晴初霜旦，林寒涧肃，常有高猿长啸，属引凄异，空谷传响，哀转久绝。”' },
