@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《活板》 · 22题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f7f9f4;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #6a8d5a 0%, #8fb07c 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #6a8d5a; color: #e8efe3;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #a3c19a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #a3c19a; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e8efe3; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #6a8d5a, #c4d8b8); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e8efe3; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #6a8d5a; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #8fb07c; background: #e8efe3; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #6a8d5a; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+  .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #e8efe3; border-left: 4px solid #8fb07c;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3f5736; border-radius: 4px;
+  }
+  .seg-orig strong { color: #a3c19a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #a3c19a; }
+  .seg-orig small { font-size: 10px; color: #a3c19a; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e8efe3; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c4d8b8; background: #f6f8f3; }
+  .opts label.selected { border-color: #6a8d5a; background: #e8efe3; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e8efe3; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #6a8d5a; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f6f8f3; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #6a8d5a; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #6a8d5a, #8fb07c); color: #fff; box-shadow: 0 2px 8px rgba(106,141,90,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(106,141,90,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #6a8d5a; border: 2px solid #c4d8b8; }
+  .btn-secondary:hover { background: #f6f8f3; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #6a8d5a, #8fb07c); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e8efe3; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #6a8d5a; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e8efe3; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f6f8f3; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #6a8d5a; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f6f8f3; border: 1px solid #e8efe3; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e8efe3; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #e8efe3; border-left: 4px solid #8fb07c;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3f5736; border-radius: 4px;
+  }
+  .seg-orig strong { color: #a3c19a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #a3c19a; }
+  .seg-orig small { font-size: 10px; color: #a3c19a; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(106,141,90,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #3f5736; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《活板》</h1>
+  <p>部编版七年级下册 · 《梦溪笔谈》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#e8efe3;color:#3f5736;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #c4d8b8"><strong>常识</strong> 本文选自《梦溪笔谈》卷十八。作者沈括（1031—1095），字存中，北宋科学家、政治家。本文详细记载了毕昇发明的活字印刷术。
+</div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 22 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 22 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "板印书籍，唐人尚未<u>盛</u>为之。<u>已</u>后典籍皆为板本。庆历中，有<u>布衣</u>毕昇，又<u>为</u>活板。" },
+  { tag: "字词释义", q: '“<span class="highlight">板</span>印书籍”中“<span class="highlight">板</span>”的意思是？', options: ["用雕版（同“版”，名作状）", "木板", "印刷", "版面"], answer: 0, explain: '“板”同“版”，名词作状语，意为“用雕版”。用雕版印刷书籍。' },
+  { tag: "字词释义", q: '“尚未<span class="highlight">盛</span>为之”中“<span class="highlight">盛</span>”的意思是？', options: ["大规模地", "茂盛", "丰富", "隆重"], answer: 0, explain: '“盛”意为“大规模地”。唐朝人还没有大规模地这样做。' },
+  { tag: "字词释义", q: '“<span class="highlight">已</span>后典籍”中“<span class="highlight">已</span>”的读音和意思是？', options: ["yǐ，同“以”", "yǐ，已经", "jǐ，自己", "yì，已经"], answer: 0, explain: '“已”读yǐ，同“以”，“已后”即“以后”。' },
+  { tag: "字词释义", q: '“有<span class="highlight">布衣</span>毕昇”中“<span class="highlight">布衣</span>”的意思是？', options: ["平民", "布做的衣服", "布衣人家", "粗布衣裳"], answer: 0, explain: '“布衣”借代指平民（穿布衣的人）。有个平民叫毕昇。' },
+  { tag: "字词释义", q: '“又<span class="highlight">为</span>活板”中“<span class="highlight">为</span>”的意思是？', options: ["制作", "为了", "被", "作为"], answer: 0, explain: '“为”意为“制作”。又发明（制作）了活字印刷。' },
+  { seg: "其法：用胶泥刻字，薄如钱<u>唇</u>，每字为一<u>印</u>，<u>火</u>烧令坚。先设一铁板，其上以松脂、蜡和纸灰之类<u>冒</u>之。欲印，则以一铁范置铁板上，乃密布字印，满铁范为一板，持<u>就</u>火炀(yáng)之，药稍熔，则以一平板按其面，则字平如<u>砥</u>。" },
+  { tag: "字词释义", q: '“薄如钱<span class="highlight">唇</span>”中“<span class="highlight">唇</span>”的意思是？', options: ["边缘", "嘴唇", "边沿", "钱孔"], answer: 0, explain: '“唇”意为“边缘”。字模薄得像铜钱的边缘。' },
+  { tag: "字词释义", q: '“每字为一<span class="highlight">印</span>”中“<span class="highlight">印</span>”的意思是？', options: ["字印", "印刷", "印刻", "印象"], answer: 0, explain: '“印”指字印（印章）。每个字做一个字印。' },
+  { tag: "字词释义", q: '“<span class="highlight">火</span>烧令坚”中“<span class="highlight">火</span>”的意思是？', options: ["用火（名词作状语）", "火焰", "火烧", "火烤"], answer: 0, explain: '“火”名词作状语，意为“用火”。用火烧使它坚硬。' },
+  { tag: "字词释义", q: '“以松脂、蜡和纸灰之类<span class="highlight">冒</span>之”中“<span class="highlight">冒</span>”的意思是？', options: ["覆盖", "冒犯", "冒出", "冒充"], answer: 0, explain: '“冒”意为“覆盖”。用松脂、蜡混合纸灰这类东西覆盖（铁板）。' },
+  { tag: "字词释义", q: '“持<span class="highlight">就</span>火炀之”中“<span class="highlight">就</span>”的意思是？', options: ["靠近", "完成", "立即", "于是"], answer: 0, explain: '“就”意为“靠近”。拿着（铁板）靠近火烘烤。' },
+  { tag: "字词释义", q: '“则字平如<span class="highlight">砥</span>”中“<span class="highlight">砥</span>”的意思是？', options: ["磨刀石", "地面", "平地", "基础"], answer: 0, explain: '“砥”意为“磨刀石”。字模平整得像磨刀石一样。' },
+  { seg: "若<u>止</u>印三二本，未为简易；若印数十百千本，则极为神速。常作二铁板，一板印刷，一板已自<u>布字</u>，此印者才毕，则第二板已<u>具</u>，<u>更互</u>用之，瞬息可<u>就</u>。" },
+  { tag: "字词释义", q: '“若<span class="highlight">止</span>印三二本”中“<span class="highlight">止</span>”的意思是？', options: ["只", "停止", "阻止", "还是"], answer: 0, explain: '“止”意为“只、仅”。如果只印两三本。' },
+  { tag: "字词释义", q: '“一板已自<span class="highlight">布字</span>”中“<span class="highlight">布字</span>”的意思是？', options: ["排字", "布置", "分布", "写字"], answer: 0, explain: '“布字”意为“排字”。另一块板已经在自行排字。' },
+  { tag: "字词释义", q: '“则第二板已<span class="highlight">具</span>”中“<span class="highlight">具</span>”的意思是？', options: ["准备好", "工具", "具备", "具体"], answer: 0, explain: '“具”意为“准备好”。第二块板已经准备好了。' },
+  { tag: "字词释义", q: '“<span class="highlight">更互</span>用之”中“<span class="highlight">更互</span>”的意思是？', options: ["交替", "更加", "更换", "互相"], answer: 0, explain: '“更互”意为“交替、轮流”。交替使用两块板。' },
+  { tag: "字词释义", q: '“瞬息可<span class="highlight">就</span>”中“<span class="highlight">就</span>”的意思是？', options: ["完成", "靠近", "立即", "靠近"], answer: 0, explain: '“就”意为“完成”。转眼之间就能完成。（与“持就火炀之”的“就=靠近”对比）' },
+  { seg: "每一字皆有数印，如“之”“也”等字，每字有二十余印，以备一板内有重复者。不用，则以纸<u>帖</u>之，每韵为一帖，木格贮之。有奇字<small>〔奇字〕生僻字</small>素无备者，<u>旋</u>刻之，以草火烧，瞬息可成。不以木为之者，文<u>理</u>有疏密，沾水则高下不平，兼与药相粘，不可取；不若燔土，用讫再火令药熔，以手拂之，其印自落，<u>殊</u>不沾污。" },
+  { tag: "字词释义", q: '“则以纸<span class="highlight">帖</span>之”中“<span class="highlight">帖</span>”的意思是？', options: ["标注（动词）", "粘贴", "帖子", "字帖"], answer: 0, explain: '“帖”作动词，意为“标注”。就用纸标签标注它们。' },
+  { tag: "字词释义", q: '“<span class="highlight">旋</span>刻之”中“<span class="highlight">旋</span>”的意思是？', options: ["随即", "旋转", "盘旋", "周转"], answer: 0, explain: '“旋”意为“随即、立刻”。随即刻制它。' },
+  { tag: "字词释义", q: '“文<span class="highlight">理</span>有疏密”中“<span class="highlight">文</span>”的意思是？', options: ["同“纹”，纹理", "文章", "文字", "文化"], answer: 0, explain: '“文”同“纹”，意为“纹理”。木头的纹理有疏有密。' },
+  { tag: "字词释义", q: '“<span class="highlight">殊</span>不沾污”中“<span class="highlight">殊</span>”的意思是？', options: ["根本", "特殊", "不同", "非常"], answer: 0, explain: '“殊”意为“根本、绝对”。根本不会被弄脏。' },
+  { tag: "内容理解", q: '“常作二铁板一板印刷一板已自布字此印者才毕则第二板已具更互用之瞬息可就”断句正确的一项是？', options: ["常作二铁板，一板印刷，一板已自布字，此印者才毕，则第二板已具，更互用之，瞬息可就。", "常作二铁板一板，印刷一板，已自布字此印者，才毕则第二板，已具更互用之，瞬息可就。", "常作二铁板，一板印刷一板已，自布字此印者才毕，则第二板已具更互，用之瞬息可就。", "常作二铁板一板印刷，一板已自布字此印者，才毕则第二板已具，更互用之瞬息可就。"], answer: 0, explain: '正确断句为“常作二铁板，一板印刷，一板已自布字，此印者才毕，则第二板已具，更互用之，瞬息可就。”意为常常做两块铁板，一块印刷，一块排字，交替使用，转眼完成。' },
+  { tag: "内容理解", q: '下列句子中是被动句的是？', options: ["昇死，其印为余群从所得", "板印书籍，唐人尚未盛为之", "火烧令坚", "不以木为之者"], answer: 0, explain: '“其印为余群从所得”中“为……所”表被动，是被动句，意为“字印被我的堂兄弟和子侄辈得到”。' },
+];
+
+const sentenceData = [
+  { original: "板印书籍，唐人尚未盛为之。自冯瀛王始印五经，已后典籍皆为板本。", notes: [{ word: "板", meaning: "用雕版（名作状）" }, { word: "盛", meaning: "大规模地" }, { word: "已", meaning: "同“以”" }], trans: "用雕版印刷书籍，唐朝人还没有大规模地这样做。从冯瀛王开始用雕版印刷五经，以后的书籍都是用雕版印刷的本子了。" },
+  { original: "庆历中，有布衣毕昇，又为活板。", notes: [{ word: "布衣", meaning: "平民（借代）" }, { word: "为", meaning: "制作" }], trans: "庆历年间，有个平民叫毕昇，又发明（制作）了活字印刷。" },
+  { original: "其法：用胶泥刻字，薄如钱唇，每字为一印，火烧令坚。", notes: [{ word: "唇", meaning: "边缘" }, { word: "印", meaning: "字印" }, { word: "火", meaning: "用火（名作状）" }], trans: "他的方法是：用黏土刻字，字模薄得像铜钱的边缘，每个字做一个字印，用火烧使它坚硬。" },
+  { original: "先设一铁板，其上以松脂、蜡和纸灰之类冒之。", notes: [{ word: "冒", meaning: "覆盖" }], trans: "先设置一块铁板，在它上面用松脂、蜡混合纸灰这类东西覆盖。" },
+  { original: "欲印，则以一铁范置铁板上，乃密布字印，满铁范为一板，持就火炀之，药稍熔，则以一平板按其面，则字平如砥。", notes: [{ word: "就", meaning: "靠近" }, { word: "炀(yáng)", meaning: "烤" }, { word: "砥", meaning: "磨刀石" }], trans: "想要印刷时，就把一个铁框放在铁板上，于是密密地排布字印，排满铁框算作一板，拿着（铁板）靠近火烘烤它，药物稍微熔化，就用一块平板按压它的表面，于是字模就平整得像磨刀石一样。" },
+  { original: "若止印三二本，未为简易；若印数十百千本，则极为神速。", notes: [{ word: "止", meaning: "只" }], trans: "如果只印两三本，还不算是简便省事；如果印几十、几百、上千本，那就非常快速了。" },
+  { original: "常作二铁板，一板印刷，一板已自布字，此印者才毕，则第二板已具，更互用之，瞬息可就。", notes: [{ word: "布字", meaning: "排字" }, { word: "具", meaning: "准备好" }, { word: "更互", meaning: "交替" }, { word: "就", meaning: "完成" }], trans: "常常做两块铁板，一块板在印刷，另一块板已经在自行排字，这块板刚印完，第二块板已经准备好了，交替使用它们，转眼之间就能完成。" },
+  { original: "每一字皆有数印，如“之”“也”等字，每字有二十余印，以备一板内有重复者。", notes: [{ word: "备", meaning: "防备" }], trans: "每个字都有好几个字印，像“之”“也”等字，每个字有二十多个字印，用来防备一块板内有重复出现（的字）。" },
+  { original: "不用，则以纸帖之，每韵为一帖，木格贮之。", notes: [{ word: "帖", meaning: "标注（动词）" }, { word: "韵", meaning: "韵部" }], trans: "（字印）不用的时候，就用纸标签标注它们，每个韵部做一个标签，用木格存放它们。" },
+  { original: "有奇字素无备者，旋刻之，以草火烧，瞬息可成。", notes: [{ word: "奇字", meaning: "生僻字" }, { word: "素", meaning: "平时" }, { word: "旋", meaning: "随即" }], trans: "有平时没有准备的生僻字，随即刻制它，用草火烘烤，转眼之间就能做成。" },
+  { original: "不以木为之者，文理有疏密，沾水则高下不平，兼与药相粘，不可取；不若燔土，用讫再火令药熔，以手拂之，其印自落，殊不沾污。", notes: [{ word: "文", meaning: "同“纹”，纹理" }, { word: "燔", meaning: "烧" }, { word: "讫", meaning: "完毕" }, { word: "殊", meaning: "根本" }], trans: "不用木头刻字印的原因，是（木头的）纹理有疏有密，沾水后就高低不平，并且和药物互相粘连，不能取下来；不如用火烧黏土（制印），用完后再用火烤使药物熔化，用手掸它，那些字印自然掉落，根本不会被弄脏。" },
+  { original: "昇死，其印为余群从所得，至今保藏。", notes: [{ word: "为……所", meaning: "被动句式" }, { word: "群从", meaning: "堂兄弟及侄子辈" }], trans: "毕昇死后，他的字印被我的堂兄弟和子侄辈得到，至今还保存收藏着。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'huoban_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++;
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
