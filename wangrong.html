@@ -269,7 +269,7 @@ function checkSubmitReady() { var done = getAnswered().length; var total = quest
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
   submitted = true; var answers = getStoredAnswers(); var correct = 0;
-  for (var i = 0; i < questions.length; i++) { var q = questions[i]; var userAns = answers[i]; var isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《《王戎不取道旁李》》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+  for (var i = 0; i < questions.length; i++) { var q = questions[i]; var userAns = answers[i]; var isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《王戎不取道旁李》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
     var card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
     var labels = document.querySelectorAll('label[data-q="' + i + '"]'); for (var li = 0; li < labels.length; li++) { labels[li].classList.add('disabled'); }
     var cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
