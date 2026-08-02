@@ -330,7 +330,7 @@ submitBtn.addEventListener('click', function() {
   submitted = true;
   const answers = getStoredAnswers(); let correct = 0;
   for (let i = 0; i < questions.length; i++) {
-    const q = questions[i]; const ua = answers[i]; const isCorrect = ua === q.answer; if (isCorrect) correct++;
+    const q = questions[i]; const ua = answers[i]; const isCorrect = ua === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《《古人谈读书之论语》》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: ua, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
     document.getElementById('q' + i).classList.add(isCorrect ? 'correct' : 'wrong');
     const labels = document.querySelectorAll('label[data-q="' + i + '"]'); for (let li = 0; li < labels.length; li++) { labels[li].classList.add('disabled'); }
     const cl = document.querySelector('label[data-q="' + i + '"][data-o="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
