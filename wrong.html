@@ -30,7 +30,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif
 .paper-group.open .wq { display: block; }
 .wq { background: #fff; border-radius: 10px; padding: 12px 14px; margin: 8px 0; border: 1px solid #e0eaf2; }
 .wq .tag { font-size: 11px; color: #fff; background: #0284c7; border-radius: 4px; padding: 1px 6px; }
-.wq .q { font-size: 14px; font-weight: 500; margin: 8px 0 6px; line-height: 1.6; }
+.wq .q { font-size: 14px; font-weight: 500; margin: 8px 0 4px; line-height: 1.6; }
+.wq .times { display: inline-block; font-size: 11px; color: #fff; background: #ea580c; border-radius: 4px; padding: 1px 8px; margin-left: 6px; vertical-align: 1px; }
 .wq .a { font-size: 13px; line-height: 1.7; }
 .wq .a .wrong { color: #dc2626; }
 .wq .a .right { color: #16a34a; }
@@ -45,11 +46,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif
 <body>
 <div class="banner">
   <h1>📒 我的错题本</h1>
-  <div class="sub">做错的题都在这里 · 本机保存</div>
+  <div class="sub">重复的错题自动合并 · 本机保存</div>
 </div>
 <div class="container">
   <div class="stats">
-    <div class="stat"><div class="n" id="totalCount">0</div><div class="l">错题总数</div></div>
+    <div class="stat"><div class="n" id="totalCount">0</div><div class="l">错题总数（去重）</div></div>
     <div class="stat"><div class="n" id="paperCount">0</div><div class="l">涉及篇目</div></div>
   </div>
   <div class="actions">
@@ -70,33 +71,51 @@ function getWrong() {
 function saveWrong(list) { localStorage.setItem(KEY, JSON.stringify(list)); }
 function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1500); }
 
+// 合并重复错题（按 篇目+题干 去重，统计次数；保留最近一次的答案和时间）
+function mergeWrong(list) {
+  var merged = [], seen = {};
+  list.forEach(function(w){
+    var key = w.paper + '||' + (w.q || '');
+    if (seen[key] !== undefined) {
+      merged[seen[key]].count++;
+      merged[seen[key]].userAns = w.userAns;
+      merged[seen[key]].time = w.time;
+    } else {
+      seen[key] = merged.length;
+      merged.push({ paper: w.paper, tag: w.tag, q: w.q, options: w.options, userAns: w.userAns, correct: w.correct, explain: w.explain, time: w.time, count: 1 });
+    }
+  });
+  return merged;
+}
+
 function render() {
   var list = getWrong();
+  var merged = mergeWrong(list);
   var totalEl = document.getElementById('totalCount');
   var paperEl = document.getElementById('paperCount');
   var listEl = document.getElementById('list');
-  totalEl.textContent = list.length;
+  totalEl.textContent = merged.length;
   var papers = {};
-  list.forEach(function(w){ papers[w.paper] = (papers[w.paper] || 0) + 1; });
+  merged.forEach(function(w){ papers[w.paper] = (papers[w.paper] || 0) + 1; });
   paperEl.textContent = Object.keys(papers).length;
-  if (!list.length) {
+  if (!merged.length) {
     listEl.innerHTML = '<div class="empty"><div class="big">🎉</div>暂无错题<br>做完自测题后，做错的题会自动收集到这里</div>';
     return;
   }
   var html = '';
   var grouped = {};
-  list.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
+  merged.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
   Object.keys(grouped).forEach(function(paper){
     html += '<div class="paper-group" onclick="this.classList.toggle(\'open\')"><div class="paper-title"><span><span class="arr">▶</span> 📄 ' + paper + '</span><span class="cnt">' + grouped[paper].length + ' 题</span></div>';
     grouped[paper].forEach(function(w, idx){
       html += '<div class="wq">';
       html += '<span class="tag">' + (w.tag || '字词释义') + '</span>';
-      html += '<div class="q">' + (w.q || '') + '</div>';
+      html += '<div class="q">' + (w.q || '') + '<span class="times">错 ' + w.count + ' 次</span></div>';
       var ua = (typeof w.userAns === 'number' && w.options) ? w.options[w.userAns] : '未作答';
       var ca = (typeof w.correct === 'number' && w.options) ? w.options[w.correct] : '';
       html += '<div class="a">你的答案：<span class="wrong">' + ua + '</span>　正确答案：<span class="right">' + ca + '</span></div>';
       if (w.explain) html += '<div class="exp"><strong>解析：</strong>' + w.explain + '</div>';
-      html += '<div class="meta"><span>' + (w.time || '') + '</span><button class="del" onclick="event.stopPropagation();removeOne(' + list.indexOf(w) + ')">删除</button></div>';
+      html += '<div class="meta"><span>' + (w.time || '') + '</span><button class="del" onclick="event.stopPropagation();removeOne(' + merged.indexOf(w) + ')">删除</button></div>';
       html += '</div>';
     });
     html += '</div>';
@@ -104,9 +123,14 @@ function render() {
   listEl.innerHTML = html;
 }
 
+// 删除合并卡片 = 删除该题的全部记录
 function removeOne(i) {
   var list = getWrong();
-  if (i >= 0 && i < list.length) { list.splice(i, 1); saveWrong(list); render(); toast('已删除该错题'); }
+  var merged = mergeWrong(list);
+  if (i < 0 || i >= merged.length) return;
+  var key = merged[i].paper + '||' + (merged[i].q || '');
+  var newList = list.filter(function(x){ return !(x.paper + '||' + (x.q || '') === key); });
+  saveWrong(newList); render(); toast('已删除该错题');
 }
 function clearAll() {
   if (!getWrong().length) return;
@@ -114,15 +138,16 @@ function clearAll() {
   saveWrong([]); render(); toast('错题本已清空');
 }
 function exportWrong() {
-  var list = getWrong();
-  if (!list.length) { toast('暂无可导出的错题'); return; }
-  var txt = '光点小塾 · 我的错题本\n' + new Date().toLocaleString() + '\n共 ' + list.length + ' 题\n\n';
+  var merged = mergeWrong(getWrong());
+  if (!merged.length) { toast('暂无可导出的错题'); return; }
+  var txt = '光点小塾 · 我的错题本\n' + new Date().toLocaleString() + '\n共 ' + merged.length + ' 题（已去重）\n\n';
   var grouped = {};
-  list.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
+  merged.forEach(function(w){ (grouped[w.paper] = grouped[w.paper] || []).push(w); });
   Object.keys(grouped).forEach(function(p){
     txt += '【' + p + '】\n';
     grouped[p].forEach(function(w){
       txt += (w.q || '') + '\n';
+      txt += '  答错 ' + w.count + ' 次\n';
       txt += '  你的答案：' + ((typeof w.userAns === 'number' && w.options) ? w.options[w.userAns] : '未作答') + '\n';
       txt += '  正确答案：' + ((typeof w.correct === 'number' && w.options) ? w.options[w.correct] : '') + '\n';
       if (w.explain) txt += '  解析：' + w.explain + '\n';
