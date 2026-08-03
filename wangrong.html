@@ -128,7 +128,8 @@
   }
   .float-home:hover { background: #4a2840; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
-</style>
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
 </head>
 <body>
 
@@ -145,8 +146,6 @@
 <div style="text-align:center;background:#f0f0f5;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #ddd"><strong>常识</strong> 本文选自《世说新语·雅量》。王戎，西晋名士，“竹林七贤”之一。本文写王戎幼时凭观察与推理判断李子是苦的。
 </div>
 <div class="container">
-
-  <div class="progress-text" id="progressText">已答 0 / 12 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -175,7 +174,8 @@
   </div>
 </div>
 
-<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+<div class="float-prog" id="floatProg">已答 0 / 12 题</div>
+ href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
 
@@ -207,7 +207,6 @@ var container = document.getElementById('questionsContainer');
 var submitBtn = document.getElementById('submitBtn');
 var resetBtn = document.getElementById('resetBtn');
 var progressFill = document.getElementById('progressFill');
-var progressText = document.getElementById('progressText');
 var resultPanel = document.getElementById('resultPanel');
 var scoreNum = document.getElementById('scoreNum');
 var correctCountEl = document.getElementById('correctCount');
@@ -263,7 +262,7 @@ function restoreFromStorage() {
   for (var ki = 0; ki < keys.length; ki++) { var idx = parseInt(keys[ki]); var opt = answers[keys[ki]]; var label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); var r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } }
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { var done = getAnswered().length; var total = questions.length; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function updateProgress() { var done = getAnswered().length; var total = questions.length; document.getElementById(\'floatProg\').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
 function checkSubmitReady() { var done = getAnswered().length; var total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
