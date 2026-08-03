@@ -530,7 +530,7 @@ function restoreFromStorage() {
 
 }
 
-function updateProgress() { const done = getAnswered().length; const total = questions.length; document.getElementById(\'floatProg\').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function updateProgress() { const done = getAnswered().length; const total = questions.length; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
 
 function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 
