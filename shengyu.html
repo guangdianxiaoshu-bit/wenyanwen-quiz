@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《生于忧患，死于安乐》 · 28题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #2f5d4e 0%, #4e7a68 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #2f5d4e; color: #d3e0d9;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #8fa898; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #8fa898; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #d3e0d9; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #2f5d4e, #a8bcb0); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d3e0d9; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #2f5d4e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #4e7a68; background: #d3e0d9; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #2f5d4e; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #eaf1ec; border-left: 4px solid #4e7a68;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #2f5d4e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #8fa898; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #8fa898; }
+  .seg-orig small { font-size: 10px; color: #8fa898; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d3e0d9; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #a8bcb0; background: #edf3ef; }
+  .opts label.selected { border-color: #2f5d4e; background: #d3e0d9; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d3e0d9; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #2f5d4e; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #edf3ef; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #2f5d4e; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #2f5d4e, #4e7a68); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #2f5d4e; border: 2px solid #a8bcb0; }
+  .btn-secondary:hover { background: #edf3ef; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #2f5d4e, #4e7a68); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d3e0d9; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #2f5d4e; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d3e0d9; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #edf3ef; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #2f5d4e; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #edf3ef; border: 1px solid #d3e0d9; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d3e0d9; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #eaf1ec; border-left: 4px solid #4e7a68;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #2f5d4e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #8fa898; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #8fa898; }
+  .seg-orig small { font-size: 10px; color: #8fa898; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《生于忧患，死于安乐》</h1>
+  <p>部编版八年级上册 · [战国]孟子</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#eaf1ec;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cfdad3"> <strong>常识</strong> 本文选自《孟子译注》（中华书局1960年版）。孟子（约前372—前289），名轲，邹（今山东邹城东南）人，战国时期思想家，儒家学派代表人物之一。本文通过列举历史事例，论证忧患使人成长、安乐使人灭亡的道理。舜、傅说、胶鬲、管夷吾、孙叔敖、百里奚均为历史上有作为的人物。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 28 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 28 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "舜<u>发</u>于畎亩<small>〔畎(quǎn)亩〕田地</small>之中，傅<u>举</u>于版筑<small>〔版筑〕筑墙</small>之间，胶鬲举于鱼盐<small>〔鱼盐〕贩卖鱼盐的人</small>之中，管夷吾举于士<small>〔士〕狱官</small>，孙叔敖举于海<small>〔海〕海滨</small>，百里奚举于市<small>〔市〕集市</small>。<u>故</u>天将降大任于<u>是人</u>也，必先<u>苦</u>其心志，<u>劳</u>其筋骨，<u>饿</u>其体肤，<u>乏</u><small>〔乏(fá)〕</small>其身，行<u>拂</u>乱其所为，所以动心忍性，<u>益</u>其所不能。" },
+  { tag: "字词释义", q: '“舜<span class="highlight">发</span>于畎亩之中”中“<span class="highlight">发</span>”的意思是？', options: ["兴起，被任用", "出发", "散发", "发现"], answer: 0, explain: '“发”意为“兴起、被任用”。舜从田野之中兴起。' },
+  { tag: "字词释义", q: '“傅说<span class="highlight">举</span>于版筑之间”中“<span class="highlight">举</span>”的意思是？', options: ["被举用，被选拔", "举起", "推举", "全，都"], answer: 0, explain: '“举”意为“被举用、被选拔”。' },
+  { tag: "字词释义", q: '“<span class="highlight">故</span>天将降大任于是人也”中“<span class="highlight">故</span>”的意思是？', options: ["所以", "缘故", "旧的", "故意"], answer: 0, explain: '“故”意为“所以”。' },
+  { tag: "字词释义", q: '“天将降大任于<span class="highlight">是人</span>也”中“<span class="highlight">是人</span>”的意思是？', options: ["这样的人", "这个国家", "人民", "人类"], answer: 0, explain: '“是人”意为“这样的人”，指承担大任的人。' },
+  { tag: "字词释义", q: '“必先<span class="highlight">苦</span>其心志”中“<span class="highlight">苦</span>”的活用和意思是？', options: ["使动用法，使……痛苦", "痛苦", "辛苦", "苦难"], answer: 0, explain: '“苦”使动用法，“使……痛苦”。' },
+  { tag: "字词释义", q: '“<span class="highlight">劳</span>其筋骨”中“<span class="highlight">劳</span>”的活用和意思是？', options: ["使动用法，使……劳累", "劳累", "劳动", "功劳"], answer: 0, explain: '“劳”使动用法，“使……劳累”。' },
+  { tag: "字词释义", q: '“<span class="highlight">饿</span>其体肤”中“<span class="highlight">饿</span>”的活用和意思是？', options: ["使动用法，使……饥饿", "饥饿", "挨饿", "饿死"], answer: 0, explain: '“饿”使动用法，“使……饥饿”。' },
+  { tag: "字词释义", q: '“<span class="highlight">乏</span>其身”中“<span class="highlight">乏</span>”的意思是？', options: ["使……困乏", "缺乏", "疲乏", "匮乏"], answer: 0, explain: '“乏”意为“使……困乏、穷困”。使他的身体困乏。' },
+  { tag: "字词释义", q: '“行<span class="highlight">拂</span>乱其所为”中“<span class="highlight">拂</span>”的意思是？', options: ["违背，不顺", "擦拭", "拂晓", "拂过"], answer: 0, explain: '“拂”意为“违背、不顺”。“拂乱”即扰乱。' },
+  { tag: "字词释义", q: '“<span class="highlight">益</span>其所不能”中“<span class="highlight">益</span>”的意思是？', options: ["增加", "更加", "益处", "利益"], answer: 0, explain: '“益”意为“增加”。“益其所不能”即增加他所不具备的能力。' },
+  { seg: "人<u>恒</u>过，<u>然后</u>能改；困于心，<u>衡</u>于虑，而后<u>作</u>；<u>征</u>于色，发于声，而后<u>喻</u>。<u>入</u>则无<u>法家</u><u>士</u>，<u>出</u>则无<u>敌</u>国外患者，国恒亡。然后知生于忧患而死于安乐也。" },
+  { tag: "字词释义", q: '“人<span class="highlight">恒</span>过”中“<span class="highlight">恒</span>”的意思是？', options: ["常常", "恒心", "长久", "永久"], answer: 0, explain: '“恒”意为“常常”。“人恒过”即人常常犯错误。' },
+  { tag: "字词释义", q: '“<span class="highlight">然后</span>能改”中“<span class="highlight">然后</span>”的意思是？', options: ["这样以后", "然后（今义）", "然而", "以后"], answer: 0, explain: '“然后”意为“这样以后”。' },
+  { tag: "字词释义", q: '“困于心，<span class="highlight">衡</span>于虑”中“<span class="highlight">衡</span>”的意思是？', options: ["同“横”，梗塞，不顺", "平衡", "衡量", "秤"], answer: 0, explain: '“衡”同“横”，梗塞、不顺。“衡于虑”即思虑阻塞。' },
+  { tag: "字词释义", q: '“而后<span class="highlight">作</span>”中“<span class="highlight">作</span>”的意思是？', options: ["奋起，指有所作为", "作业", "制作", "发作"], answer: 0, explain: '“作”意为“奋起”，这里指有所作为。' },
+  { tag: "字词释义", q: '“<span class="highlight">征</span>于色”中“<span class="highlight">征</span>”的意思是？', options: ["征验，表现", "征讨", "征求", "特征"], answer: 0, explain: '“征”意为“征验、表现”。“征于色”即表现在脸色上。' },
+  { tag: "字词释义", q: '“而后<span class="highlight">喻</span>”中“<span class="highlight">喻</span>”的意思是？', options: ["了解，明白", "比喻", "告知", "晓喻"], answer: 0, explain: '“喻”意为“了解、明白”。“而后喻”即而后才能被人理解。' },
+  { tag: "字词释义", q: '“<span class="highlight">入</span>则无法家拂士”中“<span class="highlight">入</span>”的意思是？', options: ["在国内", "进入", "收入", "进来"], answer: 0, explain: '“入”与“出”相对，指“在国内”。' },
+  { tag: "字词释义", q: '“入则无<span class="highlight">法家</span>拂士”中“<span class="highlight">法家</span>”的意思是？', options: ["守法度的大臣", "法家学派", "执法的官吏", "法律"], answer: 0, explain: '“法家”指守法度的大臣。' },
+  { tag: "字词释义", q: '“入则无法家<span class="highlight">士</span>”中“<span class="highlight">士</span>”的意思是？', options: ["辅佐君主的贤士", "士兵", "士人", "志士"], answer: 0, explain: '“拂士”的“士”指辅佐君主的贤士。“拂士”即辅佐君主的贤士。' },
+  { tag: "字词释义", q: '“<span class="highlight">出</span>则无敌国外患者”中“<span class="highlight">出</span>”的意思是？', options: ["在国外", "出去", "外出", "出来"], answer: 0, explain: '“出”指“在国外”，与“入”（在国内）相对。' },
+  { tag: "字词释义", q: '“出则无<span class="highlight">敌</span>国外患者”中“<span class="highlight">敌</span>”的意思是？', options: ["匹敌，相当", "敌人", "敌对", "抵抗"], answer: 0, explain: '“敌”意为“匹敌、相当”，指势力相当。“敌国外患”指势力相当的外国侵犯的忧患。' },
+  { tag: "字词释义", q: '对“所以动心忍性”中加点词的用法，解说得当的一项是？', options: ["动：动词，震动；忍：忍耐，无活用", "动：使动，使……震撼；忍：使动，使……坚忍", "动：名词，活动；忍：形容词，坚韧", "动、忍均为意动用法"], answer: 1, explain: '“动”“忍”都是使动用法：“使……震撼”“使……坚忍”。' },
+  { tag: "内容理解", q: '下列对“故天将降大任于是人也”的翻译，正确的一项是？', options: ["所以上天将要降临重大使命给这样的人。", "因此上天将要下达重要任务于是这个人。", "所以上天降低重任给这个人。", "因此上天将要托付大任认同这个人。"], answer: 0, explain: '“故”为所以，“大任”为重大使命，“于是人”为“给这样的人”。A 项翻译准确。' },
+  { tag: "断句", q: '下列语句停顿划分正确的一项是？', options: ["舜发于畎 / 亩之中", "故天将降大任 / 于是人也", "困于心衡 / 于虑而后作", "入则无 / 法家拂士"], answer: 3, explain: 'A 拆散“畎亩”；B 应在“故”后稍顿；C 应为“困于心/衡于虑”；D“入则无/法家拂士”停顿正确。' },
+  { tag: "论证方法", q: '文章开篇列举舜、傅说等六人的事例，作用是？', options: ["证明出身底层的人更容易成功", "作为事实论据，论证磨难能使人担当大任", "说明古代君王都来自民间", "对比安逸环境使人堕落"], answer: 1, explain: '六人都是出身微贱而终担大任，作为事实论据论证“磨难能使人担当大任”。' },
+  { tag: "内容理解", q: '下列对文章内容的理解，不符合文意的一项是？', options: ["人才想要成才，需要经受肉体、精神多方面磨难", "人犯错之后，只要自我反省，就一定能够成功", "国家长久安定，既需要国内贤臣，也需要外部对手的警醒", "文章从个人成才推及国家治理，由小到大论证观点"], answer: 1, explain: '“人恒过，然后能改”强调犯错后能改正，但“只要反省就一定成功”说法过于绝对，不符合文意。' },
+  { tag: "内容理解", q: '下列关于本文的说法，不正确的一项是？', options: ["“曾、衡、拂”都是本文出现的通假字", "本文先举例，再说理，最后提炼中心论点", "文章仅从正面论证忧患的价值", "结尾“生于忧患，死于安乐”统领全篇"], answer: 2, explain: '文章既从正面论证忧患使人成才，又从反面论证安乐导致亡国，“仅从正面”说法错误。' },
+  { tag: "论证思路", q: '下列对文章论证思路的分析，正确的一项是？', options: ["先提出中心论点，再举事例证明", "先列举事例，提炼人才造就的道理，再引申到治国，最后归纳论点", "先谈论国家治理，再谈论个人成长", "先反面论证安乐亡国，再正面论证忧患成才"], answer: 1, explain: '文章先列举六人事例，提炼出“生于忧患”的道理，再引申到国家治理（入无法家拂士、出无敌国外患），最后归纳中心论点。' }
+];
+
+const sentenceData = [
+  { original: "舜发于畎亩之中，傅说举于版筑之间，胶鬲举于鱼盐之中，管夷吾举于士，孙叔敖举于海，百里奚举于市。", notes: [{ word: "发", meaning: "兴起，被任用" }, { word: "举", meaning: "被举用，被选拔" }, { word: "畎亩", meaning: "田地" }, { word: "版筑", meaning: "筑墙" }], trans: "舜从田野之中兴起，傅说从筑墙工匠中被举荐，胶鬲从鱼盐商贩中被选拔，管夷吾从狱官手里获释被任用，孙叔敖从海滨隐居处被征召，百里奚从集市上被赎买任用。" },
+  { original: "故天将降大任于是人也，必先苦其心志，劳其筋骨，饿其体肤，乏其身，行拂乱其所为，", notes: [{ word: "故", meaning: "所以" }, { word: "是人", meaning: "这样的人" }, { word: "苦", meaning: "使……痛苦" }, { word: "劳", meaning: "使……劳累" }, { word: "饿", meaning: "使……饥饿" }, { word: "乏", meaning: "使……困乏" }, { word: "拂", meaning: "违背，不顺" }], trans: "所以上天要把重大使命赋予某人时，必定先使他心志痛苦，筋骨劳累，体肤饥饿，身心困乏，行事受挫扰乱，" },
+  { original: "所以动心忍性，益其所不能。", notes: [{ word: "动", meaning: "使……震撼" }, { word: "忍", meaning: "使……坚忍" }, { word: "益", meaning: "增加" }], trans: "以此来惊动他的心志，坚韧他的性格，增加他所不具备的能力。" },
+  { original: "人恒过，然后能改；困于心，衡于虑，而后作；征于色，发于声，而后喻。", notes: [{ word: "恒", meaning: "常常" }, { word: "过", meaning: "犯过错" }, { word: "然后", meaning: "这样以后" }, { word: "衡", meaning: "同“横”，梗塞，不顺" }, { word: "作", meaning: "奋起，有所作为" }, { word: "征", meaning: "征验，表现" }, { word: "喻", meaning: "了解，明白" }], trans: "人常犯错，然后才能改正；内心困窘，思虑阻塞，而后才能振作；表现在脸色，抒发于言语，而后才能被人理解。" },
+  { original: "入则无法家拂士，出则无敌国外患者，国恒亡。", notes: [{ word: "入", meaning: "在国内" }, { word: "法家", meaning: "守法度的大臣" }, { word: "拂士", meaning: "辅佐君主的贤士" }, { word: "出", meaning: "在国外" }, { word: "敌", meaning: "匹敌，相当" }, { word: "恒", meaning: "常常" }], trans: "在内无坚守法度的大臣和辅佐之士，在外无敌对国家的忧患，国家常会灭亡。" },
+  { original: "然后知生于忧患而死于安乐也。", notes: [{ word: "于", meaning: "在" }], trans: "由此可知，人在忧患中生存，在安乐中灭亡。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'shengyu_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《生于忧患，死于安乐》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
