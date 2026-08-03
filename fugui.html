@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《富贵不能淫》 · 26题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7a2e3a 0%, #965065 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7a2e3a; color: #e5d0d5;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #b18a94; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #b18a94; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e5d0d5; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7a2e3a, #caa4ae); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e5d0d5; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7a2e3a; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #965065; background: #e5d0d5; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7a2e3a; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f3e9ec; border-left: 4px solid #965065;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a2e3a; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b18a94; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b18a94; }
+  .seg-orig small { font-size: 10px; color: #b18a94; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e5d0d5; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #caa4ae; background: #f6edf0; }
+  .opts label.selected { border-color: #7a2e3a; background: #e5d0d5; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e5d0d5; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7a2e3a; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f6edf0; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7a2e3a; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7a2e3a, #965065); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7a2e3a; border: 2px solid #caa4ae; }
+  .btn-secondary:hover { background: #f6edf0; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7a2e3a, #965065); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e5d0d5; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7a2e3a; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e5d0d5; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f6edf0; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7a2e3a; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f6edf0; border: 1px solid #e5d0d5; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e5d0d5; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f3e9ec; border-left: 4px solid #965065;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a2e3a; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b18a94; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b18a94; }
+  .seg-orig small { font-size: 10px; color: #b18a94; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《富贵不能淫》</h1>
+  <p>部编版八年级上册 · [战国]孟子</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f3e9ec;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e2ccd2"> <strong>常识</strong> 本文选自《孟子译注》（中华书局1960年版）。孟子（约前372—前289），名轲，邹（今山东邹城东南）人，战国时期思想家，儒家学派代表人物之一。本篇是孟子与纵横家景春的论辩，驳斥景春对大丈夫的错误认识，提出真正的大丈夫标准。景春、公孙衍、张仪均为纵横家。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 26 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 26 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "景春<small>〔景春〕与孟子同时代的人，纵横家</small>曰：“公孙衍<small>〔公孙衍(yǎn)〕战国魏国人，纵横家</small>、张仪<small>〔张仪〕战国魏国人，纵横家</small>岂不<u>诚</u><u>大丈夫</u>哉？一怒<u>而</u>诸侯惧，安居而天下<u>熄</u>。”" },
+  { tag: "字词释义", q: '“岂不<span class="highlight">诚</span>大丈夫哉”中“<span class="highlight">诚</span>”的意思是？', options: ["真正，确实", "诚实", "真诚", "果然"], answer: 0, explain: '“诚”意为“真正、确实”。“岂不诚大丈夫哉”即难道不是真正的大丈夫吗？' },
+  { tag: "字词释义", q: '“岂不诚<span class="highlight">大丈夫</span>哉”中“<span class="highlight">大丈夫</span>”的意思是？', options: ["有志气有节操的人", "成年男子", "大男人", "丈夫"], answer: 0, explain: '“大丈夫”指有志气、有节操、有作为的人。' },
+  { tag: "字词释义", q: '“一怒<span class="highlight">而</span>诸侯惧”中“<span class="highlight">而</span>”的意思是？', options: ["表顺承，就，于是", "表转折，却", "表并列，并且", "表修饰"], answer: 0, explain: '“而”表顺承。“一怒而诸侯惧”即一发怒诸侯就害怕。' },
+  { tag: "字词释义", q: '“安居而天下<span class="highlight">熄</span>”中“<span class="highlight">熄</span>”的意思是？', options: ["指战火停息，天下太平", "熄灭", "消灭", "平息怒火"], answer: 0, explain: '“熄”本义熄灭，这里指战火停息、天下太平。' },
+  { seg: "孟子曰：“<u>是</u><u>焉</u><u>得</u>为大丈夫乎？子未学礼乎？丈夫之<u>冠</u>也，父<u>命</u>之；女子之嫁也，母命之，往送<u>之</u>门，<u>戒</u>之曰：‘往之<u>女</u>家，必敬必戒，无违<u>夫子</u>！’以顺为正者，妾妇之道也。”" },
+  { tag: "字词释义", q: '“<span class="highlight">是</span>焉得为大丈夫乎”中“<span class="highlight">是</span>”的意思是？', options: ["这", "是（判断词）", "正确", "于是"], answer: 0, explain: '“是”是指示代词，意为“这”。' },
+  { tag: "字词释义", q: '“是<span class="highlight">焉</span>得为大丈夫乎”中“<span class="highlight">焉</span>”的意思是？', options: ["怎么，哪里", "于是", "语气词", "于此"], answer: 0, explain: '“焉”是疑问代词，意为“怎么、哪里”。' },
+  { tag: "字词释义", q: '“是焉<span class="highlight">得</span>为大丈夫乎”中“<span class="highlight">得</span>”的意思是？', options: ["能够", "得到", "得意", "得以"], answer: 0, explain: '“得”意为“能够”。' },
+  { tag: "字词释义", q: '“丈夫之<span class="highlight">冠</span>也”中“<span class="highlight">冠</span>”的读音和意思是？', options: ["guàn，行冠礼（动词）", "guān，帽子（名词）", "guàn，冠军", "guān，衣冠"], answer: 0, explain: '“冠”读 guàn，动词，行冠礼。古代男子二十岁行冠礼表示成年。' },
+  { tag: "字词释义", q: '“父<span class="highlight">命</span>之”中“<span class="highlight">命</span>”的意思是？', options: ["训导，教导", "命令", "命运", "命名"], answer: 0, explain: '“命”此处意为“训导、教导”。“父命之”即父亲训导他。' },
+  { tag: "字词释义", q: '“往送<span class="highlight">之</span>门”中“<span class="highlight">之</span>”的意思是？', options: ["到，往（动词）", "的（助词）", "代词，她", "取消句子独立性"], answer: 0, explain: '“往送之门”的“之”是动词，意为“到、往”。' },
+  { tag: "字词释义", q: '“<span class="highlight">戒</span>之曰”中“<span class="highlight">戒</span>”的意思是？', options: ["告诫，叮嘱", "戒除", "警戒", "戒备"], answer: 0, explain: '“戒”意为“告诫、叮嘱”。“戒之曰”即告诫她说。' },
+  { tag: "字词释义", q: '“往之<span class="highlight">女</span>家”中“<span class="highlight">女</span>”的意思是？', options: ["同“汝”，你", "女子", "女儿", "妇女"], answer: 0, explain: '“女”同“汝”，你的。“往之女家”即到你的夫家去。' },
+  { tag: "字词释义", q: '“无违<span class="highlight">夫子</span>”中“<span class="highlight">夫子</span>”的意思是？', options: ["丈夫", "老师", "对人的尊称", "男子"], answer: 0, explain: '“夫子”这里指丈夫。“无违夫子”即不要违背丈夫。' },
+  { seg: "居天下之<u>广居</u>，立天下之<u>正位</u>，行天下之<u>大道</u>。得志，与民<u>由</u>之；不得志，独行其道。富贵不能<u>淫</u>，贫贱不能<u>移</u>，威武不能<u>屈</u>。此之谓大丈夫。" },
+  { tag: "字词释义", q: '“居天下之<span class="highlight">广居</span>”中“<span class="highlight">广居</span>”喻指？', options: ["“仁”", "宽广的住宅", "广大的居所", "天下"], answer: 0, explain: '“广居”比喻“仁”，指仁的居所。' },
+  { tag: "字词释义", q: '“立天下之<span class="highlight">正位</span>”中“<span class="highlight">正位</span>”喻指？', options: ["“礼”", "端正的位置", "正当地位", "正确的座位"], answer: 0, explain: '“正位”比喻“礼”。' },
+  { tag: "字词释义", q: '“行天下之<span class="highlight">大道</span>”中“<span class="highlight">大道</span>”喻指？', options: ["“义”", "宽阔的大路", "大道理", "正道"], answer: 0, explain: '“大道”比喻“义”。' },
+  { tag: "字词释义", q: '“与民<span class="highlight">由</span>之”中“<span class="highlight">由</span>”的意思是？', options: ["遵从，遵循", "由于", "理由", "自由"], answer: 0, explain: '“由”意为“遵从、遵循”。“与民由之”即与百姓一同遵循大道。' },
+  { tag: "字词释义", q: '“贫贱不能<span class="highlight">移</span>”中“<span class="highlight">移</span>”的活用和意思是？', options: ["使动用法，使……改变、动摇", "移动", "迁移", "移交"], answer: 0, explain: '“移”使动用法，“使……改变、动摇”。贫贱不能使（他）改变操守。' },
+  { tag: "字词释义", q: '“威武不能<span class="highlight">屈</span>”中“<span class="highlight">屈</span>”的活用和意思是？', options: ["使动用法，使……屈服", "委屈", "弯曲", "理亏"], answer: 0, explain: '“屈”使动用法，“使……屈服”。' },
+  { tag: "字词释义", q: '对“富贵不能淫”中“<span class="highlight">淫</span>”的用法，解说得当的一项是？', options: ["动词，放纵，古今词义一致，无活用", "使动用法，使……惑乱、迷惑", "名词，淫邪之事", "形容词，荒淫的"], answer: 1, explain: '“淫”是使动用法，“使……惑乱、迷惑”。富贵不能使（他）迷惑。B 项解说正确。' },
+  { tag: "内容理解", q: '下列对“一怒而诸侯惧，安居而天下熄”的翻译，正确的一项是？', options: ["（他们）一发怒，诸侯就害怕；安定下来，天下的战火便停息。", "一旦发怒，诸侯感到恐惧；安心居住，天下就熄灭了。", "（他们）一发脾气，诸侯畏惧；居家过日子，天下太平消失。", "一次发怒诸侯恐惧，安稳居住天下熄火。"], answer: 0, explain: '“而”表顺承；“安居”指安定下来；“熄”指战火停息。A 项翻译准确。' },
+  { tag: "内容理解", q: '对“居天下之广居，立天下之正位，行天下之大道”的翻译，最准确的一项是？', options: ["住进天下宽广的居所，站在天下端正的位置，走天下宽阔的大路。", "住进宽敞房屋，坚守正当地位，行走宽阔道路。", "（大丈夫应当）住进仁的居所，站在礼的位置，走义的道路。", "居住在广阔之地，立身端正，行走在大道上。"], answer: 2, explain: '“广居”“正位”“大道”分别喻指“仁”“礼”“义”，C 项译出比喻义，最准确。' },
+  { tag: "断句", q: '下列语句停顿划分正确的一项是？', options: ["公孙衍、张仪岂不 / 诚大丈夫哉", "是焉得 / 为大丈夫乎", "居天下 / 之广居，立天下 / 之正位", "富贵 / 不能淫，贫贱 / 不能移，威武 / 不能屈"], answer: 3, explain: '“富贵”“贫贱”“威武”后停顿，主谓结构清晰：富贵不能淫，贫贱不能移，威武不能屈。' },
+  { tag: "内容理解", q: '景春认为公孙衍、张仪是大丈夫，理由是？', options: ["他们坚守仁义，不被富贵迷惑", "他们身居高位，坚守本心", "他们一发怒，诸侯害怕；安静下来，天下太平", "他们能够做到贫贱不能移，威武不能屈"], answer: 2, explain: '景春认为他们能“一怒而诸侯惧，安居而天下熄”，凭威势左右天下，故称大丈夫。' },
+  { tag: "内容理解", q: '下列关于“大丈夫”标准的表述，不符合孟子观点的一项是？', options: ["内心坚守仁、礼、义", "得志时和百姓一同践行正道；不得志时独自坚守原则", "富贵、贫贱、强权都无法改变内心操守", "能够凭借自身威势左右诸侯，掌控天下局势"], answer: 3, explain: '孟子恰恰否定“凭威势左右诸侯”，认为那只是“妾妇之道”，D 项与孟子观点相反。' },
+  { tag: "内容理解", q: '下列关于本文的说法，不正确的一项是？', options: ["“广居”喻指“仁”，“正位”喻指“礼”，“大道”喻指“义”", "文章先摆出景春观点，再反驳，提出自己的大丈夫标准", "孟子认为公孙衍、张仪能够做到威武不能屈", "文章运用类比论证，用女子出嫁遵从母命类比张仪等人顺从君主"], answer: 2, explain: '孟子认为公孙衍、张仪只是“妾妇之道”，做不到“威武不能屈”，C 项说法错误。' }
+];
+
+const sentenceData = [
+  { original: "景春曰：“公孙衍、张仪岂不诚大丈夫哉？一怒而诸侯惧，安居而天下熄。”", notes: [{ word: "诚", meaning: "真正，确实" }, { word: "大丈夫", meaning: "有志气有节操的人" }, { word: "而", meaning: "表顺承" }, { word: "熄", meaning: "指战火停息，天下太平" }], trans: "景春说：“公孙衍、张仪难道不是真正的大丈夫吗？他们一发怒，诸侯就恐惧；他们安静下来，天下战火就熄灭。”" },
+  { original: "孟子曰：“是焉得为大丈夫乎？子未学礼乎？", notes: [{ word: "是", meaning: "这" }, { word: "焉", meaning: "怎么，哪里" }, { word: "得", meaning: "能够" }], trans: "孟子说：“这怎么能算大丈夫呢？你没学过礼吗？" },
+  { original: "丈夫之冠也，父命之；女子之嫁也，母命之，往送之门，戒之曰：‘往之女家，必敬必戒，无违夫子！’", notes: [{ word: "冠", meaning: "行冠礼（guàn）" }, { word: "命", meaning: "训导，教导" }, { word: "之", meaning: "到，往" }, { word: "戒", meaning: "告诫，叮嘱" }, { word: "女", meaning: "同“汝”，你" }, { word: "夫子", meaning: "丈夫" }], trans: "男子行冠礼时，父亲训导他；女子出嫁时，母亲训导她，送到门口，告诫说：‘到了夫家，一定要恭敬谨慎，不要违背丈夫！’" },
+  { original: "以顺为正者，妾妇之道也。", notes: [{ word: "以", meaning: "把" }, { word: "正", meaning: "正理" }, { word: "妾妇", meaning: "泛指妇女" }], trans: "把顺从当作正理，是妾妇的行为准则。" },
+  { original: "居天下之广居，立天下之正位，行天下之大道。", notes: [{ word: "广居", meaning: "喻指“仁”" }, { word: "正位", meaning: "喻指“礼”" }, { word: "大道", meaning: "喻指“义”" }], trans: "居住在天下最宽广的住宅（仁）里，站立在天下最正确的位置（礼）上，行走在天下最光明的道路（义）上。" },
+  { original: "得志，与民由之；不得志，独行其道。", notes: [{ word: "由", meaning: "遵从，遵循" }, { word: "独行", meaning: "独自坚守" }], trans: "得志时，与百姓一同遵循大道；不得志时，独自坚守原则。" },
+  { original: "富贵不能淫，贫贱不能移，威武不能屈。此之谓大丈夫。", notes: [{ word: "淫", meaning: "使……惑乱" }, { word: "移", meaning: "使……改变" }, { word: "屈", meaning: "使……屈服" }, { word: "谓", meaning: "叫做" }], trans: "富贵不能迷乱心性，贫贱不能改变操守，威武不能屈服意志。这才叫大丈夫。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'fugui_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《富贵不能淫》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
