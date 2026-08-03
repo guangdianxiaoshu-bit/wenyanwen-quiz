@@ -353,7 +353,7 @@ resetBtn.addEventListener('click', function() {
   scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-generateShuffles(); renderQuestions();
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 </script>
 </body>
 </html>
