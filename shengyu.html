@@ -161,7 +161,8 @@
   }
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
-</style>
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
 </head>
 <body>
 
@@ -175,8 +176,6 @@
 
 <div style="text-align:center;background:#eaf1ec;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cfdad3"> <strong>常识</strong> 本文选自《孟子译注》（中华书局1960年版）。孟子（约前372—前289），名轲，邹（今山东邹城东南）人，战国时期思想家，儒家学派代表人物之一。本文通过列举历史事例，论证忧患使人成长、安乐使人灭亡的道理。舜、傅说、胶鬲、管夷吾、孙叔敖、百里奚均为历史上有作为的人物。 </div>
 <div class="container">
-
-  <div class="progress-text" id="progressText">已答 0 / 28 题</div>
 
   <div id="questionsContainer"></div>
 
@@ -205,7 +204,8 @@
   </div>
 </div>
 
-<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+<div class="float-prog" id="floatProg">已答 0 / 28 题</div>
+ href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
 
@@ -256,7 +256,6 @@ const container = document.getElementById('questionsContainer');
 const submitBtn = document.getElementById('submitBtn');
 const resetBtn = document.getElementById('resetBtn');
 const progressFill = document.getElementById('progressFill');
-const progressText = document.getElementById('progressText');
 const resultPanel = document.getElementById('resultPanel');
 const scoreNum = document.getElementById('scoreNum');
 const correctCountEl = document.getElementById('correctCount');
@@ -320,7 +319,7 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById(\'floatProg\').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
 function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
