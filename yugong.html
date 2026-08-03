@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《愚公移山》 · 42题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7a5c2e 0%, #96783f 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7a5c2e; color: #e2d8c2;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #b09a6e; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #b09a6e; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e2d8c2; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7a5c2e, #c9b28a); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e2d8c2; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7a5c2e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #96783f; background: #e2d8c2; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7a5c2e; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f1ebdd; border-left: 4px solid #96783f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a5c2e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b09a6e; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b09a6e; }
+  .seg-orig small { font-size: 10px; color: #b09a6e; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e2d8c2; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c9b28a; background: #f4efe4; }
+  .opts label.selected { border-color: #7a5c2e; background: #e2d8c2; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e2d8c2; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7a5c2e; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f4efe4; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7a5c2e; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7a5c2e, #96783f); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7a5c2e; border: 2px solid #c9b28a; }
+  .btn-secondary:hover { background: #f4efe4; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7a5c2e, #96783f); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e2d8c2; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7a5c2e; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e2d8c2; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f4efe4; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7a5c2e; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f4efe4; border: 1px solid #e2d8c2; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e2d8c2; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f1ebdd; border-left: 4px solid #96783f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a5c2e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b09a6e; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b09a6e; }
+  .seg-orig small { font-size: 10px; color: #b09a6e; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《愚公移山》</h1>
+  <p>部编版八年级上册 · 《列子》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f1ebdd;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #ddd2b8"> <strong>常识</strong> 本文选自《列子·汤问》（《列子集释》，中华书局1979年版）。《列子》旧题为战国时期列御寇所著，今本多为晋人整理，内容多为民间故事、寓言和神话传说。题目是编者加的。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 42 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 42 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "太行、王屋二山，<u>方</u>七百里，高万<u>仞</u>，本在冀州之南，河阳之北。北山愚公者，年<u>且</u>九十，面山<u>而</u>居。<u>惩</u>山北之塞，出入之<u>迂</u>也，聚室而谋曰：“吾与汝<u>毕力</u>平险，<u>指</u>通豫南，达于汉<u>阴</u>，可乎？”<u>杂然</u>相许。其妻献疑曰：“以君之力，<u>曾</u>不能损魁父之丘，<u>如太行、王屋何</u>？且<u>焉</u>置土石？”杂曰：“投<u>诸</u>渤海之尾，隐土之北。”<u>遂</u>率子孙<u>荷</u>担者三夫，<u>叩</u>石垦壤，<u>箕畚</u>运于渤海之尾。邻人京城氏之<u>孀妻</u>有遗男，始<u>龀</u>，跳往助之。寒暑<u>易</u>节，<u>始</u>一<u>反</u>焉。" },
+  { tag: "字词释义", q: '“太行、王屋二山，<span class="highlight">方</span>七百里”中“<span class="highlight">方</span>”的意思是？', options: ["方圆，纵横", "方向", "方法", "正在"], answer: 0, explain: '“方”意为“方圆、纵横”。“方七百里”指纵横七百里。' },
+  { tag: "字词释义", q: '“高万<span class="highlight">仞</span>”中“<span class="highlight">仞</span>”的意思是？', options: ["古代长度单位，七尺或八尺为一仞", "千仞", "刀刃", "认"], answer: 0, explain: '“仞”是古代长度单位，七尺或八尺为一仞。“高万仞”极言其高。' },
+  { tag: "字词释义", q: '“年<span class="highlight">且</span>九十”中“<span class="highlight">且</span>”的意思是？', options: ["将近", "并且", "况且", "尚且"], answer: 0, explain: '“且”意为“将近”。“年且九十”即年纪将近九十岁。' },
+  { tag: "字词释义", q: '“面山<span class="highlight">而</span>居”中“<span class="highlight">而</span>”的意思是？', options: ["表修饰", "表转折", "表顺承", "表并列"], answer: 0, explain: '“而”表修饰，“面山而居”即面对着山居住。' },
+  { tag: "字词释义", q: '“<span class="highlight">惩</span>山北之塞”中“<span class="highlight">惩</span>”的意思是？', options: ["苦于", "惩罚", "惩戒", "戒备"], answer: 0, explain: '“惩”意为“苦于”。“惩山北之塞”即苦于山北道路阻塞。' },
+  { tag: "字词释义", q: '“出入之<span class="highlight">迂</span>也”中“<span class="highlight">迂</span>”的意思是？', options: ["曲折，绕远", "迂腐", "迂回", "迟缓"], answer: 0, explain: '“迂”意为“曲折、绕远”。“出入之迂”即进出都要绕远路。' },
+  { tag: "字词释义", q: '“吾与汝<span class="highlight">毕力</span>平险”中“<span class="highlight">毕力</span>”的意思是？', options: ["用尽力气，竭尽全力", "完毕", "全部力量", "最终"], answer: 0, explain: '“毕力”意为“用尽力气”。“毕”是尽、竭尽。' },
+  { tag: "字词释义", q: '“<span class="highlight">指</span>通豫南”中“<span class="highlight">指</span>”的意思是？', options: ["一直，直", "手指", "指向", "指使"], answer: 0, explain: '“指”意为“一直、直”。“指通豫南”即一直通向豫州南部。' },
+  { tag: "字词释义", q: '“达于汉<span class="highlight">阴</span>”中“<span class="highlight">阴</span>”的意思是？', options: ["水的南岸", "阴天", "阴冷", "阴影"], answer: 0, explain: '“阴”指水的南岸。古代称山之北、水之南为阴。“汉阴”即汉水南岸。' },
+  { tag: "字词释义", q: '“<span class="highlight">杂然</span>相许”中“<span class="highlight">杂然</span>”的意思是？', options: ["纷纷地", "杂乱", "混杂", "纷杂"], answer: 0, explain: '“杂然”意为“纷纷地”。“杂然相许”即大家纷纷表示赞同。' },
+  { tag: "字词释义", q: '“<span class="highlight">曾</span>不能损魁父之丘”中“<span class="highlight">曾</span>”的意思是？', options: ["连……都（表强调）", "曾经", "不曾", "竟然"], answer: 0, explain: '“曾”意为“连……都”，表强调。“曾不能损魁父之丘”即连魁父这样的小山丘都不能削减。' },
+  { tag: "字词释义", q: '“<span class="highlight">如太行、王屋何</span>”中“如……何”的意思是？', options: ["把……怎么样", "像……什么", "如果……怎么办", "如何"], answer: 0, explain: '“如……何”意为“把……怎么样”。“如太行、王屋何”即能把太行、王屋两座大山怎么样呢？' },
+  { tag: "字词释义", q: '“且<span class="highlight">焉</span>置土石”中“<span class="highlight">焉</span>”的意思是？', options: ["哪里", "于此", "语气词", "怎么"], answer: 0, explain: '“焉”意为“哪里”。“且焉置土石”即况且把土石放到哪里去呢？' },
+  { tag: "字词释义", q: '“投<span class="highlight">诸</span>渤海之尾”中“<span class="highlight">诸</span>”的意思是？', options: ["兼词，“之于”", "众多", "诸位", "各种"], answer: 0, explain: '“诸”是兼词，为“之于”的合音。“投诸渤海之尾”即把它扔到渤海边上。' },
+  { tag: "字词释义", q: '“<span class="highlight">遂</span>率子孙”中“<span class="highlight">遂</span>”的意思是？', options: ["于是，就", "成功", "顺利", "完成"], answer: 0, explain: '“遂”意为“于是、就”。' },
+  { tag: "字词释义", q: '“子孙<span class="highlight">荷</span>担者三夫”中“<span class="highlight">荷</span>”的意思是？', options: ["肩负，挑", "荷花", "负荷", "感谢"], answer: 0, explain: '“荷”意为“肩负、挑”。“荷担者三夫”即能挑担子的三个人。' },
+  { tag: "字词释义", q: '“<span class="highlight">叩</span>石垦壤”中“<span class="highlight">叩</span>”的意思是？', options: ["敲，打", "叩头", "扣留", "询问"], answer: 0, explain: '“叩”意为“敲、打”。“叩石垦壤”即敲石头挖泥土。' },
+  { tag: "字词释义", q: '“<span class="highlight">箕畚</span>运于渤海之尾”中“<span class="highlight">箕畚</span>”的活用和意思是？', options: ["名词作状语，用箕畚", "箕畚（名词）", "扫帚", "搬运"], answer: 0, explain: '“箕畚”名词作状语，意为“用箕畚”。' },
+  { tag: "字词释义", q: '“邻人京城氏之<span class="highlight">孀妻</span>”中“<span class="highlight">孀妻</span>”的意思是？', options: ["寡妇", "双妻", "独居女子", "已婚女子"], answer: 0, explain: '“孀妻”即寡妇。' },
+  { tag: "字词释义", q: '“始<span class="highlight">龀</span>”中“<span class="highlight">龀</span>”的意思是？', options: ["换牙（指七八岁）", "龋齿", "牙齿", "稚嫩"], answer: 0, explain: '“龀”指换牙。“始龀”即刚换牙，指七八岁。' },
+  { tag: "字词释义", q: '“寒暑<span class="highlight">易</span>节”中“<span class="highlight">易</span>”的意思是？', options: ["交换，变换", "容易", "改变", "交易"], answer: 0, explain: '“易”意为“交换、变换”。“寒暑易节”即冬夏换季。' },
+  { tag: "字词释义", q: '“<span class="highlight">始</span>一反焉”中“<span class="highlight">始</span>”的意思是？', options: ["才", "开始", "起初", "始终"], answer: 0, explain: '“始”意为“才”。“始一反焉”即才往返一次。' },
+  { tag: "字词释义", q: '“始一<span class="highlight">反</span>焉”中“<span class="highlight">反</span>”的意思是？', options: ["同“返”，往返", "反对", "反而", "返回"], answer: 0, explain: '“反”同“返”，往返。“始一反焉”即才往返一次。' },
+  { seg: "河曲智叟笑而止之曰：“甚矣，汝<u>之</u>不<u>惠</u>！以残年余力，曾不能毁山之一毛，<u>其</u>如土石何？”北山愚公长息曰：“汝心之<u>固</u>，固不可<u>彻</u>，曾<u>不若</u>孀妻弱子。<u>虽</u>我之死，有子存<u>焉</u>。子又生孙，孙又生子；子又有子，子又有孙；子子孙孙无穷匮也，而山不加增，何<u>苦</u>而不平？”河曲智叟<u>亡</u>以应。" },
+  { tag: "字词释义", q: '“汝<span class="highlight">之</span>不惠”中“<span class="highlight">之</span>”的意思是？', options: ["取消句子独立性", "的", "代词", "到"], answer: 0, explain: '“汝之不惠”的“之”用于主谓之间，取消句子独立性。' },
+  { tag: "字词释义", q: '“汝之不<span class="highlight">惠</span>”中“<span class="highlight">惠</span>”的意思是？', options: ["同“慧”，聪明", "恩惠", "贤惠", "惠顾"], answer: 0, explain: '“惠”同“慧”，聪明。“汝之不惠”即你太不聪明了。' },
+  { tag: "字词释义", q: '“<span class="highlight">其</span>如土石何”中“<span class="highlight">其</span>”的意思是？', options: ["加强反问语气", "他的", "其中", "大概"], answer: 0, explain: '“其”用在“如……何”前，加强反问语气。“其如土石何”即又能把泥土石头怎么样呢？' },
+  { tag: "字词释义", q: '“汝心之<span class="highlight">固</span>”中“<span class="highlight">固</span>”的意思是？', options: ["顽固", "坚固", "本来", "巩固"], answer: 0, explain: '“固”意为“顽固”。“汝心之固”即你的思想太顽固了。' },
+  { tag: "字词释义", q: '“固不可<span class="highlight">彻</span>”中“<span class="highlight">彻</span>”的意思是？', options: ["通，变通", "彻底", "透彻", "贯彻"], answer: 0, explain: '“彻”意为“通、变通”。“固不可彻”即顽固到不可改变的地步。' },
+  { tag: "字词释义", q: '“曾<span class="highlight">不若</span>孀妻弱子”中“<span class="highlight">不若</span>”的意思是？', options: ["不如，比不上", "不像", "若不是", "不善"], answer: 0, explain: '“不若”意为“不如、比不上”。“曾不若孀妻弱子”即连寡妇和小孩都比不上。' },
+  { tag: "字词释义", q: '“<span class="highlight">虽</span>我之死”中“<span class="highlight">虽</span>”的意思是？', options: ["即使", "虽然", "虽然……但是", "纵然"], answer: 0, explain: '“虽”意为“即使”。“虽我之死，有子存焉”即即使我死了，还有儿子在。' },
+  { tag: "字词释义", q: '“有子存<span class="highlight">焉</span>”中“<span class="highlight">焉</span>”的意思是？', options: ["语气词，了，啊", "哪里", "于此", "怎么"], answer: 0, explain: '“焉”是句末语气词，表陈述语气。“有子存焉”即还有儿子在啊。' },
+  { tag: "字词释义", q: '“何<span class="highlight">苦</span>而不平”中“<span class="highlight">苦</span>”的意思是？', options: ["愁，担心", "痛苦", "辛苦", "苦于"], answer: 0, explain: '“苦”意为“愁、担心”。“何苦而不平”即还担心挖不平吗？' },
+  { tag: "字词释义", q: '“河曲智叟<span class="highlight">亡</span>以应”中“<span class="highlight">亡</span>”的意思是？', options: ["同“无”，没有", "死亡", "灭亡", "逃亡"], answer: 0, explain: '“亡”同“无”，没有。“亡以应”即无话可答。' },
+  { seg: "操蛇之神<small>〔操蛇之神〕手里拿着蛇的神。操，持。</small>闻之，惧其不已也，告之于帝。帝感其诚，命夸娥氏<small>〔夸娥氏〕神话中的大力神。</small>二子负二山，一<u>厝</u>朔东<small>〔朔东〕朔方东部，今山西北部一带。朔，朔方，今内蒙古自治区南部一带。</small>，一厝雍南。自此，冀之南，汉之阴，无<u>陇</u>断焉。" },
+  { tag: "字词释义", q: '“一<span class="highlight">厝</span>朔东”中“<span class="highlight">厝</span>”的意思是？', options: ["放置，安放", "处理", "磨刀石", "错过"], answer: 0, explain: '“厝”意为“放置、安放”。“一厝朔东”即一座放在朔方东部。“厝”通“措”。' },
+  { tag: "字词释义", q: '“无<span class="highlight">陇</span>断焉”中“<span class="highlight">陇</span>”的意思是？', options: ["同“垄”，山冈，高地", "陇西", "田地", "丘陵"], answer: 0, explain: '“陇”同“垄”，山冈、高地。“无陇断焉”即再也没有山冈阻隔了。' },
+  { tag: "字词释义", q: '对“毕力平险”中词语的用法，分析正确的一项是？', options: ["险：动词，冒险", "险：形容词作名词，险峻的大山", "毕：名词，完毕", "无词类活用现象"], answer: 1, explain: '“险”形容词作名词，指险峻的大山；“毕”是“尽、用尽”。' },
+  { tag: "内容理解", q: '下列对“甚矣，汝之不惠”的翻译，准确的一项是？', options: ["太过分了，你不懂得恩惠。", "你太不聪明了！", "严重啊，你不肯施舍。", "你十分不贤惠。"], answer: 1, explain: '“甚矣”表程度之深；“惠”同“慧”，聪明。“汝之不惠”即你太不聪明了。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["惩山北之塞，出入之迂也：苦于山北路途阻塞，出来进去都要绕远。", "指通豫南，达于汉阴：一直通向豫州南部，到达汉水南岸。", "子子孙孙无穷匮也，而山不加增，何苦而不平：子子孙孙无穷无尽，可是山不会增高加大，还担心挖不平吗？", "帝感其诚：天帝感受到他的诚实。"], answer: 3, explain: '“帝感其诚”是被动句，应为“天帝被他的诚心感动”，不是“感受到他的诚实”。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["邻人京城氏之孀妻 / 有遗男", "遂率子孙荷担 / 者三夫", "河曲智叟笑 / 而止之曰", "命夸娥氏 / 二子负二山"], answer: 0, explain: 'B 应为“遂率子孙荷担者/三夫”（荷担者定语后置）；C 应为“河曲智叟/笑而止之曰”；D 应为“命/夸娥氏二子负二山”。A 停顿正确。' },
+  { tag: "内容理解", q: '愚公妻子“献疑”与智叟“笑而止之”的态度，分析正确的一项是？', options: ["两人都坚决反对移山，想法完全一致", "妻子提出疑问，是出于关心；智叟嘲讽、阻止，目光短浅", "妻子认为没有地方放置土石，坚决阻止愚公", "智叟认可愚公志向，只是担忧他力量不足"], answer: 1, explain: '妻子“献疑”是出于关心，提出实际困难；智叟“笑而止之”是嘲讽阻止、目光短浅。' },
+  { tag: "内容理解", q: '文中设置“操蛇之神”“天帝移山”的神话结尾，作用是？', options: ["说明依靠人力无法移山，必须依靠神灵", "增添神话色彩，寄托古人征服自然的愿望，突出愚公精神感动天地", "证明古代山神可以随意移动大山", "体现愚公自身能力不足以战胜大山"], answer: 1, explain: '神话结尾寄托古人征服自然的愿望，突出愚公坚持不懈的精神感动天地，并非宣扬迷信。' },
+  { tag: "内容理解", q: '下列对文章内涵的理解，正确的一项是？', options: ["本文告诉我们遇到困难，可以等待神灵帮助", "只要持之以恒，持续奋斗，终能战胜艰难险阻", "人力永远无法改变自然，只能被动顺从", "做事不需要听取任何人的质疑与建议"], answer: 1, explain: '本文赞颂持之以恒、艰苦奋斗的精神，说明只要坚持不懈就能战胜艰难险阻。' }
+];
+
+const sentenceData = [
+  { original: "太行、王屋二山，方七百里，高万仞，本在冀州之南，河阳之北。", notes: [{ word: "方", meaning: "方圆，纵横" }, { word: "仞", meaning: "古代长度单位" }], trans: "太行、王屋两座大山，纵横七百里，高数万仞，原本坐落在冀州的南部，河阳的北部。" },
+  { original: "北山愚公者，年且九十，面山而居。惩山北之塞，出入之迂也，聚室而谋曰：“吾与汝毕力平险，指通豫南，达于汉阴，可乎？”", notes: [{ word: "且", meaning: "将近" }, { word: "而", meaning: "表修饰" }, { word: "惩", meaning: "苦于" }, { word: "迂", meaning: "曲折，绕远" }, { word: "毕力", meaning: "用尽力气" }, { word: "指", meaning: "一直，直" }, { word: "阴", meaning: "水的南岸" }], trans: "北山有位名叫愚公的老人，年纪将近九十岁，面对着大山居住。他苦于山北道路阻塞，进出都要绕远路，于是召集全家商量说：“我和你们尽全力铲除这险峻的大山，直通向豫州南部，到达汉水南岸，好吗？”" },
+  { original: "杂然相许。其妻献疑曰：“以君之力，曾不能损魁父之丘，如太行、王屋何？且焉置土石？”", notes: [{ word: "杂然", meaning: "纷纷地" }, { word: "曾", meaning: "连……都" }, { word: "如……何", meaning: "把……怎么样" }, { word: "焉", meaning: "哪里" }], trans: "大家纷纷表示赞同。他的妻子提出疑问说：“凭您的力气，连魁父这样的小山丘都不能削减，又能把太行、王屋两座大山怎么样呢？况且把土石放到哪里去呢？”" },
+  { original: "杂曰：“投诸渤海之尾，隐土之北。”遂率子孙荷担者三夫，叩石垦壤，箕畚运于渤海之尾。", notes: [{ word: "诸", meaning: "兼词，“之于”" }, { word: "遂", meaning: "于是，就" }, { word: "荷", meaning: "肩负，挑" }, { word: "叩", meaning: "敲，打" }, { word: "箕畚", meaning: "名词作状语，用箕畚" }], trans: "众人纷纷说：“把它们扔到渤海的边上，隐土的北面。”于是愚公率领三个能挑担子的子孙，敲石头、挖泥土，用箕畚装着运到渤海的边上。" },
+  { original: "邻人京城氏之孀妻有遗男，始龀，跳往助之。寒暑易节，始一反焉。", notes: [{ word: "孀妻", meaning: "寡妇" }, { word: "龀", meaning: "换牙（指七八岁）" }, { word: "易", meaning: "交换，变换" }, { word: "始", meaning: "才" }, { word: "反", meaning: "同“返”，往返" }], trans: "邻居姓京城的寡妇有个孤儿，刚七八岁，蹦蹦跳跳地去帮助他们。冬夏换季，才往返一次。" },
+  { original: "河曲智叟笑而止之曰：“甚矣，汝之不惠！以残年余力，曾不能毁山之一毛，其如土石何？”", notes: [{ word: "之", meaning: "取消句子独立性" }, { word: "惠", meaning: "同“慧”，聪明" }, { word: "其", meaning: "加强反问语气" }], trans: "河曲的智叟嘲笑并阻止他说：“你太不聪明了！凭你老迈的年纪和残余的气力，连山上的一根草木都毁不了，又能把泥土石头怎么样呢？”" },
+  { original: "北山愚公长息曰：“汝心之固，固不可彻，曾不若孀妻弱子。虽我之死，有子存焉。子又生孙，孙又生子；子又有子，子又有孙；子子孙孙无穷匮也，而山不加增，何苦而不平？”", notes: [{ word: "固", meaning: "顽固" }, { word: "彻", meaning: "通，变通" }, { word: "不若", meaning: "不如，比不上" }, { word: "虽", meaning: "即使" }, { word: "焉", meaning: "语气词" }, { word: "苦", meaning: "愁，担心" }], trans: "北山愚公长叹一声说：“你的思想太顽固了，顽固到不可改变的地步，连寡妇和小孩都比不上。即使我死了，还有儿子在；儿子又生孙子，孙子又生儿子；儿子又有儿子，儿子又有孙子；子子孙孙无穷无尽，而山不会再增高，还担心挖不平吗？”" },
+  { original: "河曲智叟亡以应。", notes: [{ word: "亡", meaning: "同“无”，没有" }], trans: "河曲的智叟无话可答。" },
+  { original: "操蛇之神闻之，惧其不已也，告之于帝。帝感其诚，命夸娥氏二子负二山，一厝朔东，一厝雍南。自此，冀之南，汉之阴，无陇断焉。", notes: [{ word: "厝", meaning: "放置，安放" }, { word: "陇", meaning: "同“垄”，山冈，高地" }], trans: "手里拿着蛇的山神听说了这件事，害怕愚公不停地干下去，就把这件事报告给天帝。天帝被愚公的诚心感动，命令大力神夸娥氏的两个儿子背走两座大山，一座放在朔方东部，一座放在雍州南部。从此以后，冀州的南部直到汉水的南岸，再也没有山冈阻隔了。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'yugong_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《愚公移山》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
