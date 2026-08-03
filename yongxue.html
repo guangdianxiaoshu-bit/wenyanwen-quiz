@@ -1228,7 +1228,7 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 
 
 
-generateShuffles();
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles();
 
 renderQuestions();
 
