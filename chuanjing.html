@@ -160,7 +160,6 @@
 </div>
 <div class="container">
 
-  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
   <div class="progress-text" id="progressText">已答 0 / 10 题</div>
 
   <div id="questionsContainer"></div>
@@ -295,7 +294,7 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = questions.length; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
 function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
