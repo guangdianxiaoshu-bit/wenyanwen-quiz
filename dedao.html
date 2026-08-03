@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《得道多助，失道寡助》 · 26题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7d4434 0%, #96583f 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7d4434; color: #e3d5c9;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #b08a76; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #b08a76; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e3d5c9; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7d4434, #c9a08c); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e3d5c9; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7d4434; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #96583f; background: #e3d5c9; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7d4434; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f2e9e0; border-left: 4px solid #96583f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7d4434; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b08a76; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b08a76; }
+  .seg-orig small { font-size: 10px; color: #b08a76; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e3d5c9; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c9a08c; background: #f5ede6; }
+  .opts label.selected { border-color: #7d4434; background: #e3d5c9; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e3d5c9; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7d4434; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f5ede6; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7d4434; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7d4434, #96583f); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7d4434; border: 2px solid #c9a08c; }
+  .btn-secondary:hover { background: #f5ede6; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7d4434, #96583f); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e3d5c9; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7d4434; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e3d5c9; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f5ede6; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7d4434; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f5ede6; border: 1px solid #e3d5c9; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e3d5c9; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #f2e9e0; border-left: 4px solid #96583f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7d4434; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b08a76; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #b08a76; }
+  .seg-orig small { font-size: 10px; color: #b08a76; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《得道多助，失道寡助》</h1>
+  <p>部编版八年级上册 · [战国]孟子</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f2e9e0;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e0cec0"> <strong>常识</strong> 本文选自《孟子译注》（中华书局1960年版）。孟子（约前372—前289），名轲，邹（今山东邹城东南）人，战国时期思想家，儒家学派代表人物之一。《孟子》是记录孟子及其弟子言行的著作，共七篇，一般认为是孟子及其弟子万章、公孙丑等人共同编著。题目是编者加的。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">已答 0 / 26 题</div>
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 26 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "天时不如地利，地利不如<u>人和</u>。三里之<u>城</u>，七里之<u>郭</u>，环<u>而</u>攻之<u>而</u>不胜。<u>夫</u>环而攻之，必有得天时者矣，<u>然而</u>不胜者，是天时不如地利也。" },
+  { tag: "字词释义", q: '“地利不如<span class="highlight">人和</span>”中“<span class="highlight">人和</span>”的意思是？', options: ["人心所向，内部团结", "人民和睦", "人们友好", "人心和顺"], answer: 0, explain: '“人和”指人心所向、内部团结。' },
+  { tag: "字词释义", q: '“三里之<span class="highlight">城</span>”中“<span class="highlight">城</span>”的意思是？', options: ["内城", "城市", "城墙", "城外"], answer: 0, explain: '“城”指内城。“三里之城”即方圆三里的内城。' },
+  { tag: "字词释义", q: '“七里之<span class="highlight">郭</span>”中“<span class="highlight">郭</span>”的意思是？', options: ["外城", "城郭", "村庄", "郊外"], answer: 0, explain: '“郭”指外城。古时内城为“城”，外城为“郭”。' },
+  { tag: "字词释义", q: '“环<span class="highlight">而</span>攻之”中“<span class="highlight">而</span>”的意思是？', options: ["表修饰，环绕着", "表转折，却", "表顺承，然后", "表并列，并且"], answer: 0, explain: '“而”表修饰，连接状语“环”和谓语“攻”，意为“环绕着进攻”。' },
+  { tag: "字词释义", q: '“<span class="highlight">夫</span>环而攻之”中“<span class="highlight">夫</span>”的意思是？', options: ["发语词，无实义", "丈夫", "那", "语气词，表感叹"], answer: 0, explain: '“夫”是发语词，用于句首，表示将要发表议论，无实义。' },
+  { tag: "字词释义", q: '“<span class="highlight">然而</span>不胜者”中“<span class="highlight">然而</span>”的意思是？', options: ["这样却", "然而（今义）", "然后", "但是"], answer: 0, explain: '“然而”是“然”和“而”连用，“然”指“这样”，“而”表转折，意为“这样却”。' },
+  { seg: "城非不高也，<u>池</u>非不深也，兵<u>革</u>非不坚利也，米粟非不多也，<u>委</u>而<u>去</u>之，是地利不如人和也。<u>故</u>曰：<u>域</u>民不以封疆之界，<u>固</u>国不<u>以</u>山溪之险，<u>威</u>天下不以兵革之利。" },
+  { tag: "字词释义", q: '“<span class="highlight">池</span>非不深也”中“<span class="highlight">池</span>”的意思是？', options: ["护城河", "池塘", "水池", "城池"], answer: 0, explain: '“池”指护城河。“池非不深”即护城河并非不深。' },
+  { tag: "字词释义", q: '“兵<span class="highlight">革</span>非不坚利也”中“<span class="highlight">革</span>”的意思是？', options: ["皮革制的甲", "皮革", "改革", "革除"], answer: 0, explain: '“革”指皮革制的甲。“兵革”泛指武器装备。' },
+  { tag: "字词释义", q: '“<span class="highlight">委</span>而去之”中“<span class="highlight">委</span>”的意思是？', options: ["放弃", "委托", "委屈", "推卸"], answer: 0, explain: '“委”意为“放弃”。“委而去之”即弃城而逃。' },
+  { tag: "字词释义", q: '“委而<span class="highlight">去</span>之”中“<span class="highlight">去</span>”的意思是？', options: ["离开", "去除", "过去", "前往"], answer: 0, explain: '“去”意为“离开”。“委而去之”即（守城者）放弃（城池）而离开。' },
+  { tag: "字词释义", q: '“<span class="highlight">故</span>曰”中“<span class="highlight">故</span>”的意思是？', options: ["所以", "缘故", "旧的", "故意"], answer: 0, explain: '“故”意为“所以”。“故曰”即所以说。' },
+  { tag: "字词释义", q: '“<span class="highlight">域</span>民不以封疆之界”中“<span class="highlight">域</span>”的活用和意思是？', options: ["名词作动词，限制", "地域", "领域", "区域"], answer: 0, explain: '“域”名词作动词，意为“限制”。“域民”即限制人民（使人民定居）。' },
+  { tag: "字词释义", q: '“<span class="highlight">固</span>国不以山溪之险”中“<span class="highlight">固</span>”的活用和意思是？', options: ["使……巩固", "坚固", "本来", "顽固"], answer: 0, explain: '“固”使动用法，“使……巩固”。“固国”即巩固国防。' },
+  { tag: "字词释义", q: '“固国不<span class="highlight">以</span>山溪之险”中“<span class="highlight">以</span>”的意思是？', options: ["凭借，依靠", "用", "因为", "所以"], answer: 0, explain: '“以”意为“凭借、依靠”。巩固国防不靠山溪的险阻。' },
+  { tag: "字词释义", q: '“<span class="highlight">威</span>天下不以兵革之利”中“<span class="highlight">威</span>”的活用和意思是？', options: ["威慑（形容词作动词）", "威风", "威力", "威严"], answer: 0, explain: '“威”形容词作动词，意为“威慑”。“威天下”即威慑天下。' },
+  { seg: "<u>得道</u>者多助，失道者寡助。寡助之<u>至</u>，<u>亲戚</u>畔之；多助之至，天下顺之。<u>以</u>天下之所顺，攻亲戚之所<u>畔</u>，故君子有不战，战必胜矣。" },
+  { tag: "字词释义", q: '“<span class="highlight">得道</span>者多助”中“<span class="highlight">得道</span>”的意思是？', options: ["施行仁政", "得到方法", "获得道理", "走对路"], answer: 0, explain: '“得道”指施行仁政。“得道者”即施行仁政的君主。' },
+  { tag: "字词释义", q: '“寡助之<span class="highlight">至</span>”中“<span class="highlight">至</span>”的意思是？', options: ["极点", "到达", "至于", "到来"], answer: 0, explain: '“至”意为“极点”。“寡助之至”即少助到了极点。' },
+  { tag: "字词释义", q: '“<span class="highlight">亲戚</span>畔之”中“<span class="highlight">亲戚</span>”的意思是？', options: ["内外亲属（古今异义）", "亲戚朋友（今义）", "亲人", "族人"], answer: 0, explain: '“亲戚”古义指内外亲属，今义指跟自己家庭有婚姻或血统关系的人，属古今异义。' },
+  { tag: "字词释义", q: '“亲戚<span class="highlight">畔</span>之”中“<span class="highlight">畔</span>”的意思是？', options: ["同“叛”，背叛", "田畔", "旁边", "陪伴"], answer: 0, explain: '“畔”同“叛”，背叛。“亲戚畔之”即内外亲属都背叛他。' },
+  { tag: "字词释义", q: '“<span class="highlight">以</span>天下之所顺”中“<span class="highlight">以</span>”的意思是？', options: ["用（凭借）", "认为", "因为", "把"], answer: 0, explain: '“以”意为“用、凭借”。“以天下之所顺”即用天下归顺的力量。' },
+  { tag: "内容理解", q: '下列对“寡助之至，亲戚畔之；多助之至，天下顺之”的翻译，正确的一项是？', options: ["少助到极点，内外亲属都背叛他；多助到极点，天下百姓都归顺他。", "少助的人到了，亲戚朋友背叛他；多助的人到了，天下人顺从他。", "少助到了极点，亲戚都背叛；多助到了极点，天下人顺利。", "缺少帮助的人来了，亲戚背叛他；帮助多的人来了，天下归顺。"], answer: 0, explain: '“至”为极点，“亲戚”指内外亲属，“畔”同“叛”，“顺”为归顺。A 项翻译准确。' },
+  { tag: "字词释义", q: '下列加点词解释有误的一项是？', options: ["<u>池</u>非不深也——护城河", "<u>委</u>而去之——放弃", "<u>亲戚</u>畔之——亲戚朋友，今义", "寡助之<u>至</u>——极点"], answer: 2, explain: '“亲戚畔之”的“亲戚”应解释为古义“内外亲属”，不是今义“亲戚朋友”。' },
+  { tag: "内容理解", q: '下列关于本文论点的说法，正确的一项是？', options: ["本文的中心论点是“得道者多助，失道者寡助”", "“天时不如地利，地利不如人和”是中心论点，“得道者多助，失道者寡助”是文章推导出的核心结论", "文章开篇提出“得道者多助，失道者寡助”，再用战争事例证明", "“寡助之至，亲戚畔之；多助之至，天下顺之”是全文中心论点"], answer: 1, explain: '本文开篇提出中心论点“天时不如地利，地利不如人和”，经论证后推导出核心结论“得道者多助，失道者寡助”。' },
+  { tag: "论证方法", q: '“寡助之至，亲戚畔之；多助之至，天下顺之”运用了哪种论证方法？', options: ["对比论证", "举例论证", "道理论证", "比喻论证"], answer: 0, explain: '将“寡助”“多助”两种后果相对照，是对比论证，突出“得道”的重要性。' },
+  { tag: "内容理解", q: '下列对文章内容的理解，有误的一项是？', options: ["“得道”指君主施行仁政", "“失道寡助”从反面论证人心的重要性", "文章认为作战时地利的作用大于人和", "“亲戚畔之”是内外亲属背叛君主，是寡助的极致表现"], answer: 2, explain: '文章通过攻城、守城事例层层论证，最终推出“人和”最重要，认为人和的作用大于天时、地利，C 项说法与文意相反。' },
+  { tag: "论证思路", q: '下列对文章论证层次的梳理，正确的一项是？', options: ["提出论点→举守城事例→举攻城事例→治国道理→得出结论", "提出论点→举攻城事例→举守城事例→类推治国→得出结论", "先提出“得道多助”→举战争例子→层层论证中心论点", "由治国道理说起，再用战争事例佐证"], answer: 1, explain: '文章先提出中心论点，再用攻城事例论证“天时不如地利”，用守城事例论证“地利不如人和”，进而类推治国之道，最后得出结论。' }
+];
+
+const sentenceData = [
+  { original: "天时不如地利，地利不如人和。", notes: [{ word: "天时", meaning: "有利于作战的天气时令" }, { word: "地利", meaning: "有利于作战的地理形势" }, { word: "人和", meaning: "人心所向，内部团结" }], trans: "有利于作战的天气时令，比不上有利于作战的地理形势；有利于作战的地理形势，比不上人心所向、内部团结。" },
+  { original: "三里之城，七里之郭，环而攻之而不胜。", notes: [{ word: "城", meaning: "内城" }, { word: "郭", meaning: "外城" }, { word: "环", meaning: "包围" }, { word: "而", meaning: "表修饰" }], trans: "方圆三里的内城，方圆七里的外城，包围进攻却不能取胜。" },
+  { original: "夫环而攻之，必有得天时者矣，然而不胜者，是天时不如地利也。", notes: [{ word: "夫", meaning: "发语词" }, { word: "然而", meaning: "这样却" }], trans: "既然包围进攻，必定有得天时的条件，却不能取胜，这说明天时不如地利。" },
+  { original: "城非不高也，池非不深也，兵革非不坚利也，米粟非不多也，委而去之，是地利不如人和也。", notes: [{ word: "池", meaning: "护城河" }, { word: "兵革", meaning: "武器装备" }, { word: "委", meaning: "放弃" }, { word: "去", meaning: "离开" }], trans: "城墙并非不高，护城河并非不深，武器装备并非不精良，粮食并非不多，但（守城者）弃城而逃，这说明地利不如人和。" },
+  { original: "故曰：域民不以封疆之界，固国不以山溪之险，威天下不以兵革之利。", notes: [{ word: "域", meaning: "名词作动词，限制" }, { word: "以", meaning: "凭借，依靠" }, { word: "固", meaning: "使……巩固" }, { word: "威", meaning: "威慑" }], trans: "所以说：使人民定居不应靠疆界限制，巩固国防不应靠山溪险阻，威慑天下不应靠武器锋利。" },
+  { original: "得道者多助，失道者寡助。寡助之至，亲戚畔之；多助之至，天下顺之。", notes: [{ word: "得道", meaning: "施行仁政" }, { word: "至", meaning: "极点" }, { word: "亲戚", meaning: "内外亲属" }, { word: "畔", meaning: "同“叛”，背叛" }, { word: "顺", meaning: "归顺" }], trans: "施行仁政者得众多支持，不行仁政者少人支持。少助到极点，内外亲属皆背叛；多助到极点，天下百姓都归顺。" },
+  { original: "以天下之所顺，攻亲戚之所畔，故君子有不战，战必胜矣。", notes: [{ word: "以", meaning: "用，凭借" }, { word: "故", meaning: "所以" }], trans: "以天下归顺之力，攻亲属背叛之敌，所以君子不战则已，战则必胜。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'dedao_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《得道多助，失道寡助》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
