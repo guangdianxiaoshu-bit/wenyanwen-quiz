@@ -169,7 +169,10 @@
 
   .float-start:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
-</style>
+.mar-tags { text-align: center; margin: 10px 0 14px; }
+  .mar-tags .tag { background: #fff; border: 1px solid #d9cfc2; color: #8a6d5d; border-radius: 16px; padding: 5px 18px; margin: 3px 4px; font-size: 13px; cursor: pointer; transition: all .15s; }
+  .mar-tags .tag.on { background: #b5533c; border-color: #b5533c; color: #fff; }
+  </style>
 
 </head>
 
@@ -194,6 +197,7 @@
 <div id="s1">
 
   <div class="sec">选择篇目（最多 5 篇）</div>
+  <div class="mar-tags"><button class="tag on" onclick="marTag(this,'')">全部</button><button class="tag" onclick="marTag(this,'小学')">小学</button><button class="tag" onclick="marTag(this,'初中')">初中</button></div>
 
   <div id="pickList"></div>
 
@@ -319,6 +323,19 @@ var selected = {};
 
 // Render pick list
 
+var MAR_GRADE = {"桃花源记":"初中","周亚夫军细柳":"初中","愚公移山":"初中","生于忧患，死于安乐":"初中","富贵不能淫":"初中","得道多助，失道寡助":"初中","与朱元思书":"初中","记承天寺夜游":"初中","答谢中书书":"初中","三峡":"初中","活板":"初中","木兰诗":"初中","爱莲说":"初中","陋室铭":"初中","卖油翁":"初中","孙权劝学":"初中","杞人忧天":"初中","穿井得一人":"初中","狼":"初中","诫子书":"初中","论语十二章":"初中","陈太丘与友期行":"初中","两小儿辩日":"小学","学弈":"小学","司马光":"小学","守株待兔":"小学","精卫填海":"小学","王戎不取道旁李":"小学","囊萤夜读":"小学","咏雪":"初中","铁杵成针":"小学","古人谈读书之论语":"小学","古人谈读书之读书有三到":"小学","自相矛盾":"小学","杨氏之子":"小学","伯牙鼓琴":"小学","书戴嵩画牛":"小学","小石潭记":"初中"};
+
+function marTag(btn, t){
+  var tags = document.querySelectorAll('.mar-tags .tag');
+  for (var i = 0; i < tags.length; i++) tags[i].classList.remove('on');
+  btn.classList.add('on');
+  var picks = document.querySelectorAll('#pickList .pick');
+  for (var j = 0; j < picks.length; j++) {
+    var g = picks[j].getAttribute('data-tags') || '';
+    picks[j].style.display = (!t || g.indexOf(t) >= 0) ? '' : 'none';
+  }
+}
+
 titles.forEach(function(t){
 
   var n = QDATA[t].length;
@@ -326,6 +343,8 @@ titles.forEach(function(t){
   var div = document.createElement('label');
 
   div.className = 'pick';
+
+  div.setAttribute('data-tags', MAR_GRADE[t] || '');
 
   div.innerHTML = '<input type="checkbox" value="' + t + '"><span class="nm">' + t + '</span><span class="ct">' + n + ' 题</span>';
 
