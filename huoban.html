@@ -336,7 +336,7 @@ submitBtn.addEventListener('click', function() {
   });
   resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
   const pct = correct / TOTAL_Q; let stars = '', comment = '';
-  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
   else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
   else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
   else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
