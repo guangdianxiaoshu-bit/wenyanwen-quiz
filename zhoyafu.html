@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《周亚夫军细柳》 · 36题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #3d5a80 0%, #5a7a9e 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #3d5a80; color: #d5dfe8;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #7e9bb8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #7e9bb8; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #d5dfe8; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3d5a80, #a8c0d8); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5dfe8; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #3d5a80; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #5a7a9e; background: #d5dfe8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #3d5a80; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #e9eef4; border-left: 4px solid #5a7a9e;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3d5a80; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7e9bb8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7e9bb8; }
+  .seg-orig small { font-size: 10px; color: #7e9bb8; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5dfe8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #a8c0d8; background: #eef2f6; }
+  .opts label.selected { border-color: #3d5a80; background: #d5dfe8; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d5dfe8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #3d5a80; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #eef2f6; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #3d5a80; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #3d5a80, #5a7a9e); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #3d5a80; border: 2px solid #a8c0d8; }
+  .btn-secondary:hover { background: #eef2f6; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #3d5a80, #5a7a9e); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5dfe8; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #3d5a80; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d5dfe8; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eef2f6; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #3d5a80; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #eef2f6; border: 1px solid #d5dfe8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d5dfe8; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig {
+    position: sticky; top: 0; z-index: 50;
+    background: #e9eef4; border-left: 4px solid #5a7a9e;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3d5a80; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7e9bb8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7e9bb8; }
+  .seg-orig small { font-size: 10px; color: #7e9bb8; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《周亚夫军细柳》</h1>
+  <p>部编版八年级上册 · [西汉]司马迁</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#e9eef4;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cfd8e2"> <strong>常识</strong> 本文节选自《史记·绛侯周勃世家》（中华书局2013年版）。周亚夫（？—前143），西汉名将，绛侯周勃之子，封条侯。司马迁（约前145—？），字子长，夏阳（今陕西韩城）人，西汉历史学家。《史记》记述了从传说中的黄帝到汉武帝时的史事，全书一百三十篇，包括十二本纪、十表、八书、三十世家、七十列传。题目是编者加的。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 36 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg">已答 0 / 36 题</div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "文帝之后六年，匈奴大入边。<u>乃</u>以宗正<small>〔宗正〕掌管皇族事务的官员。</small>刘礼为将军，<u>军</u>霸上；祝兹侯<small>〔祝兹侯〕封号。</small>徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：<u>以</u>备胡。" },
+  { tag: "字词释义", q: '“<span class="highlight">乃</span>以宗正刘礼为将军”中“<span class="highlight">乃</span>”的意思是？', options: ["于是，就", "才", "竟然", "却"], answer: 0, explain: '“乃”意为“于是、就”。“乃以宗正刘礼为将军”即于是任命宗正刘礼为将军。' },
+  { tag: "字词释义", q: '“<span class="highlight">军</span>霸上”中“<span class="highlight">军</span>”的活用和意思是？', options: ["名词作动词，驻军", "军队", "军营", "军事"], answer: 0, explain: '“军”名词作动词，意为“驻军”。“军霸上”即驻军霸上。' },
+  { tag: "字词释义", q: '“<span class="highlight">以</span>备胡”中“<span class="highlight">以</span>”的意思是？', options: ["来，用来", "凭借", "因为", "认为"], answer: 0, explain: '“以”意为“来、用来”。“以备胡”即用来防备匈奴。' },
+  { seg: "上自<u>劳</u>军。至霸上及棘门军，直驰入，将以<u>下骑</u>送迎。<u>已而</u><u>之</u>细柳军，军士吏<u>被</u>甲，<u>锐兵刃</u>，<u>彀(gòu)</u>弓弩，持满。天子<u>先驱</u>至，不得入。先驱曰：“天子<u>且</u>至！”军门都尉曰：“将军令曰‘军中闻将军令，不闻天子之诏’。”<u>居</u><u>无何</u>，上至，又不得入。" },
+  { seg: "于是上乃<u>使</u><u>使</u>持节诏将军：“吾欲入劳军。”亚夫<u>乃</u>传言开壁门。壁门士吏<u>谓</u>从属车骑曰：“将军约，军中不得驱驰。”于是天子乃按辔徐行。至营，将军亚夫持兵曰：“<u>介</u>胄之士不拜，请以军礼见。”天子为<u>动</u>，改容<u>式车</u>。使人<u>称谢</u>：“皇帝敬劳将军。”成礼而<u>去</u>。" },
+  { tag: "字词释义", q: '“上自<span class="highlight">劳</span>军”中“<span class="highlight">劳</span>”的意思是？', options: ["慰劳", "劳动", "劳累", "功劳"], answer: 0, explain: '“劳”意为“慰劳”。“上自劳军”即皇上亲自慰劳军队。' },
+  { tag: "字词释义", q: '“将以<span class="highlight">下骑</span>送迎”中“<span class="highlight">下骑</span>”的意思是？', options: ["下马", "骑马的人", "骑兵", "下车"], answer: 0, explain: '“下骑”意为“下马”。“将以下骑送迎”即将军及其部下都下马迎送。' },
+  { tag: "字词释义", q: '“<span class="highlight">已而</span>之细柳军”中“<span class="highlight">已而</span>”的意思是？', options: ["不久", "已经", "然后", "一会儿"], answer: 0, explain: '“已而”意为“不久”。' },
+  { tag: "字词释义", q: '“已而<span class="highlight">之</span>细柳军”中“<span class="highlight">之</span>”的意思是？', options: ["到，往", "的", "代词", "取消句子独立性"], answer: 0, explain: '“之”是动词，意为“到、往”。“之细柳军”即到细柳军营。' },
+  { tag: "字词释义", q: '“军士吏<span class="highlight">被</span>甲”中“<span class="highlight">被</span>”的意思是？', options: ["同“披”，穿着", "被子", "被动", "背负"], answer: 0, explain: '“被”同“披”，穿着。“军士吏被甲”即官兵都穿着铠甲。' },
+  { tag: "字词释义", q: '“<span class="highlight">锐兵刃</span>”中“<span class="highlight">锐</span>”的活用和意思是？', options: ["形容词使动用法，使……锋利（刀出鞘）", "锐利的兵器", "精锐的部队", "兵器锋利"], answer: 0, explain: '“锐”形容词使动用法，“使……锋利”。“锐兵刃”即使刀刃锋利，即刀出鞘。' },
+  { tag: "字词释义", q: '“<span class="highlight">彀(gòu)</span>弓弩”中“<span class="highlight">彀</span>”的意思是？', options: ["张开", "弓箭", "弓弦", "拉满"], answer: 0, explain: '“彀”意为“张开”。“彀弓弩”即张开弓弩。' },
+  { tag: "字词释义", q: '“天子<span class="highlight">先驱</span>至”中“<span class="highlight">先驱</span>”的意思是？', options: ["先行引导的人员", "先驱者", "先头部队", "前进"], answer: 0, explain: '“先驱”指先行引导的人员。“天子先驱至”即天子的先行引导人员到了营前。' },
+  { tag: "字词释义", q: '“天子<span class="highlight">且</span>至”中“<span class="highlight">且</span>”的意思是？', options: ["将要", "并且", "况且", "尚且"], answer: 0, explain: '“且”意为“将要”。“天子且至”即天子即将到来。' },
+  { tag: "字词释义", q: '“<span class="highlight">居</span>无何”中“<span class="highlight">居</span>”的意思是？', options: ["经过，过了", "居住", "停留", "占据"], answer: 0, explain: '“居”意为“经过、过了”。“居无何”即过了不久。' },
+  { tag: "字词释义", q: '“居<span class="highlight">无何</span>”中“<span class="highlight">无何</span>”的意思是？', options: ["不久", "没有什么", "没有原因", "无论"], answer: 0, explain: '“无何”意为“不久”。“居无何”即过了不久。' },
+  { tag: "字词释义", q: '“于是上乃<span class="highlight">使</span>使持节诏将军”中第一个“<span class="highlight">使</span>”的意思是？', options: ["派遣", "使者", "使用", "假如"], answer: 0, explain: '第一个“使”是动词，意为“派遣”。' },
+  { tag: "字词释义", q: '“于是上乃使<span class="highlight">使</span>持节诏将军”中第二个“<span class="highlight">使</span>”的意思是？', options: ["使者", "派遣", "使用", "使命"], answer: 0, explain: '第二个“使”是名词，意为“使者”。' },
+  { tag: "字词释义", q: '“亚夫<span class="highlight">乃</span>传言开壁门”中“<span class="highlight">乃</span>”的意思是？', options: ["才", "于是", "竟然", "却"], answer: 0, explain: '“乃”意为“才”。“亚夫乃传言开壁门”即周亚夫这才传令打开营垒大门。' },
+  { tag: "字词释义", q: '“壁门士吏<span class="highlight">谓</span>从属车骑曰”中“<span class="highlight">谓</span>”的意思是？', options: ["告诉，对……说", "认为", "叫做", "称为"], answer: 0, explain: '“谓”意为“告诉、对……说”。' },
+  { tag: "字词释义", q: '“<span class="highlight">介</span>胄之士不拜”中“<span class="highlight">介</span>”的活用和意思是？', options: ["名词作动词，穿铠甲", "介绍", "间隔", "铠甲（名词）"], answer: 0, explain: '“介”名词作动词，意为“穿铠甲”。“介胄之士”即穿铠甲戴头盔的将士。' },
+  { tag: "字词释义", q: '“天子为<span class="highlight">动</span>”中“<span class="highlight">动</span>”的意思是？', options: ["感动", "行动", "打动", "变动"], answer: 0, explain: '“动”意为“感动”。“天子为动”即天子被他感动（“为”表被动）。' },
+  { tag: "字词释义", q: '“改容<span class="highlight">式车</span>”中“<span class="highlight">式</span>”的意思是？', options: ["同“轼”，车前横木，这里指扶轼致敬", "乘车", "车式", "仪式"], answer: 0, explain: '“式”同“轼”，车前横木，这里指扶轼致敬。“改容式车”即表情严肃，扶着车前横木表示敬意。' },
+  { tag: "字词释义", q: '“使人<span class="highlight">称谢</span>”中“<span class="highlight">称谢</span>”的意思是？', options: ["致意，告知", "感谢", "称谢（今义）", "谢罪"], answer: 0, explain: '“称谢”意为“致意、告知”，是古今异义词。“使人称谢”即派人向周亚夫致意。' },
+  { tag: "字词释义", q: '“成礼而<span class="highlight">去</span>”中“<span class="highlight">去</span>”的意思是？', options: ["离开", "去除", "过去", "前往"], answer: 0, explain: '“去”意为“离开”。“成礼而去”即完成礼仪后离去。' },
+  { seg: "<u>既</u>出军门，群臣皆惊。文帝曰：“嗟乎，此真将军矣！<u>曩</u>者霸上、棘门军，<u>若</u>儿戏耳，其将<u>固</u>可袭而虏也。至于亚夫，可得而犯邪！”称善者久<u>之</u>。" },
+  { tag: "字词释义", q: '“<span class="highlight">既</span>出军门”中“<span class="highlight">既</span>”的意思是？', options: ["已经，……之后", "既然", "即使", "立即"], answer: 0, explain: '“既”意为“已经”。“既出军门”即出了军营大门之后。' },
+  { tag: "字词释义", q: '“<span class="highlight">曩</span>者霸上、棘门军”中“<span class="highlight">曩</span>”的意思是？', options: ["先前，从前", "囊", "曾经", "往昔"], answer: 0, explain: '“曩”意为“先前、从前”。“曩者”即先前。' },
+  { tag: "字词释义", q: '“<span class="highlight">若</span>儿戏耳”中“<span class="highlight">若</span>”的意思是？', options: ["像，如同", "如果", "你", "假如"], answer: 0, explain: '“若”意为“像、如同”。“若儿戏耳”即就像儿戏一样。' },
+  { tag: "字词释义", q: '“其将<span class="highlight">固</span>可袭而虏也”中“<span class="highlight">固</span>”的意思是？', options: ["一定，必", "坚固", "本来", "顽固"], answer: 0, explain: '“固”意为“一定、必”。“其将固可袭而虏也”即那里的将军必定会被袭击而俘获。' },
+  { tag: "字词释义", q: '“称善者久<span class="highlight">之</span>”中“<span class="highlight">之</span>”的意思是？', options: ["音节助词，补足音节", "的", "代词", "到"], answer: 0, explain: '“之”是音节助词，用来补足音节。“称善者久之”即称赞了很久。' },
+  { tag: "字词释义", q: '下列加点字词类活用类型与“<span class="highlight">军</span>细柳”相同的一项是？', options: ["锐兵刃", "介胄之士不拜", "天子为动", "按辔徐行"], answer: 1, explain: '“军”名词作动词，驻军；“介胄”名词作动词，穿铠甲戴头盔，活用类型相同。A“锐”使动；C 被动句；D 无活用。' },
+  { tag: "内容理解", q: '下列对“军中闻将军令，不闻天子之诏”的翻译，准确的一项是？', options: ["军营中听从将军的命令，不听从天子发布的诏令。", "军营里听见将军下令，听不见天子的诏书。", "在军队中只能听闻将军，不能听闻天子。", "将军下令，天子的诏令不起作用。"], answer: 0, explain: '“闻”为听从，“诏”为诏令。A 项翻译准确。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["居无何，上至，又不得入：过了不久，皇上驾到，也不能够进入军营。", "将军约，军中不得驱驰：将军规定，军营中不可以策马疾驰。", "介胄之士不拜，请以军礼见：穿戴盔甲的将士不行跪拜礼，请允许我用军礼参见。", "天子为动：天子主动动身。"], answer: 3, explain: '“天子为动”是被动句，意为“天子被他感动”，不是“主动动身”。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["已而之细柳 / 军", "军士吏 / 被甲，锐兵 / 刃", "于是上 / 乃使使持节诏将军", "称善者 / 久之"], answer: 3, explain: 'A“细柳军”不可拆；B“锐兵刃”不可拆；C 应在“于是”后停顿；D“称善者/久之”停顿正确。' },
+  { tag: "内容理解", q: '文章写霸上、棘门军营的作用是？', options: ["体现三处军营防御力量各有特色", "与细柳营形成对比，突出周亚夫治军严明", "说明刘礼、徐厉两位将军毫无军事才能", "交代匈奴入侵时汉朝全部边防部署"], answer: 1, explain: '霸上、棘门营门大开、直驰而入，与细柳营军纪严明形成对比，突出周亚夫治军严明。' },
+  { tag: "内容理解", q: '下列说法不符合文意的一项是？', options: ["细柳营士兵严守军令，即使天子到来也不随意放行", "周亚夫面对汉文帝，坚持行军人礼仪，不卑不亢", "群臣感到吃惊，是因为大家都认为周亚夫应当迎接皇帝", "汉文帝内心不满周亚夫无礼，只是表面称赞他"], answer: 3, explain: '汉文帝赞赏周亚夫（“此真将军矣”），并非“内心不满、表面称赞”。' },
+  { tag: "内容理解", q: '下列对周亚夫人物形象的概括，不准确的一项是？', options: ["治军严格，军纪严明", "坚守原则，刚正不阿", "谄媚君主，讨好帝王", "恪尽职守，不卑不亢"], answer: 2, explain: '周亚夫治军严明、刚正不阿、不卑不亢，绝非“谄媚君主”。' },
+  { tag: "内容理解", q: '下列关于本文的理解，说法正确的一项是？', options: ["周亚夫拒绝天子直接进军营，是以下犯上、目中无人", "“被”“式”都是文中出现的通假字", "霸上棘门军营守卫森严，外敌难以偷袭", "本文主要通过大量心理描写塑造人物"], answer: 1, explain: '“被”通“披”（穿着），“式”通“轼”（车前横木），都是通假字。B 项正确。' }
+];
+
+const sentenceData = [
+  { original: "文帝之后六年，匈奴大入边。乃以宗正刘礼为将军，军霸上；祝兹侯徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：以备胡。", notes: [{ word: "乃", meaning: "于是，就" }, { word: "军", meaning: "名词作动词，驻军" }, { word: "以", meaning: "来，用来" }], trans: "汉文帝后元六年，匈奴大规模侵入汉朝边境。于是朝廷任命宗正刘礼为将军，驻军霸上；任命祝兹侯徐厉为将军，驻军棘门；任命河内郡郡守周亚夫为将军，驻军细柳：来防备匈奴侵扰。" },
+  { original: "上自劳军。至霸上及棘门军，直驰入，将以下骑送迎。", notes: [{ word: "劳", meaning: "慰劳" }, { word: "下骑", meaning: "下马" }], trans: "文帝亲自去慰劳军队。到霸上和棘门的军营时，车马径直奔驰而入，将军及其部下都骑马迎送。" },
+  { original: "已而之细柳军，军士吏被甲，锐兵刃，彀弓弩，持满。", notes: [{ word: "已而", meaning: "不久" }, { word: "之", meaning: "到，往" }, { word: "被", meaning: "同“披”，穿着" }, { word: "锐", meaning: "使……锋利" }, { word: "彀", meaning: "张开" }], trans: "不久来到细柳军营，只见官兵都穿着铠甲，刀剑出鞘，张开弓弩，拉满弓弦。" },
+  { original: "天子先驱至，不得入。先驱曰：“天子且至！”军门都尉曰：“将军令曰‘军中闻将军令，不闻天子之诏’。”", notes: [{ word: "先驱", meaning: "先行引导的人员" }, { word: "且", meaning: "将要" }], trans: "天子的先行引导人员到了营前，无法进入。先行官说：“天子即将到来！”军营的守卫军官说：“将军有令‘军中只听从将军的命令，不听从天子的诏令’。”" },
+  { original: "居无何，上至，又不得入。于是上乃使使持节诏将军：“吾欲入劳军。”亚夫乃传言开壁门。", notes: [{ word: "居", meaning: "经过，过了" }, { word: "无何", meaning: "不久" }, { word: "使（1）", meaning: "派遣" }, { word: "使（2）", meaning: "使者" }, { word: "乃", meaning: "才" }], trans: "过了不久，文帝到了，也无法进入军营。于是文帝就派使者手持符节下诏令给周将军：“我想进入军营慰劳军队。”周亚夫这才传令打开营垒的大门。" },
+  { original: "壁门士吏谓从属车骑曰：“将军约，军中不得驱驰。”于是天子乃按辔徐行。", notes: [{ word: "谓", meaning: "告诉，对……说" }], trans: "守卫营门的军官对随从车马队伍说：“将军规定，军营中不可以策马疾驰。”于是天子就控制着缰绳缓慢前行。" },
+  { original: "至营，将军亚夫持兵曰：“介胄之士不拜，请以军礼见。”天子为动，改容式车。", notes: [{ word: "介", meaning: "名词作动词，穿铠甲" }, { word: "动", meaning: "感动" }, { word: "式", meaning: "同“轼”，扶轼致敬" }], trans: "到了军营中，将军周亚夫手持兵器拱手行礼说：“穿戴着盔甲的将领不行跪拜礼，请允许我用军礼参见陛下。”文帝被他感动，表情严肃起来，扶着车前横木俯下身子。" },
+  { original: "使人称谢：“皇帝敬劳将军。”成礼而去。", notes: [{ word: "称谢", meaning: "致意，告知" }, { word: "去", meaning: "离开" }], trans: "文帝派人向周亚夫致意：“皇帝敬重地慰劳将军。”完成劳军礼仪后离去。" },
+  { original: "既出军门，群臣皆惊。文帝曰：“嗟乎，此真将军矣！曩者霸上、棘门军，若儿戏耳，其将固可袭而虏也。至于亚夫，可得而犯邪！”称善者久之。", notes: [{ word: "既", meaning: "已经，……之后" }, { word: "曩", meaning: "先前，从前" }, { word: "若", meaning: "像，如同" }, { word: "固", meaning: "一定，必" }, { word: "之", meaning: "音节助词，补足音节" }], trans: "出了细柳军营的大门后，群臣都很震惊。文帝感叹道：“啊！这才是真正的将军啊！先前霸上、棘门的军营，就像儿戏一样，那里的将军必定会被袭击而被俘获。至于周亚夫，怎么可能被侵犯呢！”文帝对他赞赏了很久。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'zhoyafu_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《周亚夫军细柳》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+</script>
+</body>
+</html>
