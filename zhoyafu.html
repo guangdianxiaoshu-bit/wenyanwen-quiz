@@ -217,7 +217,6 @@ const questions = [
   { tag: "字词释义", q: '“<span class="highlight">军</span>霸上”中“<span class="highlight">军</span>”的活用和意思是？', options: ["名词作动词，驻军", "军队", "军营", "军事"], answer: 0, explain: '“军”名词作动词，意为“驻军”。“军霸上”即驻军霸上。' },
   { tag: "字词释义", q: '“<span class="highlight">以</span>备胡”中“<span class="highlight">以</span>”的意思是？', options: ["来，用来", "凭借", "因为", "认为"], answer: 0, explain: '“以”意为“来、用来”。“以备胡”即用来防备匈奴。' },
   { seg: "上自<u>劳</u>军。至霸上及棘门军，直驰入，将以<u>下骑</u>送迎。<u>已而</u><u>之</u>细柳军，军士吏<u>被</u>甲，<u>锐兵刃</u>，<u>彀(gòu)</u>弓弩，持满。天子<u>先驱</u>至，不得入。先驱曰：“天子<u>且</u>至！”军门都尉曰：“将军令曰‘军中闻将军令，不闻天子之诏’。”<u>居</u><u>无何</u>，上至，又不得入。" },
-  { seg: "于是上乃<u>使</u><u>使</u>持节诏将军：“吾欲入劳军。”亚夫<u>乃</u>传言开壁门。壁门士吏<u>谓</u>从属车骑曰：“将军约，军中不得驱驰。”于是天子乃按辔徐行。至营，将军亚夫持兵曰：“<u>介</u>胄之士不拜，请以军礼见。”天子为<u>动</u>，改容<u>式车</u>。使人<u>称谢</u>：“皇帝敬劳将军。”成礼而<u>去</u>。" },
   { tag: "字词释义", q: '“上自<span class="highlight">劳</span>军”中“<span class="highlight">劳</span>”的意思是？', options: ["慰劳", "劳动", "劳累", "功劳"], answer: 0, explain: '“劳”意为“慰劳”。“上自劳军”即皇上亲自慰劳军队。' },
   { tag: "字词释义", q: '“将以<span class="highlight">下骑</span>送迎”中“<span class="highlight">下骑</span>”的意思是？', options: ["下马", "骑马的人", "骑兵", "下车"], answer: 0, explain: '“下骑”意为“下马”。“将以下骑送迎”即将军及其部下都下马迎送。' },
   { tag: "字词释义", q: '“<span class="highlight">已而</span>之细柳军”中“<span class="highlight">已而</span>”的意思是？', options: ["不久", "已经", "然后", "一会儿"], answer: 0, explain: '“已而”意为“不久”。' },
@@ -229,6 +228,7 @@ const questions = [
   { tag: "字词释义", q: '“天子<span class="highlight">且</span>至”中“<span class="highlight">且</span>”的意思是？', options: ["将要", "并且", "况且", "尚且"], answer: 0, explain: '“且”意为“将要”。“天子且至”即天子即将到来。' },
   { tag: "字词释义", q: '“<span class="highlight">居</span>无何”中“<span class="highlight">居</span>”的意思是？', options: ["经过，过了", "居住", "停留", "占据"], answer: 0, explain: '“居”意为“经过、过了”。“居无何”即过了不久。' },
   { tag: "字词释义", q: '“居<span class="highlight">无何</span>”中“<span class="highlight">无何</span>”的意思是？', options: ["不久", "没有什么", "没有原因", "无论"], answer: 0, explain: '“无何”意为“不久”。“居无何”即过了不久。' },
+  { seg: "于是上乃<u>使</u><u>使</u>持节诏将军：“吾欲入劳军。”亚夫<u>乃</u>传言开壁门。壁门士吏<u>谓</u>从属车骑曰：“将军约，军中不得驱驰。”于是天子乃按辔徐行。至营，将军亚夫持兵曰：“<u>介</u>胄之士不拜，请以军礼见。”天子为<u>动</u>，改容<u>式车</u>。使人<u>称谢</u>：“皇帝敬劳将军。”成礼而<u>去</u>。" },
   { tag: "字词释义", q: '“于是上乃<span class="highlight">使</span>使持节诏将军”中第一个“<span class="highlight">使</span>”的意思是？', options: ["派遣", "使者", "使用", "假如"], answer: 0, explain: '第一个“使”是动词，意为“派遣”。' },
   { tag: "字词释义", q: '“于是上乃使<span class="highlight">使</span>持节诏将军”中第二个“<span class="highlight">使</span>”的意思是？', options: ["使者", "派遣", "使用", "使命"], answer: 0, explain: '第二个“使”是名词，意为“使者”。' },
   { tag: "字词释义", q: '“亚夫<span class="highlight">乃</span>传言开壁门”中“<span class="highlight">乃</span>”的意思是？', options: ["才", "于是", "竟然", "却"], answer: 0, explain: '“乃”意为“才”。“亚夫乃传言开壁门”即周亚夫这才传令打开营垒大门。' },
@@ -255,90 +255,8 @@ const questions = [
 ];
 
 const sentenceData = [
-  { original: "文帝之后六年，匈奴大入边。乃以宗正刘礼为将军，军霸上；祝兹侯徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：以备胡。", notes: [{ word: "乃", meaning: "于是，就" }, { word: "军", meaning: "名词作动词，驻军" }, { word: "以", meaning: "来，用来" }], trans: "汉文帝后元六年，匈奴大规模侵入汉朝边境。于是朝廷任命宗正刘礼为将军，驻军霸上；任命祝兹侯徐厉为将军，驻军棘门；任命河内郡郡守周亚夫为将军，驻军细柳：来防备匈奴侵扰。" },
-  { original: "上自劳军。至霸上及棘门军，直驰入，将以下骑送迎。", notes: [{ word: "劳", meaning: "慰劳" }, { word: "下骑", meaning: "下马" }], trans: "文帝亲自去慰劳军队。到霸上和棘门的军营时，车马径直奔驰而入，将军及其部下都骑马迎送。" },
-  { original: "已而之细柳军，军士吏被甲，锐兵刃，彀弓弩，持满。", notes: [{ word: "已而", meaning: "不久" }, { word: "之", meaning: "到，往" }, { word: "被", meaning: "同“披”，穿着" }, { word: "锐", meaning: "使……锋利" }, { word: "彀", meaning: "张开" }], trans: "不久来到细柳军营，只见官兵都穿着铠甲，刀剑出鞘，张开弓弩，拉满弓弦。" },
-  { original: "天子先驱至，不得入。先驱曰：“天子且至！”军门都尉曰：“将军令曰‘军中闻将军令，不闻天子之诏’。”", notes: [{ word: "先驱", meaning: "先行引导的人员" }, { word: "且", meaning: "将要" }], trans: "天子的先行引导人员到了营前，无法进入。先行官说：“天子即将到来！”军营的守卫军官说：“将军有令‘军中只听从将军的命令，不听从天子的诏令’。”" },
-  { original: "居无何，上至，又不得入。于是上乃使使持节诏将军：“吾欲入劳军。”亚夫乃传言开壁门。", notes: [{ word: "居", meaning: "经过，过了" }, { word: "无何", meaning: "不久" }, { word: "使（1）", meaning: "派遣" }, { word: "使（2）", meaning: "使者" }, { word: "乃", meaning: "才" }], trans: "过了不久，文帝到了，也无法进入军营。于是文帝就派使者手持符节下诏令给周将军：“我想进入军营慰劳军队。”周亚夫这才传令打开营垒的大门。" },
-  { original: "壁门士吏谓从属车骑曰：“将军约，军中不得驱驰。”于是天子乃按辔徐行。", notes: [{ word: "谓", meaning: "告诉，对……说" }], trans: "守卫营门的军官对随从车马队伍说：“将军规定，军营中不可以策马疾驰。”于是天子就控制着缰绳缓慢前行。" },
-  { original: "至营，将军亚夫持兵曰：“介胄之士不拜，请以军礼见。”天子为动，改容式车。", notes: [{ word: "介", meaning: "名词作动词，穿铠甲" }, { word: "动", meaning: "感动" }, { word: "式", meaning: "同“轼”，扶轼致敬" }], trans: "到了军营中，将军周亚夫手持兵器拱手行礼说：“穿戴着盔甲的将领不行跪拜礼，请允许我用军礼参见陛下。”文帝被他感动，表情严肃起来，扶着车前横木俯下身子。" },
-  { original: "使人称谢：“皇帝敬劳将军。”成礼而去。", notes: [{ word: "称谢", meaning: "致意，告知" }, { word: "去", meaning: "离开" }], trans: "文帝派人向周亚夫致意：“皇帝敬重地慰劳将军。”完成劳军礼仪后离去。" },
-  { original: "既出军门，群臣皆惊。文帝曰：“嗟乎，此真将军矣！曩者霸上、棘门军，若儿戏耳，其将固可袭而虏也。至于亚夫，可得而犯邪！”称善者久之。", notes: [{ word: "既", meaning: "已经，……之后" }, { word: "曩", meaning: "先前，从前" }, { word: "若", meaning: "像，如同" }, { word: "固", meaning: "一定，必" }, { word: "之", meaning: "音节助词，补足音节" }], trans: "出了细柳军营的大门后，群臣都很震惊。文帝感叹道：“啊！这才是真正的将军啊！先前霸上、棘门的军营，就像儿戏一样，那里的将军必定会被袭击而被俘获。至于周亚夫，怎么可能被侵犯呢！”文帝对他赞赏了很久。" }
-];
-
-const container = document.getElementById('questionsContainer');
-const submitBtn = document.getElementById('submitBtn');
-const resetBtn = document.getElementById('resetBtn');
-const progressFill = document.getElementById('progressFill');
-const resultPanel = document.getElementById('resultPanel');
-const scoreNum = document.getElementById('scoreNum');
-const correctCountEl = document.getElementById('correctCount');
-const resultStars = document.getElementById('resultStars');
-const scoreComment = document.getElementById('scoreComment');
-const toast = document.getElementById('toast');
-const translationPanel = document.getElementById('translationPanel');
-const translationContent = document.getElementById('translationContent');
-const STORAGE_PREFIX = 'zhoyafu_';
-var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
-
-let submitted = false;
-let shuffles = {};
-function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
-function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
-function renderTranslation() {
-  translationContent.innerHTML = '';
-  sentenceData.forEach(s => {
-    const block = document.createElement('div'); block.className = 'sentence-block';
-    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
-    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
-    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
-    translationContent.appendChild(block);
-  });
-}
-function renderQuestions() {
-  container.innerHTML = '';
-  var qi = 0;
-  for (var i = 0; i < questions.length; i++) {
-    var q = questions[i];
-    if (q.seg) {
-      var s = document.createElement('div'); s.className = 'seg-orig';
-      s.innerHTML = '<strong>原文</strong> ' + q.seg;
-      container.appendChild(s);
-      continue;
-    }
-    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
-    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
-    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
-    container.appendChild(card);
-    qi++;
-  }
-}
-function selectOption(qIdx, optIdx) {
-  if (submitted) return;
-  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
-  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
-  if (label) label.classList.add('selected');
-  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
-  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
-  const done = getAnswered();
-  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
-  updateProgress(); checkSubmitReady();
-}
-function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
-function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
-function restoreFromStorage() {
-  const answers = getStoredAnswers(); const answered = getAnswered();
-  if (!answered.length) return;
-  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
-  updateProgress(); checkSubmitReady();
-}
-function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
-function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
-submitBtn.addEventListener('click', function() {
-  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
-  submitted = true; const answers = getStoredAnswers(); let correct = 0;
-  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《周亚夫军细柳》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+  { original: "文帝之后六年，匈奴大入边。乃以宗正刘礼为将军，军霸上；祝兹侯徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：以备胡。", notes: [{ word: "乃", meaning: "于是，就" },
+]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《周亚夫军细柳》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
     const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
     document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
     const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
