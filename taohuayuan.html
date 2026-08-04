@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《桃花源记》 · 44题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #a8547c 0%, #b06a8e 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #a8547c; color: #ecd2df;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #c48ba7; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #c48ba7; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #ecd2df; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #a8547c, #e0b8cc); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ecd2df; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #a8547c; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #b06a8e; background: #ecd2df; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #a8547c; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #f6e9ef; border-left: 4px solid #b06a8e;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #a8547c; border-radius: 4px;
+  }
+  .seg-orig strong { color: #c48ba7; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #c48ba7; }
+  .seg-orig small { font-size: 10px; color: #c48ba7; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #ecd2df; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #e0b8cc; background: #f9eff4; }
+  .opts label.selected { border-color: #a8547c; background: #ecd2df; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #ecd2df; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #a8547c; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f9eff4; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #a8547c; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #a8547c, #b06a8e); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #a8547c; border: 2px solid #e0b8cc; }
+  .btn-secondary:hover { background: #f9eff4; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #a8547c, #b06a8e); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ecd2df; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #a8547c; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #ecd2df; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f9eff4; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #a8547c; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f9eff4; border: 1px solid #ecd2df; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #ecd2df; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #f6e9ef; border-left: 4px solid #b06a8e;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #a8547c; border-radius: 4px;
+  }
+  .seg-orig strong { color: #c48ba7; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #c48ba7; }
+  .seg-orig small { font-size: 10px; color: #c48ba7; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《桃花源记》</h1>
+  <p>部编版八年级下册 · （晋）陶渊明</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f6e9ef;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e8ccd8"> <strong>常识</strong> 本文选自《陶渊明集》卷六（中华书局1979年版）。陶渊明（约365—427），一名潜，字元亮，浔阳柴桑（今江西九江）人，东晋诗人，田园诗派创始人。本文虚构了一个与世隔绝的理想社会，寄托了作者的社会理想。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 44 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg">已答 0 / 44 题</div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "晋太元<small>〔太元〕东晋孝武帝年号（376—396）。</small>中，武陵人捕鱼为业。<u>缘</u>溪行，忘路之远近。忽逢桃花林，<u>夹岸</u>数百步，中无杂树，芳草<u>鲜美</u>，<u>落英</u><u>缤纷</u>。渔人甚异之，复<u>前</u>行，欲<u>穷</u>其林。" },
+  { tag: "字词释义", q: '“<span class="highlight">缘</span>溪行”中“<span class="highlight">缘</span>”的意思是？', options: ["沿着，顺着", "缘分", "因为", "缘由"], answer: 0, explain: '“缘”意为“沿着、顺着”。“缘溪行”即顺着溪水划行。' },
+  { tag: "字词释义", q: '“<span class="highlight">夹岸</span>数百步”中“<span class="highlight">夹岸</span>”的意思是？', options: ["两岸", "夹着岸", "岸边", "两岸之间"], answer: 0, explain: '“夹岸”即两岸。' },
+  { tag: "字词释义", q: '“芳草<span class="highlight">鲜美</span>”中“<span class="highlight">鲜美</span>”的意思是？', options: ["鲜嫩美丽（古今异义）", "味道鲜美", "新鲜美味", "鲜艳"], answer: 0, explain: '“鲜美”意为“鲜嫩美丽”，是古今异义词（今义指味道鲜美）。' },
+  { tag: "字词释义", q: '“<span class="highlight">落英</span>缤纷”中“<span class="highlight">落英</span>”的意思是？', options: ["落花", "花", "花瓣", "落叶"], answer: 0, explain: '“落英”指落花。“英”指花。' },
+  { tag: "字词释义", q: '“落英<span class="highlight">缤纷</span>”中“<span class="highlight">缤纷</span>”的意思是？', options: ["繁多而错杂的样子", "缤纷（今义）", "纷纷", "繁多"], answer: 0, explain: '“缤纷”形容落花繁多而错杂的样子。' },
+  { tag: "字词释义", q: '“复<span class="highlight">前</span>行”中“<span class="highlight">前</span>”的活用和意思是？', options: ["名词作状语，向前", "前面", "前进", "先前"], answer: 0, explain: '“前”名词作状语，意为“向前”。“复前行”即又向前划行。' },
+  { tag: "字词释义", q: '“欲<span class="highlight">穷</span>其林”中“<span class="highlight">穷</span>”的意思是？', options: ["走到尽头", "贫穷", "穷尽", "困窘"], answer: 0, explain: '“穷”意为“走到尽头”。“欲穷其林”即想要走到林子尽头。' },
+  { seg: "<u>林尽水源</u>，便得一山，山有小口，<u>仿佛</u>若有光。便舍船，从口入。初极狭，才通人。复行数十步，豁然开朗。土地平旷，屋舍<u>俨然</u>，有良田、美池、桑竹之<u>属</u>。" },
+  { tag: "特殊句式", q: '“林尽水源”的特殊句式是？', options: ["状语后置（林尽（于）水源，省略介词“于”）", "判断句", "宾语前置", "被动句"], answer: 0, explain: '“林尽水源”即“林尽（于）水源”，桃花林在溪水发源处就到头了，是状语后置，省略介词“于”。' },
+  { tag: "字词释义", q: '“<span class="highlight">仿佛</span>若有光”中“<span class="highlight">仿佛</span>”的意思是？', options: ["隐隐约约，好像", "仿佛（今义）", "相似", "好像"], answer: 0, explain: '“仿佛”意为“隐隐约约，好像”。' },
+  { tag: "字词释义", q: '“屋舍<span class="highlight">俨然</span>”中“<span class="highlight">俨然</span>”的意思是？', options: ["整齐的样子", "俨然（今义）", "严肃", "整齐"], answer: 0, explain: '“俨然”意为“整齐的样子”。“屋舍俨然”即房屋整整齐齐。' },
+  { tag: "字词释义", q: '“桑竹之<span class="highlight">属</span>”中“<span class="highlight">属</span>”的意思是？', options: ["类", "属于", "归属", "嘱咐"], answer: 0, explain: '“属”意为“类”。“桑竹之属”即桑树竹林之类。' },
+  { seg: "阡陌<small>〔阡陌〕田间小路。</small><u>交通</u>，鸡犬相闻。其中往来种作，男女衣着，<u>悉</u>如外人。黄发垂髫<small>〔黄发垂髫〕指老人和小孩。黄发，旧说是长寿的特征，用来指老人。垂髫，垂下来的头发，用来指小孩。</small>，<u>并</u>怡然自乐。" },
+  { tag: "字词释义", q: '“阡陌<span class="highlight">交通</span>”中“<span class="highlight">交通</span>”的意思是？', options: ["交错相通（古今异义）", "交通运输", "交通（今义）", "相通"], answer: 0, explain: '“交通”意为“交错相通”，是古今异义词（今义指交通运输）。' },
+  { tag: "字词释义", q: '“男女衣着，<span class="highlight">悉</span>如外人”中“<span class="highlight">悉</span>”的意思是？', options: ["全，都", "熟悉", "详细", "知道"], answer: 0, explain: '“悉”意为“全、都”。“悉如外人”即全都和外面的人一样。' },
+  { tag: "字词释义", q: '“<span class="highlight">并</span>怡然自乐”中“<span class="highlight">并</span>”的意思是？', options: ["都，一起", "并且", "并列", "合并"], answer: 0, explain: '“并”意为“都、一起”。“并怡然自乐”即都安闲快乐。' },
+  { seg: "见渔人，<u>乃</u>大惊，问所从来。<u>具</u>答之。便<u>要</u>还家，设酒杀鸡作食。村中闻有此人，<u>咸</u>来问讯。自云先世避秦时乱，率<u>妻子</u>邑人来此<u>绝境</u>，不复出<u>焉</u>，遂与外人<u>间隔</u>。" },
+  { tag: "字词释义", q: '“见渔人，<span class="highlight">乃</span>大惊”中“<span class="highlight">乃</span>”的意思是？', options: ["于是，就", "才", "竟然", "却"], answer: 0, explain: '“乃”意为“于是、就”。看见渔人，于是十分惊奇。' },
+  { tag: "字词释义", q: '“<span class="highlight">具</span>答之”中“<span class="highlight">具</span>”的意思是？', options: ["详尽，详细", "具备", "工具", "具有"], answer: 0, explain: '“具”意为“详尽、详细”。“具答之”即详尽地回答。' },
+  { tag: "字词释义", q: '“便<span class="highlight">要</span>还家”中“<span class="highlight">要</span>”的意思是？', options: ["同“邀”，邀请", "重要", "要求", "需要"], answer: 0, explain: '“要”同“邀”，邀请。“便要还家”即就邀请（渔人）到自己家。' },
+  { tag: "字词释义", q: '“<span class="highlight">咸</span>来问讯”中“<span class="highlight">咸</span>”的意思是？', options: ["全，都", "咸味", "咸（今义）", "皆"], answer: 0, explain: '“咸”意为“全、都”。“咸来问讯”即都来打听消息。' },
+  { tag: "字词释义", q: '“率<span class="highlight">妻子</span>邑人”中“<span class="highlight">妻子</span>”的意思是？', options: ["妻子儿女（古今异义）", "妻子（今义）", "妻子和儿子", "家人"], answer: 0, explain: '“妻子”意为“妻子儿女”，是古今异义词（今义只指妻子）。' },
+  { tag: "字词释义", q: '“来此<span class="highlight">绝境</span>”中“<span class="highlight">绝境</span>”的意思是？', options: ["与人世隔绝的地方（古今异义）", "走投无路", "绝境（今义）", "险境"], answer: 0, explain: '“绝境”意为“与人世隔绝的地方”，是古今异义词（今义指走投无路的境地）。' },
+  { tag: "字词释义", q: '“不复出<span class="highlight">焉</span>”中“<span class="highlight">焉</span>”的意思是？', options: ["从这里（兼词，于此）", "语气词", "哪里", "怎么"], answer: 0, explain: '“焉”是兼词，意为“于此、从这里”。“不复出焉”即不再从这里出去。' },
+  { tag: "字词释义", q: '“遂与外人<span class="highlight">间隔</span>”中“<span class="highlight">间隔</span>”的意思是？', options: ["隔绝（古今异义）", "间隔（今义）", "隔开", "断绝"], answer: 0, explain: '“间隔”意为“隔绝”，是古今异义词（今义指事物之间距离）。' },
+  { seg: "问今是何世，<u>乃</u>不知有汉，<u>无论</u>魏晋。此人一一为<u>具</u>言所闻，皆叹惋。余人各复<u>延</u>至其家，皆出酒食。停数日，辞去。此中人语云：“<u>不足</u>为外人道也。”" },
+  { tag: "字词释义", q: '“<span class="highlight">乃</span>不知有汉”中“<span class="highlight">乃</span>”的意思是？', options: ["竟然", "于是", "才", "就"], answer: 0, explain: '“乃”意为“竟然”。“乃不知有汉”即竟然不知道有汉朝。' },
+  { tag: "字词释义", q: '“<span class="highlight">无论</span>魏晋”中“<span class="highlight">无论</span>”的意思是？', options: ["更不必说（古今异义）", "无论（今义）", "不管", "不论"], answer: 0, explain: '“无论”意为“更不必说”，是古今异义词（今义指不管）。' },
+  { tag: "字词释义", q: '“此人一一为<span class="highlight">具</span>言所闻”中“<span class="highlight">具</span>”的意思是？', options: ["详尽", "具备", "工具", "全"], answer: 0, explain: '“具”意为“详尽”。“具言所闻”即详尽地说出所听到的事。' },
+  { tag: "字词释义", q: '“余人各复<span class="highlight">延</span>至其家”中“<span class="highlight">延</span>”的意思是？', options: ["邀请", "延长", "延续", "拖延"], answer: 0, explain: '“延”意为“邀请”。“余人各复延至其家”即其余的人又各自邀请（他）到自己家。' },
+  { tag: "字词释义", q: '“<span class="highlight">不足</span>为外人道也”中“<span class="highlight">不足</span>”的意思是？', options: ["不值得", "不足（今义）", "不够", "不满"], answer: 0, explain: '“不足”意为“不值得”。“不足为外人道也”即不值得对外面的人说。' },
+  { seg: "<u>既</u>出，得其船，便<u>扶</u>向路，处处<u>志</u>之。及郡下<small>〔及郡下〕到了郡城。及，到。郡，指武陵郡。</small>，<u>诣</u>太守，说如此。太守即遣人随其往，寻<u>向</u>所志，遂迷，不复得路。" },
+  { tag: "字词释义", q: '“<span class="highlight">既</span>出”中“<span class="highlight">既</span>”的意思是？', options: ["已经，……之后", "既然", "即使", "立即"], answer: 0, explain: '“既”意为“已经”。“既出”即出来以后。' },
+  { tag: "字词释义", q: '“便<span class="highlight">扶</span>向路”中“<span class="highlight">扶</span>”的意思是？', options: ["沿着，顺着", "扶着", "扶持", "帮助"], answer: 0, explain: '“扶”意为“沿着、顺着”。“便扶向路”即就顺着旧路（回去）。' },
+  { tag: "字词释义", q: '“处处<span class="highlight">志</span>之”中“<span class="highlight">志</span>”的活用和意思是？', options: ["名词作动词，做记号", "志向", "标记（名词）", "标志"], answer: 0, explain: '“志”名词作动词，意为“做记号”。“处处志之”即处处做记号。' },
+  { tag: "字词释义", q: '“<span class="highlight">诣</span>太守”中“<span class="highlight">诣</span>”的意思是？', options: ["拜访，到……去", "造诣", "指", "告诉"], answer: 0, explain: '“诣”意为“拜访、到……去”。“诣太守”即去拜见太守。' },
+  { tag: "字词释义", q: '“寻<span class="highlight">向</span>所志”中“<span class="highlight">向</span>”的意思是？', options: ["先前", "方向", "朝向", "向来"], answer: 0, explain: '“向”意为“先前”。“寻向所志”即寻找先前做的标记。' },
+  { seg: "南阳<small>〔南阳〕郡名，在今河南南阳一带。</small>刘子骥<small>〔刘子骥〕名驎之，字子骥，《晋书·隐逸传》里说他“好游山泽”。</small>，高尚士也，闻之，欣然<u>规</u>往。<u>未果</u>，<u>寻</u>病终。后<u>遂</u>无问<u>津</u>者。" },
+  { tag: "字词释义", q: '“欣然<span class="highlight">规</span>往”中“<span class="highlight">规</span>”的意思是？', options: ["计划，打算", "规则", "规划", "规定"], answer: 0, explain: '“规”意为“计划、打算”。“欣然规往”即高兴地计划前往。' },
+  { tag: "字词释义", q: '“<span class="highlight">未果</span>”中“<span class="highlight">未果</span>”的意思是？', options: ["没有实现", "没有结果", "果实", "未成功"], answer: 0, explain: '“未果”意为“没有实现”。' },
+  { tag: "字词释义", q: '“<span class="highlight">寻</span>病终”中“<span class="highlight">寻</span>”的意思是？', options: ["不久", "寻找", "寻常", "寻找（今义）"], answer: 0, explain: '“寻”意为“不久”。“寻病终”即不久因病去世。' },
+  { tag: "字词释义", q: '“后<span class="highlight">遂</span>无问津者”中“<span class="highlight">遂</span>”的意思是？', options: ["就", "于是", "成功", "顺遂"], answer: 0, explain: '“遂”意为“就”。“后遂无问津者”即此后就没有探访的人了。' },
+  { tag: "字词释义", q: '“无问<span class="highlight">津</span>者”中“<span class="highlight">津</span>”的意思是？', options: ["渡口（这里指探访）", "天津", "唾液", "渡河"], answer: 0, explain: '“津”意为“渡口”。“问津”本义打听渡口，这里引申为探访。' },
+  { tag: "字词释义", q: '下列加点字词类活用类型与“处处<span class="highlight">志</span>之”相同的一项是？', options: ["渔人甚异之", "欲穷其林", "山有小口", "一狼洞其中"], answer: 3, explain: '“志”名词作动词，做记号；“洞”名词作动词，打洞，活用类型相同。A“异”意动；B“穷”形作动；C 无活用。' },
+  { tag: "字词释义", q: '对“渔人甚<span class="highlight">异</span>之”中“<span class="highlight">异</span>”的用法，分析正确的一项是？', options: ["异：形容词，奇异", "异：意动用法，对……感到惊异", "异：使动用法，使……奇异", "异：名词，奇异景象"], answer: 1, explain: '“异”是意动用法，“对……感到惊异”。“渔人甚异之”即渔人对这件事感到很惊异。' },
+  { tag: "内容理解", q: '下列句子翻译正确的一项是？', options: ["落英缤纷：落花繁多的样子。", "阡陌交通：田间小路四通八达，可以通行车辆。", "率妻子邑人来此绝境：带领妻子和同乡来到这个走投无路的地方。", "不足为外人道也：不值得对外人讲道理。"], answer: 0, explain: 'B“交通”为交错相通，“通行车辆”误；C“妻子”应译“妻子儿女”，“绝境”为“与世隔绝的地方”；D“道”为“说”。A 正确。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["黄发垂髫，并怡然自乐：老人和小孩，都安适愉快。", "乃不知有汉，无论魏晋：竟然不知道有汉朝，更不必说魏晋了。", "便扶向路，处处志之：顺着先前的路回去，到处做记号。", "寻病终：寻找机会，最终生病去世。"], answer: 3, explain: '“寻病终”意为“不久因病去世”，“寻”是“不久”，不是“寻找机会”。' },
+  { tag: "内容理解", q: '文中桃花源中人“叹惋”的原因是？', options: ["渔人路途艰辛，令人同情", "外界朝代更迭，战乱不断，世人饱受苦难", "担心渔人泄露桃花源的位置", "羡慕渔人可以自由外出游历"], answer: 1, explain: '桃花源中人听渔人说起外界战乱不断、百姓受苦，因而感叹惋惜。' },
+  { tag: "内容理解", q: '对文章结尾写“南阳刘子骥欣然规往，未果，寻病终。后遂无问津者”的作用，分析最准确的一项是？', options: ["交代真实历史人物寻访桃花源未果，说明桃花源确实存在，只是难以寻找", "借助名士寻访失败的情节，增添神秘色彩，暗示桃花源是虚构的理想社会", "表达作者惋惜之情，遗憾刘子骥没能找到世外桃源", "意在批判世人追求隐逸生活，却缺少坚持寻访的毅力"], answer: 1, explain: '借名士寻访失败增添神秘色彩，暗示桃花源是虚构的理想社会，可望而不可即。' },
+  { tag: "内容理解", q: '桃花源中人叮嘱渔人“不足为外人道也”，下列理解不正确的一项是？', options: ["桃花源人害怕外界战乱侵扰，破坏这里安宁平和的生活", "他们不愿世俗之人闯入，打破与世隔绝、自给自足的美好家园", "桃花源人心存私心，想独自占有这片世外桃源，不愿分享美景", "为下文渔人再寻桃花源却迷路埋下伏笔，推动情节发展"], answer: 2, explain: '桃花源人叮嘱不外传是出于避乱、守护安宁，并非“心存私心、独自占有”。' }
+];
+
+const sentenceData = [
+  { original: "晋太元中，武陵人捕鱼为业。缘溪行，忘路之远近。忽逢桃花林，夹岸数百步，中无杂树，芳草鲜美，落英缤纷。渔人甚异之，复前行，欲穷其林。", notes: [{ word: "缘", meaning: "沿着，顺着" }, { word: "夹岸", meaning: "两岸" }, { word: "鲜美", meaning: "鲜嫩美丽（古今异义）" }, { word: "落英", meaning: "落花" }, { word: "缤纷", meaning: "繁多而错杂的样子" }, { word: "前", meaning: "名词作状语，向前" }, { word: "穷", meaning: "走到尽头" }], trans: "东晋太元年间，武陵郡有个人以打鱼作为谋生手段。（他）顺着溪水划船前行，忘记了路程的远近。忽然遇到一片桃花林，生长在溪水两岸，长达几百步，中间没有别的树木，花草鲜嫩美丽，落花纷纷地散落在地上。渔人对此感到十分诧异，又继续向前划行，想要走到那片林子的尽头。" },
+  { original: "林尽水源，便得一山，山有小口，仿佛若有光。便舍船，从口入。初极狭，才通人。复行数十步，豁然开朗。土地平旷，屋舍俨然，有良田、美池、桑竹之属。", notes: [{ word: "林尽水源", meaning: "状语后置（林尽（于）水源）" }, { word: "仿佛", meaning: "隐隐约约，好像" }, { word: "俨然", meaning: "整齐的样子" }, { word: "属", meaning: "类" }], trans: "桃花林在溪水发源的地方就到头了，便出现一座山，山上有个小洞口，隐隐约约好像有点光亮。（渔人）于是舍弃船只，从洞口进去。起初洞口非常狭窄，仅能容一个人通过。又走了几十步，突然变得开阔明亮了。眼前一片平坦宽广的土地，一排排整齐的房舍，还有肥沃的田地、美丽的池沼，桑树竹林之类的。" },
+  { original: "阡陌交通，鸡犬相闻。其中往来种作，男女衣着，悉如外人。黄发垂髫，并怡然自乐。", notes: [{ word: "交通", meaning: "交错相通（古今异义）" }, { word: "悉", meaning: "全，都" }, { word: "并", meaning: "都，一起" }], trans: "田间小路交错相通，鸡鸣狗叫的声音此起彼伏，相互都能听见。在田野里来来往往耕种劳作的人们，男女的穿戴全都跟桃花源以外的世人一样。老人和小孩，都安闲快乐。" },
+  { original: "见渔人，乃大惊，问所从来。具答之。便要还家，设酒杀鸡作食。村中闻有此人，咸来问讯。自云先世避秦时乱，率妻子邑人来此绝境，不复出焉，遂与外人间隔。", notes: [{ word: "乃", meaning: "于是，就" }, { word: "具", meaning: "详尽，详细" }, { word: "要", meaning: "同“邀”，邀请" }, { word: "咸", meaning: "全，都" }, { word: "妻子", meaning: "妻子儿女（古今异义）" }, { word: "绝境", meaning: "与人世隔绝的地方（古今异义）" }, { word: "焉", meaning: "兼词，于此" }, { word: "间隔", meaning: "隔绝（古今异义）" }], trans: "（桃花源里的人）看见渔人，于是十分惊奇，问（他）是从哪里来的。（渔人）详尽地回答了他们。（有人）就邀请（渔人）到自己家里去，摆酒杀鸡做饭来款待他。村里的人听说来了这么一个人，都来打听消息。（他们）自己说他们的祖先为了躲避秦朝的战乱，率领妻子儿女和同乡人来到这个与人世隔绝的地方，不再出去，于是就同外界的人隔绝了。" },
+  { original: "问今是何世，乃不知有汉，无论魏晋。此人一一为具言所闻，皆叹惋。余人各复延至其家，皆出酒食。停数日，辞去。此中人语云：“不足为外人道也。”", notes: [{ word: "乃", meaning: "竟然" }, { word: "无论", meaning: "更不必说（古今异义）" }, { word: "延", meaning: "邀请" }, { word: "不足", meaning: "不值得" }], trans: "（他们）问现在是什么朝代，竟然不知道有过汉朝，更不必说魏朝和晋朝了。渔人把自己知道的事一件一件详尽地说给他们听，（他们）听后都感叹惋惜。其余的人各自又把渔人邀请到自己家中，都拿出酒饭来款待他。（渔人）停留了几天，就告辞离开了。村里的人告诉他说：“（这里的情况）不值得对外面的人说啊。”" },
+  { original: "既出，得其船，便扶向路，处处志之。及郡下，诣太守，说如此。太守即遣人随其往，寻向所志，遂迷，不复得路。", notes: [{ word: "既", meaning: "已经，……之后" }, { word: "扶", meaning: "沿着，顺着" }, { word: "志", meaning: "名词作动词，做记号" }, { word: "诣", meaning: "拜访，到……去" }, { word: "向", meaning: "先前" }], trans: "（渔人）出来以后，找到了他的船，就顺着旧路回去，处处都做了标记。到了郡城，（渔人）去拜见太守，报告了这番经历。太守立即派人跟着他去，寻找以前所做的标记，终于迷失了方向，再也找不到通往桃花源的路了。" },
+  { original: "南阳刘子骥，高尚士也，闻之，欣然规往。未果，寻病终。后遂无问津者。", notes: [{ word: "规", meaning: "计划，打算" }, { word: "未果", meaning: "没有实现" }, { word: "寻", meaning: "不久" }, { word: "遂", meaning: "就" }, { word: "津", meaning: "渡口（引申为探访）" }], trans: "南阳人刘子骥，是个志向高洁的隐士，听到这件事后，高兴地计划前往。但没有实现，不久就因病去世了。此后就再也没有探寻桃花源的人了。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'taohuayuan_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《桃花源记》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+</body>
+</html>
