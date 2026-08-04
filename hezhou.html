@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《核舟记》 · 40题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7d5436 0%, #8a6a4f 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7d5436; color: #e3d5c3;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #a98c6f; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #a98c6f; padding-bottom: 1px; }
+
+  .progress-bar-wrap { background: #e3d5c3; border-radius: 10px; height: 6px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7d5436, #c4ab8f); border-radius: 10px; transition: width 0.3s; width: 0%; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e3d5c3; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7d5436; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #8a6a4f; background: #e3d5c3; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7d5436; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #f3e9dc; border-left: 4px solid #8a6a4f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7d5436; border-radius: 4px;
+  }
+  .seg-orig strong { color: #a98c6f; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #a98c6f; }
+  .seg-orig small { font-size: 10px; color: #a98c6f; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e3d5c3; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c4ab8f; background: #f5ede2; }
+  .opts label.selected { border-color: #7d5436; background: #e3d5c3; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e3d5c3; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7d5436; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f5ede2; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7d5436; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7d5436, #8a6a4f); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7d5436; border: 2px solid #c4ab8f; }
+  .btn-secondary:hover { background: #f5ede2; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7d5436, #8a6a4f); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e3d5c3; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7d5436; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e3d5c3; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f5ede2; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7d5436; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f5ede2; border: 1px solid #e3d5c3; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #e3d5c3; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #f3e9dc; border-left: 4px solid #8a6a4f;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7d5436; border-radius: 4px;
+  }
+  .seg-orig strong { color: #a98c6f; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #a98c6f; }
+  .seg-orig small { font-size: 10px; color: #a98c6f; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《核舟记》</h1>
+  <p>部编版八年级下册 · （明）魏学洢</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f3e9dc;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e8dcc8"> <strong>常识</strong> 本文选自《虞初新志》卷十（清代张潮编，文学古籍刊行社1954年版），略有删节。魏学洢（约1596—约1625），字子敬，明末嘉善（今浙江嘉兴）人。《核舟记》生动地再现了微雕艺术家王叔远的精湛技艺，赞叹古代劳动人民的聪明才智。 </div>
+<div class="container">
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 40 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg">已答 0 / 40 题</div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "明有奇巧人<u>曰</u>王叔远，能以径寸之木，<u>为</u>宫室、器皿、人物，以至鸟兽、木石，<u>罔不</u><u>因</u>势<u>象</u>形，各具情态。尝<u>贻</u>余核舟一，<u>盖</u>大苏<u>泛</u>赤壁云。" },
+  { tag: "字词释义", q: '“明有奇巧人<span class="highlight">曰</span>王叔远”中“<span class="highlight">曰</span>”的意思是？', options: ["说", "叫作", "是", "认为"], answer: 1, explain: '“曰”意为“叫作、叫做”。"明有奇巧人曰王叔远"即明朝有个手艺奇妙精巧的人叫王叔远。' },
+  { tag: "字词释义", q: '“能以径寸之木，<span class="highlight">为</span>宫室”中“<span class="highlight">为</span>”的意思是？', options: ["作为", "雕刻", "成为", "因为"], answer: 1, explain: '“为”意为“做”，这里指雕刻。' },
+  { tag: "字词释义", q: '“<span class="highlight">罔不</span>因势象形”中“<span class="highlight">罔不</span>”的意思是？', options: ["没有", "全都", "不是", "不必"], answer: 1, explain: '“罔不”意为“无不、全都”。"罔不因势象形"即全都是就着材料原来的样子刻成各种事物的形象。' },
+  { tag: "字词释义", q: '“罔不<span class="highlight">因</span>势象形”中“<span class="highlight">因</span>”的意思是？', options: ["因为", "于是", "顺着", "根据"], answer: 2, explain: '“因”意为“顺着、就着”。“因势象形”即就着材料原来的样子雕刻形象。' },
+  { tag: "字词释义", q: '“罔不因势<span class="highlight">象</span>形”中“<span class="highlight">象</span>”的意思是？', options: ["形象", "模仿", "想象", "象征"], answer: 1, explain: '“象”意为“模拟、模仿”。“象形”即刻成事物的形象。' },
+  { tag: "字词释义", q: '“尝<span class="highlight">贻</span>余核舟一”中“<span class="highlight">贻</span>”的意思是？', options: ["遗留", "赠送", "带来", "给予"], answer: 1, explain: '“贻”意为“赠送”。' },
+  { tag: "字词释义", q: '“<span class="highlight">盖</span>大苏泛赤壁云”中“<span class="highlight">盖</span>”的意思是？', options: ["盖子", "大概", "因为", "原来"], answer: 1, explain: '“盖”是句首语气词，表示推测，大概。' },
+  { tag: "字词释义", q: '“盖大苏<span class="highlight">泛</span>赤壁云”中“<span class="highlight">泛</span>”的意思是？', options: ["漂浮", "广泛", "游览", "泛滥"], answer: 2, explain: '“泛”意为“泛舟、乘船游览”。“泛赤壁”即乘船游览赤壁。' },
+  { seg: "舟首尾长约八分有<u>奇</u>，高可二黍<u>许</u>。中<u>轩敞</u>者为舱，箬篷覆之。旁开小窗，左右各四，共八扇。启窗而观，雕栏<u>相望</u>焉。闭之，则右刻“山高月小，水落石出”，左刻“清风徐来，水波不兴”，石青<u>糁</u>之。" },
+  { tag: "字词释义", q: '“舟首尾长约八分有<span class="highlight">奇</span>”中“<span class="highlight">奇</span>”的意思是？', options: ["奇怪", "零数", "奇数", "特别"], answer: 1, explain: '“奇”读 jī，意为“零数、余数”。“八分有奇”即八分多一点。' },
+  { tag: "字词释义", q: '“高可二黍<span class="highlight">许</span>”中“<span class="highlight">许</span>”的意思是？', options: ["允许", "也许", "左右", "许多"], answer: 2, explain: '“许”表示约数，上下、左右。“二黍许”即两个黄米粒上下。' },
+  { tag: "字词释义", q: '“中<span class="highlight">轩敞</span>者为舱”中“<span class="highlight">轩敞</span>”的意思是？', options: ["高大", "宽敞", "高敞", "明亮"], answer: 2, explain: '“轩敞”意为“高起而宽敞”。' },
+  { tag: "字词释义", q: '“雕栏<span class="highlight">相望</span>焉”中“<span class="highlight">相望</span>”的意思是？', options: ["互相看望", "左右相对", "彼此遥望", "相互期待"], answer: 1, explain: '“相望”意为“左右相对”。' },
+  { tag: "字词释义", q: '“石青<span class="highlight">糁</span>之”中“<span class="highlight">糁</span>”的意思是？', options: ["饭粒", "涂抹", "点缀", "混入"], answer: 1, explain: '“糁”意为“涂”。“石青糁之”即用石青涂在刻字的凹处。' },
+  { seg: "船头坐三人，中峨冠而多髯者为东坡，佛印<small>〔佛印（1032—1098）〕宋代名僧，苏轼的朋友。</small>居右，鲁直<small>〔鲁直〕宋代文学家黄庭坚（1045—1105），字鲁直，苏轼的朋友。</small>居左。苏、黄共阅一手卷。东坡右手执卷端，左手抚鲁直背。鲁直左手执卷末，右手指卷，如有所语。东坡现右足，鲁直现左足，各微侧，其两膝相<u>比</u>者，各隐卷底衣褶中。佛印<u>绝类</u>弥勒，袒胸露乳，<u>矫</u>首昂视，神情与苏、黄不<u>属</u>。卧右膝，<u>诎</u>右臂支船，而竖其左膝，左臂挂念珠倚之——珠可<u>历历</u>数也。" },
+  { tag: "字词释义", q: '“其两膝相<span class="highlight">比</span>者”中“<span class="highlight">比</span>”的意思是？', options: ["比较", "靠近", "并列", "相比"], answer: 1, explain: '“比”意为“靠近”。“其两膝相比者”即他们互相靠近的两膝。' },
+  { tag: "字词释义", q: '“佛印<span class="highlight">绝类</span>弥勒”中“<span class="highlight">绝类</span>”的意思是？', options: ["极像", "断绝", "完全不同", "绝无"], answer: 0, explain: '“绝类”意为“极像”。' },
+  { tag: "字词释义", q: '“<span class="highlight">矫</span>首昂视”中“<span class="highlight">矫</span>”的意思是？', options: ["矫正", "举起", "骄傲", "挺直"], answer: 1, explain: '“矫”意为“举”。“矫首昂视”即抬头仰望。' },
+  { tag: "字词释义", q: '“神情与苏、黄不<span class="highlight">属</span>”中“<span class="highlight">属</span>”的意思是？', options: ["属于", "类似", "连接", "嘱咐"], answer: 1, explain: '“属”意为“类似”。“不属”即不相类似。' },
+  { tag: "字词释义", q: '“<span class="highlight">诎</span>右臂支船”中“<span class="highlight">诎</span>”的意思是？', options: ["弯曲", "屈服", "伸直", "委屈"], answer: 0, explain: '“诎”同“屈”，意为“弯曲”。' },
+  { tag: "字词释义", q: '“珠可<span class="highlight">历历</span>数也”中“<span class="highlight">历历</span>”的意思是？', options: ["历史", "清楚", "经历", "历次"], answer: 1, explain: '“历历”意为“分明可数、清清楚楚”。' },
+  { seg: "舟尾横卧一楫。楫左右<u>舟子</u>各一人。居右者椎髻仰面，左手倚一<u>衡</u>木，右手攀右趾，<u>若</u>啸呼状。居左者右手执蒲葵扇，左手抚炉，炉上有壶，其人视<u>端</u>容寂，若听茶声<u>然</u>。" },
+  { tag: "字词释义", q: '“楫左右<span class="highlight">舟子</span>各一人”中“<span class="highlight">舟子</span>”的意思是？', options: ["小船", "撑船的人", "船桨", "船员"], answer: 1, explain: '“舟子”意为“撑船的人”。' },
+  { tag: "字词释义", q: '“左手倚一<span class="highlight">衡</span>木”中“<span class="highlight">衡</span>”的意思是？', options: ["衡量", "平衡", "横", "称量"], answer: 2, explain: '“衡”同“横”。' },
+  { tag: "字词释义", q: '“<span class="highlight">若</span>啸呼状”中“<span class="highlight">若</span>”的意思是？', options: ["如果", "好像", "假若", "倘若"], answer: 1, explain: '“若”意为“好像”。“若啸呼状”即好像在大声呼喊的样子。' },
+  { tag: "字词释义", q: '“其人视<span class="highlight">端</span>容寂”中“<span class="highlight">端</span>”的意思是？', options: ["端正", "一端", "端详", "端庄"], answer: 0, explain: '“端”意为“正”。“视端容寂”即眼睛正视（茶炉），神色平静。' },
+  { tag: "字词释义", q: '“若听茶声<span class="highlight">然</span>”中“<span class="highlight">然</span>”的意思是？', options: ["然后", "然而", "样子", "对"], answer: 2, explain: '“然”意为“……的样子”。“若听茶声然”即好像在听茶水烧开了没有的样子。' },
+  { seg: "其船背稍<u>夷</u>，则题名其上，文曰“天启壬戌秋日，虞山王毅叔远甫<small>〔虞山王毅叔远甫〕常熟人王毅字叔远。虞山，山名，在今江苏常熟西北，这里用来代指常熟。甫，男子美称，多附于字之后。</small>刻”，细若蚊足，钩画<u>了了</u>，其色墨。又用篆章一，文曰“初平山人”，其色丹。" },
+  { tag: "字词释义", q: '“其船背稍<span class="highlight">夷</span>”中“<span class="highlight">夷</span>”的意思是？', options: ["平坦", "平安", "铲平", "蛮夷"], answer: 0, explain: '“夷”意为“平”。' },
+  { tag: "字词释义", q: '“钩画<span class="highlight">了了</span>”中“<span class="highlight">了了</span>”的意思是？', options: ["结束", "清楚", "了解", "了结"], answer: 1, explain: '“了了”意为“清清楚楚”。' },
+  { seg: "通计一舟，为人五；为窗八；为箬篷，为楫，为炉，为壶，为手卷，为念珠各一；对联、题名并篆文，为字共三十有四。而计其长<u>曾</u>不<u>盈寸</u>。盖<u>简</u>桃核<u>修狭</u>者为之。嘻，技亦灵怪矣哉！" },
+  { tag: "字词释义", q: '“而计其长<span class="highlight">曾</span>不盈寸”中“<span class="highlight">曾</span>”的意思是？', options: ["曾经", "竟然", "才", "曾经，副词"], answer: 1, explain: '“曾”意为“竟然”。“曾不盈寸”即竟然不满一寸。' },
+  { tag: "字词释义", q: '“而计其长曾不<span class="highlight">盈寸</span>”中“<span class="highlight">盈寸</span>”的意思是？', options: ["满一寸", "一寸多", "不足一寸", "一寸左右"], answer: 0, explain: '“盈寸”意为“满一寸”。' },
+  { tag: "字词释义", q: '“盖<span class="highlight">简</span>桃核修狭者为之”中“<span class="highlight">简</span>”的意思是？', options: ["简单", "挑选", "简略", "简明"], answer: 1, explain: '“简”意为“挑选”。' },
+  { tag: "字词释义", q: '“盖简桃核<span class="highlight">修狭</span>者为之”中“<span class="highlight">修狭</span>”的意思是？', options: ["狭长", "修理", "修长", "狭窄"], answer: 0, explain: '“修狭”意为“长而窄”。' },
+  { tag: "字词释义", q: '下列加点字词类活用类型与“石青糁之”中“石青”相同的一项是？', options: ["中峨冠而多髯者为东坡", "斗折蛇行（《小石潭记》）", "凄神寒骨（《小石潭记》）", "心乐之（《小石潭记》）"], answer: 1, explain: '“石青”名词作状语，用石青；“斗”“蛇”名词作状语，像北斗星那样、像蛇那样，活用类型相同。A 峨冠名词作动词；C 使动；D 意动。' },
+  { tag: "字词释义", q: '对“中峨冠而多髯者为东坡”中加点词“峨冠”用法分析正确的一项是？', options: ["峨冠，名词，高高的帽子", "峨冠，名词作动词，戴着高高的帽子", "峨冠，形容词，高大的", "峨冠，无词类活用"], answer: 1, explain: '“峨冠”名词作动词，意为“戴着高高的帽子”。' },
+  { tag: "内容理解", q: '下列对“罔不因势象形，各具情态”翻译准确的一项是？', options: ["全部顺着材料原来的样子雕刻形象，各有各的神情姿态", "没有根据材料形状随便雕刻，神情各不相同", "全都不依据木头形状，凭空雕刻人物神态", "顺着局势塑造形象，每个人姿态不同"], answer: 0, explain: '“罔不因势象形，各具情态”意为“全都是就着材料原来的样子刻成各种事物的形象，各有各的神情姿态”。B 曲解“罔不”；C 曲解“因势”；D 误译“势”。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["尝贻余核舟一：（他）曾经赠给我一只用桃核雕刻成的小船。", "启窗而观，雕栏相望焉：推开窗户来看，雕刻着花纹的栏杆左右相对。", "其两膝相比者：他们互相比较两条膝盖。", "盖简桃核修狭者为之：原来是挑选长而窄的桃核雕刻而成的。"], answer: 2, explain: 'C 误译。“比”意为“靠近”，“其两膝相比者”应为“他们互相靠近的两膝”。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["明有奇巧人 / 曰王叔远", "中峨冠 / 而多髯者为东坡", "盖简桃核 / 修狭者为之", "虞山王毅叔远 / 甫刻"], answer: 0, explain: 'A 正确。B 应为“中 / 峨冠而多髯者 / 为东坡”（“中”是状语，表位置）；C 应为“盖 / 简桃核修狭者 / 为之”；D 中“甫”是男子美称，应附于“叔远”后，作“虞山王毅叔远甫 / 刻”。' },
+  { tag: "内容理解", q: '文章开篇写“能以径寸之木，为宫室、器皿、人物……”，作用是？', options: ["说明王叔远雕刻材料十分丰富", "总起全文，概括雕刻家技艺高超，为下文核舟细节描写做铺垫", "交代作者收集了许多雕刻作品", "对比突出桃核是最难雕刻的材料"], answer: 1, explain: '开篇总起，以“径寸之木”与“宫室、器皿、人物”的巨大反差突出王叔远技艺高超，为下文核舟的精细描写做铺垫。' },
+  { tag: "内容理解", q: '文中刻画苏轼、黄鲁直、佛印三人神态动作，下列理解错误的一项是？', options: ["苏、黄共阅一手卷，凸显二人文人雅士闲适相交的氛围", "佛印袒胸露乳、矫首昂视，表现他洒脱不羁、超脱世俗的气质", "三人形象对比鲜明，丰富雕刻画面，侧面体现雕刻技艺精巧", "佛印嫌弃书卷乏味，独自抬头观景，与苏黄二人产生隔阂"], answer: 3, explain: 'D 错误。佛印“矫首昂视”是表现他超脱世俗的僧人形象，并非“嫌弃书卷”“产生隔阂”，文中无此意。' },
+  { tag: "内容理解", q: '文末统计核舟上人、物、字数量，又感叹“技亦灵怪矣哉”，分析不正确的一项是？', options: ["用具体数字直观体现桃核上雕刻内容繁多，形成强烈反差", "结尾抒情，直接抒发对微雕技艺的赞叹，收束全文", "与开头“奇巧”一词前后呼应，结构完整", "意在说明桃核材质特殊，天然适合雕刻大量文字人物"], answer: 3, explain: 'D 错误。文末统计不是说明“桃核材质特殊”，而是以数量之多与体积之小形成反差，突出雕刻技艺的精湛。' },
+  { tag: "内容理解", q: '下列对文章写法与主旨理解深度分析，最准确的一项是？', options: ["本文只客观介绍核舟外形，没有蕴含作者主观情感", "作者借一枚小小的核舟，赞美古代民间手工艺人高超的雕刻技艺", "文章主要表达作者对苏轼泛舟赤壁这一历史故事的喜爱", "文中舟子的刻画多余，只是为了填充核舟空白位置"], answer: 1, explain: '本文通过对核舟上人物、器物细致传神的描写，赞美雕刻者高超的技艺和古代劳动人民的聪明才智。' },
+  { tag: "内容理解", q: '文中左右窗刻有“山高月小，水落石出”“清风徐来，水波不兴”，安排这两处文字的作用是？', options: ["只是装饰窗户，让核舟外观更好看", "引用苏轼《赤壁赋》《后赤壁赋》名句，贴合“大苏泛赤壁”主题，丰富文化意境", "证明雕刻者擅长书法，雕刻字迹工整清晰", "区分左右两扇窗户，方便辨识"], answer: 1, explain: '这两句分别出自苏轼《后赤壁赋》《赤壁赋》，与核舟“大苏泛赤壁”的主题相呼应，丰富了文化内涵，也体现雕刻之精细。' }
+];
+
+const sentenceData = [
+  { original: "明有奇巧人曰王叔远，能以径寸之木，为宫室、器皿、人物，以至鸟兽、木石，罔不因势象形，各具情态。尝贻余核舟一，盖大苏泛赤壁云。", notes: [{ word: "曰", meaning: "叫作，叫做" }, { word: "为", meaning: "做，这里指雕刻" }, { word: "罔不", meaning: "无不，全都" }, { word: "因", meaning: "顺着，就着" }, { word: "象", meaning: "模拟，模仿" }, { word: "贻", meaning: "赠送" }, { word: "盖", meaning: "句首语气词，大概" }, { word: "泛", meaning: "泛舟，乘船游览" }], trans: "明朝有个手艺奇妙精巧的人叫王叔远，他能够用直径一寸的木头，雕刻出宫殿、器具、人物，甚至飞鸟、走兽、树木、石头，全都是就着材料原来的样子刻成各种事物的形象，各有各的神情姿态。（他）曾经送给我一个用桃核雕刻成的小船，刻的是苏轼乘船游赤壁的情景。" },
+  { original: "舟首尾长约八分有奇，高可二黍许。中轩敞者为舱，箬篷覆之。旁开小窗，左右各四，共八扇。启窗而观，雕栏相望焉。闭之，则右刻“山高月小，水落石出”，左刻“清风徐来，水波不兴”，石青糁之。", notes: [{ word: "奇", meaning: "零数，余数" }, { word: "许", meaning: "表示约数，上下，左右" }, { word: "轩敞", meaning: "高起而宽敞" }, { word: "相望", meaning: "左右相对" }, { word: "糁", meaning: "涂" }], trans: "小船从船头到船尾长度大约八分多一点，高度大约有两个黄米粒。中间高起而宽敞的部分是船舱，用箬竹叶做的船篷覆盖着它。船舱旁边开有小窗，左右两边各有四扇，一共八扇。打开窗户来看，雕刻着花纹的栏杆左右相对。关上窗户，就看到右边刻着“山高月小，水落石出”，左边刻着“清风徐来，水波不兴”，用石青涂在刻字的凹处。" },
+  { original: "船头坐三人，中峨冠而多髯者为东坡，佛印居右，鲁直居左。苏、黄共阅一手卷。东坡右手执卷端，左手抚鲁直背。鲁直左手执卷末，右手指卷，如有所语。东坡现右足，鲁直现左足，各微侧，其两膝相比者，各隐卷底衣褶中。佛印绝类弥勒，袒胸露乳，矫首昂视，神情与苏、黄不属。卧右膝，诎右臂支船，而竖其左膝，左臂挂念珠倚之——珠可历历数也。", notes: [{ word: "比", meaning: "靠近" }, { word: "绝类", meaning: "极像" }, { word: "矫", meaning: "举" }, { word: "属", meaning: "类似" }, { word: "诎", meaning: "同“屈”，弯曲" }, { word: "历历", meaning: "分明可数，清清楚楚" }], trans: "船头坐着三个人，中间戴着高高的帽子且胡须浓密的是苏东坡，佛印在右边，鲁直在左边。苏东坡和黄鲁直共同看着一幅书画长卷。东坡右手拿着画卷的右端，左手轻按在鲁直的背上。鲁直左手拿着画卷的左端，右手指着画卷，好像在说着什么。东坡露出右脚，鲁直露出左脚，身子都略微侧斜，他们互相靠近的两膝，各自隐藏在手卷下边的衣褶里。佛印极像弥勒佛，袒露着胸脯，露出乳头，抬头仰望，神情和苏东坡、黄鲁直不相类似。（佛印）平放着右膝，弯曲右臂支撑在船上，竖起他的左膝，左臂挂着念珠靠在左膝上——念珠可以清清楚楚地数出来。" },
+  { original: "舟尾横卧一楫。楫左右舟子各一人。居右者椎髻仰面，左手倚一衡木，右手攀右趾，若啸呼状。居左者右手执蒲葵扇，左手抚炉，炉上有壶，其人视端容寂，若听茶声然。", notes: [{ word: "舟子", meaning: "撑船的人" }, { word: "衡", meaning: "同“横”" }, { word: "若", meaning: "好像" }, { word: "端", meaning: "正" }, { word: "然", meaning: "……的样子" }], trans: "船尾横放着一支船桨。船桨的左右两边各有一个撑船的人。在右边的撑船人梳着椎形发髻，仰着脸，左手靠着一根横木，右手扳着右脚趾头，好像在大声呼喊的样子。在左边的撑船人右手拿着一把蒲葵扇，左手抚摸着炉子，炉子上有一把水壶，那个人眼睛正视着（茶炉），神色平静，好像在听茶水烧开了没有的样子。" },
+  { original: "其船背稍夷，则题名其上，文曰“天启壬戌秋日，虞山王毅叔远甫刻”，细若蚊足，钩画了了，其色墨。又用篆章一，文曰“初平山人”，其色丹。", notes: [{ word: "夷", meaning: "平" }, { word: "了了", meaning: "清清楚楚" }], trans: "船的顶部比较平坦，就在上面刻上名字，文字是“天启壬戌秋日，虞山王毅叔远甫刻”，笔画细得像蚊子的腿，一笔一画清清楚楚，字的颜色是黑色。又使用了一枚篆字图章，文字是“初平山人”，字的颜色是红色。" },
+  { original: "通计一舟，为人五；为窗八；为箬篷，为楫，为炉，为壶，为手卷，为念珠各一；对联、题名并篆文，为字共三十有四。而计其长曾不盈寸。盖简桃核修狭者为之。嘻，技亦灵怪矣哉！", notes: [{ word: "曾", meaning: "竟然" }, { word: "盈寸", meaning: "满一寸" }, { word: "简", meaning: "挑选" }, { word: "修狭", meaning: "长而窄" }], trans: "总计这一条船上，刻了五个人；刻了八扇窗户；刻了箬竹叶做的船篷、船桨、炉子、茶壶、手卷、念珠各一件；对联、题名和篆文，刻的字总共三十四个。可是计算它的长度竟然不满一寸。原来是挑选长而窄的桃核雕刻成的。啊，技艺也真是奇妙神奇啊！" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressFill = document.getElementById('progressFill');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'hezhou_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; progressFill.style.width = Math.min(Math.round((done / total) * 100), 100) + '%'; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《核舟记》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 太厉害了！你是古文小达人！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+</body>
+</html>
