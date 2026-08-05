@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《庄子与惠子游于濠梁》 · 25题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #2f7d6e 0%, #4f8a7c 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #2f7d6e; color: #d5e6e0;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #7fb0a0; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #7fb0a0; padding-bottom: 1px; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5e6e0; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #2f7d6e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #4f8a7c; background: #d5e6e0; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #2f7d6e; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #e9f3ef; border-left: 4px solid #4f8a7c;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #2f7d6e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7fb0a0; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7fb0a0; }
+  .seg-orig small { font-size: 10px; color: #7fb0a0; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d5e6e0; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #9fc4b8; background: #eef6f3; }
+  .opts label.selected { border-color: #2f7d6e; background: #d5e6e0; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d5e6e0; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #2f7d6e; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #eef6f3; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #2f7d6e; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #2f7d6e, #4f8a7c); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #2f7d6e; border: 2px solid #9fc4b8; }
+  .btn-secondary:hover { background: #eef6f3; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #2f7d6e, #4f8a7c); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d5e6e0; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #2f7d6e; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d5e6e0; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eef6f3; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #2f7d6e; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #eef6f3; border: 1px solid #d5e6e0; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d5e6e0; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #e9f3ef; border-left: 4px solid #4f8a7c;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #2f7d6e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #7fb0a0; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #7fb0a0; }
+  .seg-orig small { font-size: 10px; color: #7fb0a0; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《庄子与惠子游于濠梁》</h1>
+  <p>部编版八年级下册 · （先秦）《庄子》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#e9f3ef;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cddde6"> <strong>常识</strong> 本文节选自《庄子·秋水》（《庄子集释》，中华书局1961年版）。庄子，名周，战国时期宋国蒙人，道家学派的代表人物；惠子（惠施）是战国时期哲学家，庄子的好友。本文写庄子与惠子在濠水桥上关于"鱼之乐"的著名辩论，庄子从物我相融的审美视角观照外物，惠子则从逻辑推理出发质疑。 </div>
+<div class="container">
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 25 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg">已答 0 / 25 题</div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "庄子与惠子<small>〔惠子〕即惠施，战国时期哲学家，庄子的好友。</small>游于濠梁<small>〔濠梁〕濠水上的桥。濠，水名，在今安徽凤阳。</small>之上。庄子曰：“鲦鱼出游<u>从容</u>，<u>是</u>鱼之乐也。”惠子曰：“子非鱼，<u>安</u>知鱼<u>之</u>乐？”庄子曰：“子非我，安知我不知鱼之乐？”惠子曰：“我非子，<u>固</u>不知子矣；子固非鱼也，子<u>之</u>不知鱼之乐，<u>全</u>矣！”" },
+  { tag: "字词释义", q: '“鲦鱼出游<span class="highlight">从容</span>”中“<span class="highlight">从容</span>”的意思是？', options: ["悠闲自得", "从容不迫", "急急忙忙", "焦躁不安"], answer: 0, explain: '“从容”意为“悠闲自得”。“出游从容”即在水里悠闲自在地游动。' },
+  { tag: "字词释义", q: '“<span class="highlight">是</span>鱼之乐也”中“<span class="highlight">是</span>”的意思是？', options: ["表判断", "这", "正确", "这样"], answer: 1, explain: '“是”是指示代词，这。“是鱼之乐也”即这就是鱼的快乐。' },
+  { tag: "字词释义", q: '“子非鱼，<span class="highlight">安</span>知鱼之乐”中“<span class="highlight">安</span>”的意思是？', options: ["哪里", "怎么", "安全", "为何"], answer: 1, explain: '“安”意为“怎么”。“安知鱼之乐”即怎么知道鱼的快乐。' },
+  { tag: "字词释义", q: '“安知鱼<span class="highlight">之</span>乐”中“<span class="highlight">之</span>”的用法是？', options: ["结构助词，的", "代词，它", "取消句子独立性", "动词，去"], answer: 0, explain: '“之”是结构助词，的。“鱼之乐”即鱼的快乐。' },
+  { tag: "字词释义", q: '“我非子，<span class="highlight">固</span>不知子矣”中“<span class="highlight">固</span>”的意思是？', options: ["坚固", "固然", "一定", "坚持"], answer: 1, explain: '“固”意为“固然、本来”。“固不知子矣”即固然不知道你的（想法）。' },
+  { tag: "字词释义", q: '“子<span class="highlight">之</span>不知鱼之乐”中“<span class="highlight">之</span>”的用法是？', options: ["结构助词，的", "取消句子独立性", "代词，它", "动词，去"], answer: 1, explain: '“之”是助词，用在主谓之间，取消句子独立性。"子之不知鱼之乐"即你不知道鱼的快乐。' },
+  { tag: "字词释义", q: '“子之不知鱼之乐，<span class="highlight">全</span>矣”中“<span class="highlight">全</span>”的意思是？', options: ["全部", "完全", "周全", "保全"], answer: 1, explain: '“全”意为“完全、完备”。“全矣”即（这说法）完全确定了。' },
+  { seg: "庄子曰：“请<u>循</u>其<u>本</u>。子曰‘汝<u>安</u>知鱼乐’云者，<u>既</u>已知吾知<u>之</u>而问我，我知之濠上也。”" },
+  { tag: "字词释义", q: '“请<span class="highlight">循</span>其本”中“<span class="highlight">循</span>”的意思是？', options: ["遵循", "追溯", "循环", "按照"], answer: 1, explain: '“循”意为“沿循、追溯”。“循其本”即追溯话题的本源。' },
+  { tag: "字词释义", q: '“请循其<span class="highlight">本</span>”中“<span class="highlight">本</span>”的意思是？', options: ["本来", "本源", "基础", "书籍"], answer: 1, explain: '“本”意为“本源、根本”。“循其本”即追溯到话题的本源。' },
+  { tag: "字词释义", q: '“子曰‘汝<span class="highlight">安</span>知鱼乐’云者”中“<span class="highlight">安</span>”的意思是？', options: ["哪里", "怎么", "安全", "为何"], answer: 1, explain: '“安”意为“怎么”。“汝安知鱼乐”即你怎么知道鱼快乐。' },
+  { tag: "字词释义", q: '“<span class="highlight">既</span>已知吾知之而问我”中“<span class="highlight">既</span>”的意思是？', options: ["既然", "已经", "即使", "不久"], answer: 1, explain: '“既”意为“已经”。“既已知吾知之”即已经知道我知道（鱼快乐）这件事。' },
+  { tag: "字词释义", q: '“已知吾知<span class="highlight">之</span>而问我”中“<span class="highlight">之</span>”的意思是？', options: ["结构助词，的", "代词，它", "取消句子独立性", "动词，去"], answer: 1, explain: '“之”是代词，代“鱼之乐”（鱼快乐这件事）。' },
+  { tag: "内容理解", q: '“庄子与惠子游于濠梁之上”属于哪种文言句式？', options: ["判断句", "状语后置", "宾语前置", "被动句"], answer: 1, explain: '“于濠梁之上”是后置的介词短语（状语），正常语序为“庄子与惠子于濠梁之上游”，属状语后置句。' },
+  { tag: "内容理解", q: '“是鱼之乐也”句式判断正确的一项是？', options: ["省略句", "判断句", "状语后置", "反问句"], answer: 1, explain: '“是”作主语（这），“……也”表判断，是判断句。' },
+  { tag: "内容理解", q: '下列对倒装句“庄子与惠子游于濠梁之上”调整语序正确的一项是？', options: ["濠梁之上庄子与惠子游", "庄子与惠子于濠梁之上游", "庄子于濠梁之上与惠子游", "于濠梁之上游庄子与惠子"], answer: 1, explain: '“于濠梁之上”是后置状语，提前到谓语“游”前，正常语序为“庄子与惠子于濠梁之上游”。' },
+  { tag: "内容理解", q: '下列不属于判断句的一项是？', options: ["是鱼之乐也", "子固非鱼也", "鹏之背，不知其几千里也", "我知之濠上也"], answer: 2, explain: 'C 为陈述句，“鹏之背，不知其几千里也”只是描述鹏的脊背大小，虽有“也”但不是判断句。A“是……也”、B“……也”（否定判断）均为判断句。' },
+  { tag: "内容理解", q: '对“鲦鱼出游从容，是鱼之乐也”翻译最准确的一项是？', options: ["白鲦鱼游出去十分从容，这是鱼的快乐。", "鲦鱼悠闲自在地游动，这就是鱼的快乐啊。", "鲦鱼出门游玩不慌不忙，是鱼儿快乐的地方。", "鲦鱼游动从容，所以鱼很快乐。"], answer: 1, explain: '“出游从容”即悠闲自在地游动，“是鱼之乐也”即这就是鱼的快乐。B 最准确。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["子非鱼，安知鱼之乐：你不是鱼，怎么知道鱼的快乐？", "我非子，固不知子矣：我不是你，固然不知道你。", "子固非鱼也，子之不知鱼之乐，全矣：你本来就不是鱼，你不知道鱼的快乐，是完全肯定的。", "请循其本：请遵循书本上的道理。"], answer: 3, explain: 'D 误译。“请循其本”意为“请追溯话题的本源”，不是“遵循书本上的道理”。' },
+  { tag: "内容理解", q: '对“既已知吾知之而问我，我知之濠上也”翻译理解正确的一项是？', options: ["你既然知道我懂鱼，却还质问我，我在濠水桥上知晓这件事。", "你早就知道鱼很快乐，跑来问我，我在桥上看见鱼。", "你已经认定我不懂鱼，所以追问我，我在濠梁观察鱼。", "你明明知道鱼的快乐，还来试探我，我在桥上得知。"], answer: 0, explain: '“既已知吾知之”即（你）已经知道我知道（鱼快乐）这件事；“我知之濠上也”即我是在濠水的桥上知道的。A 最准确。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["庄子与惠子 / 游于濠梁之上", "鲦鱼出游 / 从容，是鱼 / 之乐也", "子之不知 / 鱼之乐全矣", "既已知吾 / 知之而问我"], answer: 0, explain: 'A 正确，主语后停顿。B 应为“鲦鱼出游从容 / 是鱼之乐也”；C 应为“子之不知鱼之乐 / 全矣”；D 应为“既已知吾知之 / 而问我”。' },
+  { tag: "断句", q: '下列断句划分有误的一项是？', options: ["子 / 非鱼，安知 / 鱼之乐", "请 / 循其本", "我非子 / 固不知子矣", "我知之 / 濠上也"], answer: 3, explain: 'D 有误。“我知之濠上也”意为“我是在濠水的桥上知道的”，“濠上”是“知”的处所补语（省略介词“于”），正确停顿为“我知之濠上 / 也”，不应在“之”后断开。' },
+  { tag: "内容理解", q: '惠子说“子非鱼，安知鱼之乐”，句中“安”的本意与追问角度是？', options: ["哪里，询问知晓鱼之乐的地点", "怎么，询问知晓鱼之乐的方式、依据", "难道，反问庄子不该揣测鱼", "平安，质疑庄子心态浮躁"], answer: 1, explain: '“安”本意为“怎么”，惠子是追问庄子凭什么（依据什么）知道鱼快乐，从逻辑推理的角度发问。' },
+  { tag: "内容理解", q: '庄子结尾“请循其本”偷换“安”的词义，将“安知”理解为？', options: ["怎么知道", "凭什么知道", "在哪里知道", "为何知道"], answer: 2, explain: '庄子将惠子“安知”的“怎么（凭什么）”偷换为“在哪里”，从而回答“我知之濠上也”（我在濠水桥上知道的），巧妙地化解了惠子的诘难。' },
+  { tag: "内容理解", q: '庄子看见鱼“出游从容”便判定“是鱼之乐”，体现他怎样的思想？', options: ["凡事必须依靠逻辑推理才能得出结论", "物我相融，以自身心境投射外物，直观感受自然之美", "只有亲身变成鱼，才能知晓鱼的感受", "世间万物都拥有与人相同的喜怒哀乐"], answer: 1, explain: '庄子从自身悠闲愉悦的心境出发，移情于鱼，认为鱼也快乐，体现了物我相融、以心观物的审美视角。' },
+  { tag: "内容理解", q: '文章以二人辩论收尾，没有给出统一结论，写作用意是？', options: ["说明二人辩论无果，没有意义", "对比两种认知世界的方式：惠子理性逻辑，庄子感性审美", "暗示庄子的观点才是唯一正确答案", "批判惠子死板，不懂欣赏自然"], answer: 1, explain: '辩论无定论，正是要展现两种认知方式的差异：惠子以逻辑理性追问，庄子以审美直觉感受，二者各有价值，无需分出对错。' },
+  { tag: "内容理解", q: '下列对全文主旨理解最深刻的一项是？', options: ["本文只是记录庄子与惠子一场无聊的口舌之争", "通过濠梁观鱼的辩论，展现惠子强大的逻辑思辨能力", "借辩论区分两种人生视角：惠子重客观认知，庄子重精神与自然相融的审美体验", "证明人可以不用亲身经历，就能感知万物的情绪"], answer: 2, explain: '本文借濠梁之辩，展现惠子重客观逻辑的认知方式与庄子重精神体验、物我相融的审美方式的对立与互补，蕴含深刻的哲学意味。' }
+];
+
+const sentenceData = [
+  { original: "庄子与惠子游于濠梁之上。庄子曰：“鲦鱼出游从容，是鱼之乐也。”惠子曰：“子非鱼，安知鱼之乐？”庄子曰：“子非我，安知我不知鱼之乐？”惠子曰：“我非子，固不知子矣；子固非鱼也，子之不知鱼之乐，全矣！”", notes: [{ word: "从容", meaning: "悠闲自得" }, { word: "是", meaning: "代词，这" }, { word: "安", meaning: "怎么" }, { word: "之", meaning: "结构助词，的" }, { word: "固", meaning: "固然，本来" }, { word: "之", meaning: "助词，取消句子独立性" }, { word: "全", meaning: "完全，完备" }], trans: "庄子和惠子在濠水的桥上游玩。庄子说：“鲦鱼在河水中游得多么悠闲自得，这就是鱼儿的快乐呀。”惠子说：“你又不是鱼，怎么知道鱼是快乐的呢？”庄子说：“你不是我，怎么知道我不知道鱼儿的快乐呢？”惠子说：“我不是你，固然不知道你（的想法）；你本来就不是鱼，你不知道鱼的快乐，这是可以完全确定的！”" },
+  { original: "庄子曰：“请循其本。子曰‘汝安知鱼乐’云者，既已知吾知之而问我，我知之濠上也。”", notes: [{ word: "循", meaning: "沿循，追溯" }, { word: "本", meaning: "本源，根本" }, { word: "安", meaning: "怎么" }, { word: "既", meaning: "已经" }, { word: "之", meaning: "代词，代“鱼之乐”" }], trans: "庄子说：“请追溯话题本源。你说‘你怎么知道鱼快乐’这样的话，说明你已经知道我知道鱼快乐才来问我。我是在濠水的桥上知道的啊。”" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'haoliang_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《庄子与惠子游于濠梁》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+</body>
+</html>
