@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《虽有嘉肴》 · 20题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #b85c38 0%, #a06a42 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #b85c38; color: #f0dcc9;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #c79a72; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #c79a72; padding-bottom: 1px; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0dcc9; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #b85c38; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #a06a42; background: #f0dcc9; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #b85c38; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #f7ecdd; border-left: 4px solid #a06a42;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #b85c38; border-radius: 4px;
+  }
+  .seg-orig strong { color: #c79a72; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #c79a72; }
+  .seg-orig small { font-size: 10px; color: #c79a72; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #f0dcc9; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #d9b68f; background: #faf1e4; }
+  .opts label.selected { border-color: #b85c38; background: #f0dcc9; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #f0dcc9; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #b85c38; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #faf1e4; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #b85c38; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #b85c38, #a06a42); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #b85c38; border: 2px solid #d9b68f; }
+  .btn-secondary:hover { background: #faf1e4; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #b85c38, #a06a42); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0dcc9; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #b85c38; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f0dcc9; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #faf1e4; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #b85c38; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #faf1e4; border: 1px solid #f0dcc9; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #f0dcc9; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #f7ecdd; border-left: 4px solid #a06a42;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #b85c38; border-radius: 4px;
+  }
+  .seg-orig strong { color: #c79a72; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; border-bottom: 1.5px dotted #c79a72; }
+  .seg-orig small { font-size: 10px; color: #c79a72; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>📖 《虽有嘉肴》</h1>
+  <p>部编版八年级下册 · （西汉）《礼记》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f7ecdd;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #eaddc6"> <strong>常识</strong> 本文节选自《礼记·学记》（《礼记集解》，中华书局1989年版）。《礼记》是儒家经典之一，相传由西汉戴圣编纂。《学记》是中国古代最早的一篇专门论述教育、教学问题的论著。本文论述了"教学相长"的道理，即教与学是相互促进的。 </div>
+<div class="container">
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 20 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg">已答 0 / 20 题</div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const questions = [
+  { seg: "虽有<u>嘉</u>肴，弗食，不知其<u>旨</u>也；虽有<u>至</u>道，弗学，不知其善也。<u>是故</u>学然后知不足，教<u>然后</u>知<u>困</u>。" },
+  { tag: "字词释义", q: '“虽有<span class="highlight">嘉</span>肴”中“<span class="highlight">嘉</span>”的意思是？', options: ["美好", "夸奖", "善良", "嘉奖"], answer: 0, explain: '“嘉”意为“美好”。“嘉肴”即美味的菜肴。' },
+  { tag: "字词释义", q: '“不知其<span class="highlight">旨</span>也”中“<span class="highlight">旨</span>”的意思是？', options: ["主旨", "味美", "旨意", "目的"], answer: 1, explain: '“旨”意为“味美”。“不知其旨”即不知道它味道甘美。' },
+  { tag: "字词释义", q: '“虽有<span class="highlight">至</span>道”中“<span class="highlight">至</span>”的意思是？', options: ["到达", "最好的", "至于", "终点"], answer: 1, explain: '“至”意为“极、最好的”。“至道”即最好的道理。' },
+  { tag: "字词释义", q: '“<span class="highlight">是故</span>学然后知不足”中“<span class="highlight">是故</span>”的意思是？', options: ["因为", "因此", "虽然", "然而"], answer: 1, explain: '“是故”意为“因此”。“是故学然后知不足”即因此学习之后才知道自己的不足。' },
+  { tag: "字词释义", q: '“教<span class="highlight">然后</span>知困”中“<span class="highlight">然后</span>”的意思是？', options: ["这样以后", "然而", "接着", "于是"], answer: 0, explain: '“然后”意为“这样以后”。“教然后知困”即教导别人之后才知道自己有困惑。' },
+  { tag: "字词释义", q: '“教然后知<span class="highlight">困</span>”中“<span class="highlight">困</span>”的意思是？', options: ["困难", "困惑", "困乏", "困境"], answer: 1, explain: '“困”意为“困惑”。“知困”即知道自己有困惑的地方。' },
+  { seg: "知不足，然后能自<u>反</u>也；知困，然后能自强也。<u>故</u>曰：教学相<u>长</u>也。《兑命<small>〔《兑命》〕即《说命》，《尚书》中的一篇。</small><small>〔兑(yuè)〕同“说”。</small>》曰“<u>学</u>学半”，<u>其</u>此<u>之</u>谓乎！" },
+  { tag: "字词释义", q: '“然后能自<span class="highlight">反</span>也”中“<span class="highlight">反</span>”的意思是？', options: ["反对", "反省", "返回", "反复"], answer: 1, explain: '“反”意为“反省”。“自反”即自我反思。' },
+  { tag: "字词释义", q: '“<span class="highlight">故</span>曰”中“<span class="highlight">故</span>”的意思是？', options: ["原因", "所以", "过去", "故意"], answer: 1, explain: '“故”意为“所以”。“故曰”即所以说。' },
+  { tag: "字词释义", q: '“教学相<span class="highlight">长</span>也”中“<span class="highlight">长</span>”的意思是？', options: ["长久", "增长", "促进", "生长"], answer: 1, explain: '“长”读 zhǎng，意为“增长、促进”。“教学相长”即教与学相互促进。' },
+  { tag: "字词释义", q: '“<span class="highlight">学</span>学半”中第一个“<span class="highlight">学</span>”的读音和意思是？', options: ["xué，学习", "xiào，教导", "xiào，学习", "xué，教导"], answer: 1, explain: '第一个“学”读 xiào，同“敩”，意为“教导”。“学（xiào）学半”即教导别人，占自己学习的一半。' },
+  { tag: "字词释义", q: '“<span class="highlight">其</span>此之谓乎”中“<span class="highlight">其</span>”的用法是？', options: ["代词，它", "语气词，大概", "代词，他的", "副词，其中"], answer: 1, explain: '“其”是语气词，表推测，大概。“其此之谓乎”即大概说的就是这个道理吧。' },
+  { tag: "字词释义", q: '“其此<span class="highlight">之</span>谓乎”中“<span class="highlight">之</span>”的用法是？', options: ["结构助词，的", "宾语前置的标志", "代词，它", "动词，去"], answer: 1, explain: '“之”是助词，宾语前置的标志。“此之谓”即“谓此”，宾语“此”前置，意为“说的就是这个”。' },
+  { tag: "内容理解", q: '对省略句“弗食，不知其旨也”补全省略成分正确的一项是？', options: ["（吾）弗食，（吾）不知其旨也", "（嘉肴）弗食，（嘉肴）不知其旨也", "（道）弗食，（人）不知其旨也", "（人）弗食，（嘉肴）不知其旨也"], answer: 0, explain: '“弗食”“不知”都省略了主语“人”（吾），即（人）不吃，（人）不知道它的味美。A 补充正确。' },
+  { tag: "内容理解", q: '对“虽有嘉肴，弗食，不知其旨也”翻译最准确的一项是？', options: ["虽然有美味的肉食，不吃它，就不知道它味道甘美。", "即使有好菜，没人品尝，就没有美味。", "就算有佳肴，不去做饭，就体会不到美味。", "即使有美味菜肴，不吃，就不知道它的旨意。"], answer: 0, explain: '“虽有”即虽然（即使）有；“弗食”即不吃；“不知其旨”即不知道它味道甘美。A 最准确。D 误将“旨”译为“旨意”。' },
+  { tag: "内容理解", q: '下列翻译有误的一项是？', options: ["虽有至道，弗学，不知其善也：即使有最好的道理，不去学习，就不知道它的好处。", "是故学然后知不足，教然后知困：所以学习之后才知道自己的不足，教人之后才知道自己有困惑。", "知不足，然后能自反也：知道自己的不足，然后才能自我反思。", "学学半：学习是一半的乐趣。"], answer: 3, explain: 'D 误译。“学（xiào）学半”意为“教导别人，占自己学习的一半”，不是“学习是一半的乐趣”。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["虽有 / 嘉肴，弗食，不知 / 其旨也", "是故学 / 然后知不足", "教然后 / 知困", "《兑命》曰：学 / 学半"], answer: 2, explain: 'C 正确，“教然后”（教导之后）作时间状语，后停顿。A 应为“虽有嘉肴 / 弗食”；B 应为“是故 / 学然后知不足”（“是故”是句首连接词）；D 中“学学半”应连读（第一个“学”读 xiào，通“敩”，教导）。' },
+  { tag: "内容理解", q: '文章开篇用“虽有嘉肴”设喻，作用是？', options: ["单纯介绍美食，丰富文章内容", "以品尝佳肴类比学习道理，通俗易懂，引出下文教与学的论述", "说明美食和学习一样，都需要别人分享", "表达作者十分喜爱美味肉食"], answer: 1, explain: '以“吃美味的菜才知道味道”类比“学习才知道道理的好处”，设喻说理，通俗易懂，自然引出下文对教与学的论述。' },
+  { tag: "内容理解", q: '文中“自反”“自强”两种收获，来源是？', options: ["只靠独自读书思考", "学习与教导他人的实践", "阅读古籍《兑命》", "和他人辩论道理"], answer: 1, explain: '“知不足”源于学习，“知困”源于教导他人，二者都来自学习与教导的实践，进而能“自反”“自强”。' },
+  { tag: "内容理解", q: '关于本文论证思路，说法正确的一项是？', options: ["先讲道理，再举美食事例，最后引用古文总结", "先类比设喻，再分析学与教的收获，最后引用典籍印证中心论点", "全程引用古书，没有举例说理", "先写教学的难处，再写学习的好处"], answer: 1, explain: '本文先以“嘉肴”设喻类比，再分析“学”“教”的收获（知不足、知困），推导出“教学相长”的中心论点，最后引用《兑命》印证。' },
+  { tag: "内容理解", q: '下列对全文主旨概括无误的一项是？', options: ["本文借美食告诉人们，生活要懂得品尝美味", "教与学相辅相成，实践才能发现自身不足", "文章主要劝诫人们多多教导他人，不用自学", "本文批判不学习、不教人、不懂反思的人"], answer: 1, explain: '本文论述“教学相长”的道理：学习与实践（教人）才能发现不足与困惑，教与学相互促进、相辅相成。' }
+];
+
+const sentenceData = [
+  { original: "虽有嘉肴，弗食，不知其旨也；虽有至道，弗学，不知其善也。是故学然后知不足，教然后知困。", notes: [{ word: "嘉", meaning: "美好" }, { word: "旨", meaning: "味美" }, { word: "至", meaning: "极，最好的" }, { word: "是故", meaning: "因此" }, { word: "然后", meaning: "这样以后" }, { word: "困", meaning: "困惑" }], trans: "虽然有美味可口的菜肴，不吃，就不知道它的味美。虽然有最好的道理，不学，就不知道它的好处。因此学习之后才知道自己的不足，教导别人之后才知道自己有困惑的地方。" },
+  { original: "知不足，然后能自反也；知困，然后能自强也。故曰：教学相长也。《兑命》曰“学学半”，其此之谓乎！", notes: [{ word: "反", meaning: "反省" }, { word: "故", meaning: "所以" }, { word: "长", meaning: "增长，促进" }, { word: "兑", meaning: "同“说”，读 yuè" }, { word: "学", meaning: "同“敩”，教导，读 xiào" }, { word: "其", meaning: "语气词，大概" }, { word: "之", meaning: "宾语前置的标志" }], trans: "知道了自己的不足，然后才能自我反思。知道了自己困惑的地方，然后才能自我勉励。所以说：教与学是相互推动、相互促进的。《兑命》说“教别人，占自己学习的一半”，大概说的就是这个道理吧！" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'jiayao_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《虽有嘉肴》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+</body>
+</html>
