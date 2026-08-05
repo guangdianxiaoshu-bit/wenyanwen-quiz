@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>写作技法自测 · 20题</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:sans-serif;background:#f8f5f0;padding:16px;max-width:640px;margin:0 auto;color:#333;line-height:1.8}
+h1{text-align:center;color:#5a3e2b;font-size:22px;margin:16px 0 6px}
+.sub{text-align:center;color:#8b7355;font-size:13px;margin-bottom:18px}
+.q{background:#fff;border:1px solid #ede7dd;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.qhead{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.qnum{background:#5a3e2b;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.qtag{font-size:11px;color:#8b7355;border:1px solid #d4c4a8;border-radius:10px;padding:0 8px}
+.qtext{font-size:15px;margin-bottom:10px}
+.opt{display:block;border:1px solid #e0d5c5;border-radius:8px;padding:8px 12px;margin-bottom:6px;font-size:14px;cursor:pointer;transition:all .15s}
+.opt:hover{border-color:#c4a87c}
+.opt.sel{border-color:#5a3e2b;background:#f5eee2}
+.opt.correct{border-color:#2e8b57;background:#e8f5ec}
+.opt.wrong{border-color:#c0392b;background:#fdecea}
+.explain{display:none;margin-top:8px;padding:8px 12px;background:#f7f3ea;border-left:3px solid #8b7355;font-size:13px;color:#555}
+.explain.show{display:block}
+.explain b{color:#5a3e2b}
+#btn{display:block;width:100%;padding:14px;background:#5a3e2b;color:#fff;border:none;border-radius:12px;font-size:16px;cursor:pointer;margin:16px 0}
+#btn:disabled{background:#c4a87c;cursor:default}
+#result{display:none;background:#fff;border:1px solid #ede7dd;border-radius:12px;padding:18px;margin-bottom:16px;text-align:center}
+#result .score{font-size:34px;color:#5a3e2b;font-weight:bold}
+#result .msg{font-size:14px;color:#666;margin-top:6px}
+#result .remark{margin-top:10px;font-size:13px;color:#8b7355;background:#f7f3ea;padding:8px;border-radius:8px}
+</style>
+</head>
+<body>
+<h1>✍️ 写作技法自测</h1>
+<div class="sub">依据《节日》修改历程 · 共 20 题 · 提交后自动批改并附解析</div>
+<div id="list"></div>
+<button id="btn">提交并批改</button>
+<div id="result"></div>
+
+<script>
+// QDATA: {c:类别, q:题干, o:[选项], a:正确索引(0-3), e:解析}
+var QDATA = [
+{c:"在场感",q:"《节日》初稿最大的问题是什么？",o:["语言不够优美","缺少“我”的在场，读者感受不到作者与春节的关系","篇幅太短","素材太少"],a:1,e:"初稿像一篇“春节习俗说明书”，作者只在“爸爸给了我一把香”处出现了一次。写作要有“我”——让读者跟着“我”的眼睛看、跟着“我”的心感受。"},
+{c:"在场感",q:"下面哪一项是“让‘我’进入文章”的正确做法？",o:["在结尾加一句“我很开心”","开头就说“我”的观点","让“我”以参与者、评论者、联想者的身份贯穿全文","每段都写“我觉得”"],a:2,e:"《节日》里“妈，我来帮你”、洗菜、问爸爸为什么拜神——都是“我”在行动、在感受。不是贴标签式地喊“我”，而是让“我”真实地参与进去。"},
+{c:"在场感",q:"写人物时，“具体人物”比“群体描写”好在哪里？",o:["字数更多","读者能记住一个人，从而产生情感连接","写法更简单","不需要观察生活"],a:1,e:"群体描写（“几个读书人”）读者记不住任何人；锁定一个人（戴眼镜的大学生、蓝条纹衬衫的老人），读者才会开始在意他。"},
+{c:"在场感",q:"按“时间顺序”组织素材的主要作用是？",o:["让文章更长","让素材有主次、有起伏","只是为了记录时间","必须严格按早中晚写"],a:1,e:"《节日》按正午→傍晚→入夜推进，形成“安静→热闹→安静”的起伏，避免了素材的平铺罗列。"},
+{c:"景别",q:"“全景”在写作中的作用是？",o:["交代环境，把读者带入场景","捕捉人物表情","放大细节","表现声音"],a:0,e:"开篇“大街小巷到处洋溢着过年的喜庆”是全景——先把读者带入整个春节的场面，再收进自家厨房。"},
+{c:"景别",q:"“近景”主要捕捉的是什么？",o:["大环境","人物表情","手的动作","时间变化"],a:1,e:"“爸爸捏着红纸，眼睛瞪大了”是近景——让读者看到人物脸上细微的神情。"},
+{c:"景别",q:"“特写”最适合用来表现什么？",o:["环境氛围","完整过程","细节和情感","事件背景"],a:2,e:"“小心翼翼地贴上去”是手的特写，“香灰烫得我甩甩手”是触觉特写——一个细节，胜过千言万语。"},
+{c:"景别",q:"一篇作文如果全程只用一个景别（比如全用中景），会怎样？",o:["画面很清晰","画面平、没有层次","更有电影感","没有任何影响"],a:1,e:"就像摄影机一个机位拍到底。好的文章要有全景、中景、近景、特写的切换组合，画面才有层次。"},
+{c:"剪辑",q:"“跳切”是什么意思？",o:["把文章分成几段","删掉无用的过渡画面，只拼接关键画面","严格按时间顺序写","把每个细节都写全"],a:1,e:"《节日》里“这些活平时也干，只是过年更热闹些”——煮饭、取锅、盛米这些普通操作一句带过，把篇幅留给最特别的场景。"},
+{c:"剪辑",q:"“蒙太奇”的作用是？",o:["删减内容","把不同时空的画面拼在一起，产生新的意义","让文章变短","专门用来写对话"],a:1,e:"写处理鱼时剪进“买鱼说吉祥话”的画面，祭拜时由烟想到“爷爷当年也是这样贴的吗”——两条时间线叠加，文章有了纵深。"},
+{c:"剪辑",q:"“取舍 / 主心骨”是指？",o:["想写什么就写什么","先定主题，再删掉与主题无关的素材","只保留最长的段落","删掉所有细节"],a:1,e:"《节日》删掉了买鱼养鱼线，聚焦祭拜——因为主心骨是“那炷香、那位神、那个仪式”。不能两个都要。"},
+{c:"剪辑",q:"“重点放大”的正确做法是？",o:["每段篇幅都相同","灵魂场景给足篇幅，次要内容跳切","只写一个场景","结尾多写几段"],a:1,e:"祭拜段是《节日》的灵魂，篇幅最长；煮饭、洗菜等背景一笔带过。剪辑不是什么都删，是删掉次要的，给重要的留够地方。"},
+{c:"语言",q:"“对话要有来有回”是什么意思？",o:["每段都要有对话","有人说话，对方要有回应（语言或动作）","对话越长越好","必须两个人轮流说话"],a:1,e:"妈妈说“孩子长大啦”，“我”低头把菜又洗了一遍：“哪有……”——一个动作、一句回应，对话才不会“掉线”。"},
+{c:"语言",q:"“台词 + 神态”组合的好处是？",o:["字数变多","同样的台词配不同神态，能表达不同感情","写法更简单","不需要写动作"],a:1,e:"爸爸“摇头盯着香头”说“不清楚”是神秘，爸爸“叹口气看向门外”说“不清楚”是怅然——同一个台词，不同的神态，感情完全不同。"},
+{c:"心理",q:"“心理描写要具体”指的是？",o:["多用心理词","把心里那句“话”原原本本写出来","写别人的心理活动","用“很生气”“很开心”概括"],a:1,e:"“神长什么样？像山海经里的怪兽吗？神会保佑我考满分吗？”——把心里真实的念头一个个写出来，而不是笼统地说“我很疑惑”。"},
+{c:"心理",q:"“认知成长”指的是？",o:["行为上的改变","认知的升级——对世界有了新的理解","学会一项新技能","长高了、长大了"],a:1,e:"《节日》里“我”从“跟着做”的懵懂，到“第一次与‘它’有了联系”——不是学会了新动作，而是对“传承”有了新的理解。"},
+{c:"结尾",q:"“不喊口号”的意思是？",o:["结尾不写字","不用“我明白了XX道理”式总结，而是给画面、留余味","结尾越短越好","结尾必须写感叹句"],a:1,e:"“那支香一直立在那，燃烧着，燃烧着”——不给结论，读者自己会感受。道理藏进画面，叫余味；道理喊出来，叫说教。"},
+{c:"结尾",q:"“首尾呼应”的好处是？",o:["内容重复","让文章有始有终、结构完整","节省字数","让开头更重要"],a:1,e:"《节日》以“咚咚咚”的切菜声开场，以“香火气”收束——开头和结尾的意象呼应，文章有了完整的结构。"},
+{c:"综合",q:"《节日》里“爸爸弯腰放饭盆时，手在膝盖上撑了一下”——这句话主要运用了什么？",o:["全景描写","动作细节特写，暗示时间流逝","心理描写","蒙太奇"],a:1,e:"一个“撑膝盖”的动作，不点破“爸爸老了”，读者自己会想到——以小见大，一个细节胜过千言万语。"},
+{c:"综合",q:"老师帮学生补充了“撑膝盖”“爸爸手里的香顿了一下”等句子。这些句子教不会，是因为？",o:["技巧太复杂","它们依赖阅历与体验，不是纯技法","学生不够聪明","句子太长"],a:1,e:"技法可以教（景别、剪辑、对话），阅历只能等——观察父母变老、理解传承的重量，需要时间。学生写不出，不是不会技巧，是没有相应的生活体验。"}
+];
+
+// 渲染
+var list = document.getElementById("list");
+var answers = new Array(QDATA.length).fill(-1);
+QDATA.forEach(function(q, i) {
+  var div = document.createElement("div");
+  div.className = "q";
+  var head = document.createElement("div");
+  head.className = "qhead";
+  var num = document.createElement("div");
+  num.className = "qnum";
+  num.textContent = i + 1;
+  var tag = document.createElement("span");
+  tag.className = "qtag";
+  tag.textContent = q.c;
+  head.appendChild(num);
+  head.appendChild(tag);
+  var text = document.createElement("div");
+  text.className = "qtext";
+  text.textContent = q.q;
+  div.appendChild(head);
+  div.appendChild(text);
+  q.o.forEach(function(opt, j) {
+    var label = document.createElement("div");
+    label.className = "opt";
+    label.textContent = "ABCD"[j] + ". " + opt;
+    label.onclick = function() {
+      answers[i] = j;
+      var opts = div.querySelectorAll(".opt");
+      for (var k = 0; k < opts.length; k++) {
+        opts[k].classList.remove("sel");
+      }
+      label.classList.add("sel");
+    };
+    div.appendChild(label);
+  });
+  var exp = document.createElement("div");
+  exp.className = "explain";
+  exp.innerHTML = "<b>解析：</b>" + q.e;
+  div.appendChild(exp);
+  list.appendChild(div);
+});
+
+// 提交
+document.getElementById("btn").onclick = function() {
+  var unanswered = 0;
+  QDATA.forEach(function(q, i) {
+    if (answers[i] === -1) unanswered++;
+  });
+  if (unanswered > 0) {
+    alert("还有 " + unanswered + " 题未作答，请完成后再提交。");
+    return;
+  }
+  var score = 0;
+  var cards = list.querySelectorAll(".q");
+  QDATA.forEach(function(q, i) {
+    var opts = cards[i].querySelectorAll(".opt");
+    var exp = cards[i].querySelector(".explain");
+    for (var j = 0; j < opts.length; j++) {
+      opts[j].classList.remove("sel", "correct", "wrong");
+      if (j === q.a) opts[j].classList.add("correct");
+      else if (j === answers[i]) opts[j].classList.add("wrong");
+    }
+    exp.classList.add("show");
+    if (answers[i] === q.a) score++;
+  });
+  var res = document.getElementById("result");
+  var msg, remark;
+  if (score >= 18) { msg = "🎉 技法掌握得很扎实！"; remark = "五轮修改的技法你基本都吸收到位了，继续保持，下一篇作文试着都用上！"; }
+  else if (score >= 14) { msg = "👍 掌握良好，还有提升空间"; remark = "错题对应的技法，翻一翻《节日》修改历程，对照解析再想想：那篇作文里这个技法用在哪里、为什么有效。"; }
+  else if (score >= 10) { msg = "📖 基础不错，继续加油"; remark = "建议把错题涉及的技法（景别、剪辑、对话……）逐个回看，结合原文段落理解，别只背概念。"; }
+  else { msg = "🌱 别灰心，技法需要慢慢积累"; remark = "写作技法不是一次能学会的。建议先挑最薄弱的一两个技法，对照《节日》原文和解析，读懂、练会，再往下走。"; }
+  res.style.display = "block";
+  res.innerHTML = '<div class="score">' + score + ' / ' + QDATA.length + '</div><div class="msg">' + msg + '</div><div class="remark">' + remark + '</div>';
+  res.scrollIntoView({behavior:"smooth"});
+  document.getElementById("btn").disabled = true;
+  document.getElementById("btn").textContent = "已完成，可刷新重做";
+};
+</script>
+</body>
+</html>
