@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>《床头捉刀人》 · 12题</title>
+
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+
+    background: #f2f7f4;
+
+    color: #2c2c2c;
+
+    padding: 0 0 48px;
+
+    line-height: 1.8;
+
+  }
+
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+
+
+  .banner {
+
+    background: linear-gradient(135deg, #3f6f5f 0%, #4f8070 100%);
+
+    color: #fff;
+
+    text-align: center;
+
+    padding: 28px 20px 22px;
+
+  }
+
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .banner .badge {
+
+    display: inline-block; background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+
+  }
+
+
+
+  .sticky-original {
+
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+
+    background: #3f6f5f; color: #d9e7df;
+
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+
+    max-height: 35vh; overflow-y: auto;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+  }
+
+  .sticky-original strong { color: #a8c4b8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+
+  .sticky-original u { text-decoration: none; border-bottom: 1.5px dotted #a8c4b8; padding-bottom: 1px; }
+
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d9e7df; }
+
+  .q-card.correct { border-left: 4px solid #4caf50; }
+
+  .q-card.wrong { border-left: 4px solid #e53935; }
+
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #3f6f5f; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+
+  .q-tag { font-size: 11px; color: #4f8070; background: #d9e7df; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+
+  .q-text .highlight { color: #3f6f5f; font-weight: 600; }
+
+
+
+  .opts { margin-top: 4px; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d9e7df; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+
+  .opts label:hover { border-color: #7fa596; background: #eef5f1; }
+
+  .opts label.selected { border-color: #3f6f5f; background: #d9e7df; }
+
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+
+  .opts input[type="radio"] { display: none; }
+
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d9e7df; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+
+  .opts label.selected .opt-letter { background: #3f6f5f; color: #fff; }
+
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #eef5f1; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+
+  .explanation.show { display: block; }
+
+  .explanation strong { color: #3f6f5f; }
+
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+
+  .btn-primary { background: linear-gradient(135deg, #3f6f5f, #4f8070); color: #fff; box-shadow: 0 2px 8px rgba(26,82,118,0.3); }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,82,118,0.35); }
+
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .btn-secondary { background: #fff; color: #3f6f5f; border: 2px solid #7fa596; }
+
+  .btn-secondary:hover { background: #eef5f1; }
+
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+
+
+  .result-panel { background: linear-gradient(135deg, #3f6f5f, #4f8070); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+
+  .result-panel.show { display: block; }
+
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d9e7df; display: none; }
+
+  .translation-panel.show { display: block; }
+
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #3f6f5f; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d9e7df; }
+
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eef5f1; }
+
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+
+  .s-line-original { color: #333; font-weight: 500; }
+
+  .s-line-notes { color: #3f6f5f; font-size: 13px; margin-bottom: 4px; }
+
+  .s-line-notes .note-word { display: inline-block; background: #eef5f1; border: 1px solid #d9e7df; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+
+  .s-line-trans { color: #666; font-size: 13px; }
+
+
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+
+  .footer .divider { width: 40px; height: 2px; background: #d9e7df; margin: 0 auto 12px; border-radius: 2px; }
+
+
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+
+  .toast.show { opacity: 1; }
+
+
+
+  @media (max-width: 400px) {
+
+    .banner { padding: 24px 14px 18px; }
+
+    .banner h1 { font-size: 19px; }
+
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+
+    .q-card { padding: 14px; }
+
+    .opts label { padding: 9px 12px; font-size: 13px; }
+
+    .result-panel .score-num { font-size: 42px; }
+
+  }
+
+  @media (min-width: 600px) {
+
+    body { padding: 20px 0 48px; }
+
+    .container { padding: 0 20px; }
+
+    .banner, .sticky-original { border-radius: 0; }
+
+  }
+
+
+
+  .float-home {
+
+    position: fixed;
+
+    right: 16px;
+
+    bottom: 24px;
+
+    z-index: 900;
+
+    background: rgba(26,82,118,0.92);
+
+    color: #fff;
+
+    padding: 10px 18px;
+
+    border-radius: 24px;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    transition: all 0.2s;
+
+  }
+
+  .float-home:hover { background: #2c5548; transform: translateY(-2px); }
+
+  .float-home:active { transform: translateY(0); }
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="banner">
+
+  <h1>📖 《床头捉刀人》</h1>
+
+  <p>课外古文 · 入门级 · 刘义庆《世说新语》</p>
+
+  
+
+</div>
+
+
+
+<div class="sticky-original" id="stickyOriginal">
+    <strong>原文</strong> 魏武将见匈奴使，自以形陋，不足<u>雄</u>远国，<u>使</u>崔季圭代，帝自<u>捉</u>刀立床头<small>〔床〕胡床、榻等坐具，非现代床铺。</small>。<u>既</u><u>毕</u>，令间谍问曰<small>〔间谍〕此处指侦察消息的探子，非现代秘密情报人员。</small>：“魏王何如？”匈奴使答曰：“魏王<u>雅望</u><u>非常</u>，<u>然</u>床头捉刀人<u>乃</u>英雄也。”魏武闻之，追杀此使。
+    <strong>常识</strong> 本文选自《世说新语·容止》。刘义庆，南朝宋文学家。本文写曹操接见匈奴使者时“捉刀立床头”的故事：曹操自嫌形貌丑陋，让崔季圭假扮魏王接见使者，自己握刀立于床头，却被使者识破“捉刀人乃英雄”，曹操随即追杀使者，表现了他的雄才大略与多疑狠辣。
+<div class="container">
+
+  <div class="progress-text" id="progressText">已答 0 / 12 题</div>
+
+
+
+  <div id="questionsContainer"></div>
+
+
+
+  <div class="btn-bar">
+
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+
+  </div>
+
+
+
+  <div class="result-panel" id="resultPanel">
+
+    <div class="score-label">你的得分</div>
+
+    <div class="score-num" id="scoreNum">0</div>
+
+    <div class="score-detail">共 12 题 · 答对 <span id="correctCount">0</span> 题</div>
+
+    <div class="result-stars" id="resultStars"></div>
+
+    <div class="score-comment" id="scoreComment"></div>
+
+  </div>
+
+
+
+  <div class="translation-panel" id="translationPanel">
+
+    <h3>📖 逐句精读</h3>
+
+    <div id="translationContent"></div>
+
+  </div>
+
+
+
+  <div class="footer">
+
+    <div class="divider"></div>
+
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+
+    
+
+  </div>
+
+</div>
+
+
+
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+
+
+<div class="toast" id="toast"></div>
+
+
+
+<script>
+
+const questions = [
+  { tag: "字词释义", q: '“不足<span class="highlight">雄</span>远国”中“<span class="highlight">雄</span>”的意思是？', options: ["称雄", "英雄", "雄壮", "首领"], answer: 0, explain: '“雄”名词作动词，称雄、显扬威名。“不足雄远国”即不足以在远国（使者面前）称雄。' },
+  { tag: "字词释义", q: '“<span class="highlight">使</span>崔季圭代”中“<span class="highlight">使</span>”的意思是？', options: ["使者", "致使", "命令", "派遣"], answer: 3, explain: '“使”意为“派遣、让”。“使崔季圭代”即让崔季圭代替自己。' },
+  { tag: "字词释义", q: '“帝自<span class="highlight">捉</span>刀立床头”中“<span class="highlight">捉</span>”的意思是？', options: ["捕捉", "握着", "携带", "放置"], answer: 1, explain: '“捉”意为“握”。“捉刀”即握着刀（古义为握持，非抓捕）。' },
+  { tag: "字词释义", q: '“<span class="highlight">既</span>毕”中“<span class="highlight">既</span>”的意思是？', options: ["既然", "即使", "已经", "不久"], answer: 2, explain: '“既”意为“已经”。“既毕”即（接见）完毕之后。' },
+  { tag: "字词释义", q: '“既<span class="highlight">毕</span>”中“<span class="highlight">毕</span>”的意思是？', options: ["结束", "全部", "毕竟", "穷尽"], answer: 0, explain: '“毕”意为“完毕、结束”。“既毕”即（接见）结束后。' },
+  { tag: "字词释义", q: '“魏王<span class="highlight">雅望</span>非常”中“<span class="highlight">雅望</span>”的意思是？', options: ["高雅的期望", "崇高的声望", "深远的谋划", "傲慢的态度"], answer: 1, explain: '“雅望”意为“崇高的声望”（雅，美好；望，声望），不是“期望”。' },
+  { tag: "字词释义", q: '“魏王雅望<span class="highlight">非常</span>”中“<span class="highlight">非常</span>”的意思是？', options: ["不同寻常", "十分", "经常", "平凡"], answer: 0, explain: '“非常”是古今异义，古义为“不同寻常”，今义为“十分”。“雅望非常”即声望不同寻常。' },
+  { tag: "字词释义", q: '“<span class="highlight">然</span>床头捉刀人乃英雄也”中“<span class="highlight">然</span>”的意思是？', options: ["然而", "这样", "于是", "果然"], answer: 0, explain: '“然”表转折，然而。“然床头捉刀人乃英雄也”即然而床边握着刀的那个人才是英雄。' },
+  { tag: "字词释义", q: '“床头捉刀人<span class="highlight">乃</span>英雄也”中“<span class="highlight">乃</span>”的意思是？', options: ["于是", "竟然", "你的", "就是"], answer: 3, explain: '“乃”是副词，表判断，就是。“乃英雄也”即才是英雄。' },
+  { tag: "断句", q: '给下面的句子断句（原句去掉标点）：魏王雅望非常然床头捉刀人乃英雄也，停顿正确的一项是？', options: ["魏王雅望非常 / 然床头捉刀人 / 乃英雄也", "魏王雅望 / 非常然床头捉刀人 / 乃英雄也", "魏王 / 雅望非常然 / 床头捉刀人乃英雄也", "魏王雅望非常然 / 床头捉刀人 / 乃英雄也"], answer: 0, explain: '“魏王雅望非常”是完整分句（魏王声望不同寻常）；“然”表转折，领起后句；“床头捉刀人乃英雄也”中“乃”表判断。A 正确。' },
+  { tag: "内容理解", q: '下列对“魏王雅望非常，然床头捉刀人乃英雄也”翻译最准确的一项是？', options: ["魏王声望不同寻常，然而床边握着刀的那个人才是英雄。", "魏王的期望很不一般，但床边捉刀的人才是英雄。", "魏王非常儒雅有风度，他身边拿刀的侍卫是英雄。", "魏王看人眼光独到，他身旁握刀之人必有大勇。"], answer: 0, explain: 'A 直译准确。B 误译“雅望”为“期望”；C“儒雅有风度”“侍卫”是原文没有的过度意译；D“看人眼光独到”“大勇”是原文没有的内容。' },
+  { tag: "内容理解", q: '下列对“自以形陋，不足雄远国，使崔季圭代，帝自捉刀立床头”翻译最准确的一项是？', options: ["魏武帝认为自己形貌丑陋，不足以在远国（使者面前）称雄，就让崔季圭代替自己，自己握着刀站在床头。", "魏武帝觉得自己长得丑，不好意思接见外国使者，就让崔季圭去，自己拿刀站在床边。", "魏武帝因相貌难看而不配与远方国家的人相见，于是派崔季圭充当使者，自己持刀立于床侧。", "魏武帝自觉相貌丑陋，便让崔季圭代替接见使者，自己握刀站在床边。"], answer: 0, explain: 'A 直译准确，各词均有落实。B“不好意思”是过度意译且漏译“不足雄远国”；C“不配……相见”过度意译；D 漏译“不足雄远国”。' }
+];
+
+
+
+const sentenceData = [
+  { original: "魏武将见匈奴使，自以形陋，不足雄远国，使崔季圭代，帝自捉刀立床头。", notes: [{ word: "雄", meaning: "名词作动词，称雄" }, { word: "使", meaning: "派遣，让" }, { word: "捉", meaning: "握" }], trans: "魏武帝将要接见匈奴使者，（他）认为自己形貌丑陋，不足以在远国（使者面前）称雄，就让崔季圭代替自己，（魏武帝）自己握着刀站在床头。" },
+  { original: "既毕，令间谍问曰：“魏王何如？”", notes: [{ word: "既", meaning: "已经" }, { word: "毕", meaning: "完毕，结束" }, { word: "间谍", meaning: "此处指侦察消息的探子" }], trans: "（接见）完毕后，（他）派间谍问（使者）说：“魏王怎么样？”" },
+  { original: "匈奴使答曰：“魏王雅望非常，然床头捉刀人乃英雄也。”", notes: [{ word: "雅望", meaning: "崇高的声望" }, { word: "非常", meaning: "不同寻常" }, { word: "然", meaning: "然而" }, { word: "乃", meaning: "就是，表判断" }], trans: "匈奴使者回答说：“魏王声望不同寻常，然而床边握着刀的那个人才是英雄。”" },
+  { original: "魏武闻之，追杀此使。", notes: [{ word: "闻", meaning: "听说" }, { word: "追", meaning: "追赶" }], trans: "魏武帝听说了这件事，就派人追杀这个使者。" }
+];
+
+
+
+const container = document.getElementById('questionsContainer');
+
+const submitBtn = document.getElementById('submitBtn');
+
+const resetBtn = document.getElementById('resetBtn');
+
+const progressText = document.getElementById('progressText');
+
+const resultPanel = document.getElementById('resultPanel');
+
+const scoreNum = document.getElementById('scoreNum');
+
+const correctCountEl = document.getElementById('correctCount');
+
+const resultStars = document.getElementById('resultStars');
+
+const scoreComment = document.getElementById('scoreComment');
+
+const toast = document.getElementById('toast');
+
+const translationPanel = document.getElementById('translationPanel');
+
+const translationContent = document.getElementById('translationContent');
+
+const STORAGE_PREFIX = 'chuotou_';
+
+
+
+let submitted = false;
+
+let shuffles = {};
+
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+
+function renderTranslation() {
+
+  translationContent.innerHTML = '';
+
+  sentenceData.forEach(s => {
+
+    const block = document.createElement('div'); block.className = 'sentence-block';
+
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+
+    translationContent.appendChild(block);
+
+  });
+
+}
+
+function renderQuestions() {
+
+  container.innerHTML = '';
+
+  questions.forEach((q, i) => {
+
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+
+    container.appendChild(card);
+
+  });
+
+}
+
+function selectOption(qIdx, optIdx) {
+
+  if (submitted) return;
+
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+
+  if (label) label.classList.add('selected');
+
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+
+  const done = getAnswered();
+
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+
+function restoreFromStorage() {
+
+  const answers = getStoredAnswers(); const answered = getAnswered();
+
+  if (!answered.length) return;
+
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function updateProgress() { const done = getAnswered().length; const total = questions.length; progressText.textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+
+submitBtn.addEventListener('click', function() {
+
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ paper: '《床头捉刀人》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+
+  });
+
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+
+  const pct = correct / questions.length; let stars = '', comment = '';
+
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+
+  renderTranslation(); translationPanel.classList.add('show');
+
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+
+});
+
+resetBtn.addEventListener('click', function() {
+
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+
+  generateShuffles(); renderQuestions(); updateProgress();
+
+  scrollTo({ top: 0, behavior: 'smooth' });
+
+});
+
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+
+generateShuffles(); renderQuestions();
+
+</script>
+
+</body>
+
+</html>
+
