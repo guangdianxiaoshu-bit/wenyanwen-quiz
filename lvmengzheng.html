@@ -279,7 +279,15 @@
   .float-home:active { transform: translateY(0); }
 
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
-</style>
+
+<style>
+.jz{border-bottom:1px dotted #8fa3c4;cursor:pointer;color:#2a445e;position:relative;padding-bottom:1px;}
+.jz:active{background:#eef2f8;}
+.jz-hint{font-size:12px;color:#8fa3c4;margin-top:6px;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#2a445e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#2a445e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#2a445e;}
+</style></style>
 
 </head>
 
@@ -300,7 +308,8 @@
 
 
 <div class="sticky-original" id="stickyOriginal">
-    <strong>原文</strong> 吕文穆公<small>〔吕文穆公〕即吕蒙正，北宋政治家，官至宰相，谥号文穆</small>以宽厚为宰相，太宗<u>尤</u>所<u>眷遇</u>。有一<u>朝士</u>，家藏古镜，自言能照二百里，欲<u>因</u>公弟<small>〔公弟〕吕蒙正的弟弟</small>献以<u>求知</u>。其弟<u>伺</u>间从容<small>〔从容〕舒缓、不慌不忙</small>言之，公笑曰：“吾面不过碟子大，<u>安</u>用照二百里？”其弟<u>遂</u>不复敢言。闻者叹服，以为贤于李卫公<small>〔李卫公〕指李德裕，唐代宰相，封卫国公，以廉洁寡欲著称</small>远矣。<u>盖</u><u>寡</u>好而不为物<u>累</u>者，<u>昔</u>贤<small>〔贤〕古代贤能之人</small>之所<u>难</u>也。<br>
+    <strong>原文</strong> <span class="jz" data-tip="吕文穆公：即吕蒙正，北宋政治家，官至宰相，谥号文穆">吕文穆公</span>以宽厚为宰相，太宗<u>尤</u>所<u>眷遇</u>。有一<u>朝士</u>，家藏古镜，自言能照二百里，欲<u>因</u><span class="jz" data-tip="公弟：吕蒙正的弟弟">公弟</span>献以<u>求知</u>。其弟<u>伺</u>间<span class="jz" data-tip="从容：舒缓、不慌不忙">从容</span>言之，公笑曰：“吾面不过碟子大，<u>安</u>用照二百里？”其弟<u>遂</u>不复敢言。闻者叹服，以为贤于<span class="jz" data-tip="李卫公：指李德裕，唐代宰相，封卫国公，以廉洁寡欲著称">李卫公</span>远矣。<u>盖</u><u>寡</u>好而不为物<u>累</u>者，<u>昔</u><span class="jz" data-tip="贤：古代贤能之人">贤</span>之所<u>难</u>也。<br>
+    <div class="jz-hint">💡 点击带虚线下划线的词，可查看注释</div>
     <strong>常识</strong> 本文写吕蒙正拒收古镜的故事：朝士想借献镜求赏识，吕蒙正以“吾面不过碟子大”婉拒，其弟遂不敢再言，众人叹服其贤于李卫公。表现吕蒙正淡泊寡欲、不为外物所累的品格。
     </div>
 <div class="container">
@@ -597,7 +606,31 @@ localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STO
 
 </script>
 
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 
 </html>
 
