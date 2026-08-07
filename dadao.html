@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>《大道之行也》 · 25题</title>
+<title>《大道之行也》 · 27题</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -192,7 +192,7 @@
   <div class="result-panel" id="resultPanel">
     <div class="score-label">你的得分</div>
     <div class="score-num" id="scoreNum">0</div>
-    <div class="score-detail">共 25 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 27 题 · 答对 <span id="correctCount">0</span> 题</div>
     <div class="result-stars" id="resultStars"></div>
     <div class="score-comment" id="scoreComment"></div>
   </div>
@@ -209,7 +209,7 @@
   </div>
 </div>
 
-<div class="float-prog" id="floatProg">已答 0 / 25 题</div>
+<div class="float-prog" id="floatProg">已答 0 / 27 题</div>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
@@ -220,19 +220,21 @@ const questions = [
   { tag: "字词释义", q: '“天下<span class="highlight">为</span>公”中“<span class="highlight">为</span>”的意思是？', options: ["是", "做", "被", "替"], answer: 0, explain: '“为”意为“是”。“天下为公”即天下是公共的。' },
   { tag: "字词释义", q: '“选贤<span class="highlight">与</span>能”中“<span class="highlight">与</span>”的意思是？', options: ["同“举”，推举", "和，同", "参与", "给予"], answer: 0, explain: '“与”同“举”，意为“推举”。“选贤与能”即选拔推举品德高尚、有才干的人。' },
   { tag: "字词释义", q: '“讲信<span class="highlight">修</span>睦”中“<span class="highlight">修</span>”的意思是？', options: ["培养", "修理", "修建", "撰写"], answer: 0, explain: '“修”意为“培养”。“讲信修睦”即讲求诚信，培养和睦气氛。' },
-  { seg: "<u>故人</u>不独<u>亲</u>其<u>亲</u>，不独<u>子</u>其子，使<u>老</u>有所<u>终</u>，壮有所<u>用</u>，幼有所<u>长</u>，<u>矜</u>、寡、<u>孤</u>、独、废疾者皆有所养，男有<u>分</u>，女有<u>归</u>。" },
+  { seg: "<u>故人</u>不独<u>亲</u>其<u>亲</u>，不独<u>子</u>其子，使<u>老</u>有所<u>终</u>，壮有所<u>用</u>，幼有所<u>长</u>，<u>矜(guān)</u>、寡、<u>孤</u>、独、废疾者皆有所养，男有<u>分</u>，女有<u>归</u>。" },
   { tag: "字词释义", q: '“不独<span class="highlight">亲</span>其亲”中第一个“<span class="highlight">亲</span>”的意思是？', options: ["以……为亲", "亲人", "亲近", "父母"], answer: 0, explain: '第一个“亲”是名词的意动用法，“以……为亲”。“不独亲其亲”即不只是敬爱自己的父母。' },
   { tag: "字词释义", q: '“不独亲其<span class="highlight">亲</span>”中第二个“<span class="highlight">亲</span>”的意思是？', options: ["父母", "亲戚", "亲爱", "家属"], answer: 0, explain: '第二个“亲”指“父母”。“亲其亲”即敬爱自己的父母。' },
   { tag: "字词释义", q: '“不独<span class="highlight">子</span>其子”中第一个“<span class="highlight">子</span>”的意思是？', options: ["以……为子", "子女", "儿子", "疼爱"], answer: 0, explain: '第一个“子”是名词的意动用法，“以……为子”。“不独子其子”即不只是疼爱自己的子女。' },
   { tag: "词类活用", q: '“<span class="highlight">老</span>有所终”中“<span class="highlight">老</span>”的意思是？', options: ["老年人", "衰老", "年长", "年迈"], answer: 0, explain: '“老”是形容词作名词，指“老年人”。“老有所终”即老年人能有终老的保障。' },
-  { tag: "字词释义", q: '“老有所<span class="highlight">终</span>”中“<span class="highlight">终</span>”的意思是？', options: ["终老，善终", "结束", "终于", "始终"], answer: 0, explain: '“终”意为“终老，善终”。“老有所终”即老年人能有终老的保障。' },
-  { tag: "字词释义", q: '“壮有所<span class="highlight">用</span>”中“<span class="highlight">用</span>”的意思是？', options: ["施展才能", "使用", "费用", "任用"], answer: 0, explain: '“用”意为“施展才能、为社会效力”。“壮有所用”即壮年人能发挥才能。' },
+  { tag: "字词释义", q: '“老有所<span class="highlight">终</span>”中“<span class="highlight">终</span>”的意思是？', options: ["善终", "结束", "终于", "始终"], answer: 0, explain: '“终”意为“终老，善终”。“老有所终”即老年人能有终老的保障。' },
+  { tag: "字词释义", q: '“壮有所<span class="highlight">用</span>”中“<span class="highlight">用</span>”的意思是？', options: ["效力", "使用", "费用", "任用"], answer: 0, explain: '“用”意为“施展才能、为社会效力”。“壮有所用”即壮年人能发挥才能。' },
   { tag: "字词释义", q: '“幼有所<span class="highlight">长</span>”中“<span class="highlight">长</span>”的意思是？', options: ["成长", "长久", "长辈", "增长"], answer: 0, explain: '“长”读 zhǎng，意为“成长”。“幼有所长”即幼童能顺利成长。' },
   { tag: "字词释义", q: '“<span class="highlight">矜</span>、寡、孤、独、废疾者”中“<span class="highlight">矜</span>”的意思是？', options: ["同“鳏”，老而无妻的人", "怜悯", "庄重", "自夸"], answer: 0, explain: '“矜”同“鳏”，指老而无妻的人。“矜、寡、孤、独”分别指老而无妻、老而无夫、幼而无父、老而无子的人。' },
-  { tag: "字词释义", q: '“男有<span class="highlight">分</span>”中“<span class="highlight">分</span>”的意思是？', options: ["职分，职业", "分开", "部分", "分寸"], answer: 0, explain: '“分”意为“职分，职业”。“男有分”即男子有职业。' },
-  { tag: "字词释义", q: '“女有<span class="highlight">归</span>”中“<span class="highlight">归</span>”的意思是？', options: ["女子出嫁", "归来", "归属", "归还"], answer: 0, explain: '“归”意为“女子出嫁”。“女有归”即女子能适时出嫁。' },
-  { seg: "货<u>恶</u>其弃于地也，不必藏于己；力<u>恶</u>其不出于身也，不必为己。<u>是故</u>谋<u>闭</u>而不<u>兴</u>，盗窃乱贼而不作，故<u>外户</u>而不闭。<u>是</u>谓大同。" },
+  { tag: "字词释义", q: '“男有<span class="highlight">分</span>”中“<span class="highlight">分</span>”的意思是？', options: ["职分", "分开", "部分", "分寸"], answer: 0, explain: '“分”意为“职分，职业”。“男有分”即男子有职业。' },
+  { tag: "字词释义", q: '“女有<span class="highlight">归</span>”中“<span class="highlight">归</span>”的意思是？', options: ["出嫁", "归来", "归属", "归还"], answer: 0, explain: '“归”意为“女子出嫁”。“女有归”即女子能适时出嫁。' },
+  { seg: "货<u>恶</u>其弃于地也，不必藏于己；力恶其不出于<u>身</u>也，不必为己。<u>是故</u>谋<u>闭</u>而不<u>兴</u>，盗窃乱贼而不作，故<u>外户</u>而不闭。<u>是</u>谓大同。" },
   { tag: "字词释义", q: '“货<span class="highlight">恶</span>其弃于地也”中“<span class="highlight">恶</span>”的意思是？', options: ["厌恶", "凶恶", "恶行", "恶劣"], answer: 0, explain: '“恶”读 wù，意为“厌恶”。人们厌恶财物被扔在地上的行为。' },
+  { tag: "字词释义", q: '“力恶其不出于<span class="highlight">身</span>也”中“<span class="highlight">身</span>”的意思是？', options: ["自己", "身体", "身份", "亲身"], answer: 0, explain: '“身”意为“自己”。“力恶其不出于身也”即人们厌恶（力气）不出于自己，愿意为公众之事出力。' },
+  { tag: "字词释义", q: '“<span class="highlight">是故</span>谋闭而不兴”中“<span class="highlight">是故</span>”的意思是？', options: ["因此", "因为", "然而", "于是"], answer: 0, explain: '“是故”是固定结构，意为“因此”。“是故谋闭而不兴”即因此图谋之心杜绝而不兴起。' },
   { tag: "字词释义", q: '“谋<span class="highlight">闭</span>而不兴”中“<span class="highlight">闭</span>”的意思是？', options: ["杜绝", "关闭", "结束", "封闭"], answer: 0, explain: '“闭”意为“杜绝”。“谋闭而不兴”即图谋之心杜绝而不兴起。' },
   { tag: "字词释义", q: '“谋闭而不<span class="highlight">兴</span>”中“<span class="highlight">兴</span>”的意思是？', options: ["兴起", "发生", "兴盛", "高兴"], answer: 0, explain: '“兴”读 xīng，意为“兴起”。“谋闭而不兴”即图谋之心闭塞而不兴起。' },
   { tag: "字词释义", q: '“故<span class="highlight">外户</span>而不闭”中“<span class="highlight">外户</span>”的意思是？', options: ["从外面把门带上", "外面的门户", "推开大门", "锁上大门"], answer: 0, explain: '“外户”即从外面把门带上。“故外户而不闭”即所以从外面把门带上而不从里面闩上。' },
@@ -249,7 +251,7 @@ const questions = [
 const sentenceData = [
   { original: "大道之行也，天下为公。选贤与能，讲信修睦。", notes: [{ word: "大道", meaning: "指儒家推崇的上古时代的政治制度" }, { word: "为", meaning: "是" }, { word: "与", meaning: "同“举”，推举" }, { word: "能", meaning: "有才干的人" }, { word: "修", meaning: "培养" }], trans: "在大道施行的时候，天下是公共的。选拔推举品德高尚、有才干的人，讲求诚信，培养和睦气氛。" },
   { original: "故人不独亲其亲，不独子其子，使老有所终，壮有所用，幼有所长，矜、寡、孤、独、废疾者皆有所养，男有分，女有归。", notes: [{ word: "故人", meaning: "所以人们（古今异义）" }, { word: "亲", meaning: "第一个：以……为亲；第二个：父母" }, { word: "子", meaning: "第一个：以……为子" }, { word: "终", meaning: "终老，善终" }, { word: "用", meaning: "施展才能" }, { word: "长", meaning: "成长" }, { word: "矜", meaning: "同“鳏”，老而无妻的人" }, { word: "分", meaning: "职分，职业" }, { word: "归", meaning: "女子出嫁" }], trans: "因此人们不只是敬爱自己的父母，不只是疼爱自己的子女。要使老年人能有终老的保障，中年人能为社会效力，幼童能顺利成长。老而无妻的人、老而无夫的人、幼而无父的人、老而无子的人、有残疾而不能做事的人，都能得到供养。男子要有职业，女子要适时出嫁。" },
-  { original: "货恶其弃于地也，不必藏于己；力恶其不出于身也，不必为己。是故谋闭而不兴，盗窃乱贼而不作，故外户而不闭。是谓大同。", notes: [{ word: "恶", meaning: "厌恶" }, { word: "是故", meaning: "因此" }, { word: "闭", meaning: "杜绝" }, { word: "兴", meaning: "兴起" }, { word: "外户", meaning: "从外面把门带上" }, { word: "是", meaning: "这，此" }], trans: "对于财物，人们厌恶把它扔在地上的行为，但不一定想据为己有；人们都愿意为公众之事竭尽全力，厌恶力气不出于自己，但不一定是为了自己的私利。因此图谋之心杜绝而不会兴起，盗窃、造反和害人的事情不会发生，所以从外面把门带上而不从里面闩上。这就叫作大同社会。" }
+  { original: "货恶其弃于地也，不必藏于己；力恶其不出于身也，不必为己。是故谋闭而不兴，盗窃乱贼而不作，故外户而不闭。是谓大同。", notes: [{ word: "恶", meaning: "厌恶" }, { word: "身", meaning: "自己" }, { word: "是故", meaning: "因此" }, { word: "闭", meaning: "杜绝" }, { word: "兴", meaning: "兴起" }, { word: "外户", meaning: "从外面把门带上" }, { word: "是", meaning: "这，此" }], trans: "对于财物，人们厌恶把它扔在地上的行为，但不一定想据为己有；人们都愿意为公众之事竭尽全力，厌恶力气不出于自己，但不一定是为了自己的私利。因此图谋之心杜绝而不会兴起，盗窃、造反和害人的事情不会发生，所以从外面把门带上而不从里面闩上。这就叫作大同社会。" }
 ];
 
 const container = document.getElementById('questionsContainer');
