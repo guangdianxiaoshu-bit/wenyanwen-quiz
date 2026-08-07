@@ -280,14 +280,16 @@
 
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
 
-<style>
-.jz{border-bottom:1px dotted #7fa596;cursor:pointer;color:#2c5548;position:relative;padding-bottom:1px;}
+/* 覆盖模板：考点词（u）改为黄色高亮，不再用虚线下划线 */
+.sticky-original u{background:#ffe58a !important;text-decoration:none !important;padding:0 3px !important;border-radius:3px !important;font-weight:600;border-bottom:none !important;}
+/* 注释词：明显实线下划线，无背景 */
+.jz{text-decoration:underline;text-decoration-color:#2c5548;text-underline-offset:3px;cursor:pointer;color:#2c5548;}
 .jz:active{background:#eef5f1;}
-.jz-hint{font-size:12px;color:#7fa596;margin-top:6px;}
+.jz-hint{font-size:12px;color:#7fa596;margin-top:6px;line-height:1.7;}
 #jzTip{position:fixed;z-index:9999;max-width:72vw;background:#2c5548;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
 #jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#2c5548;}
 #jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#2c5548;}
-</style></style>
+</style>
 
 </head>
 
@@ -309,7 +311,7 @@
 
 <div class="sticky-original" id="stickyOriginal">
     <strong>原文</strong> 魏武将见匈奴使，自以形陋，不足<u>雄</u>远国，<u>使</u>崔季圭代，帝自<u>捉</u>刀立<span class="jz" data-tip="床：胡床、榻等坐具，非现代床铺">床头</span>。<u>既</u><u>毕</u>，令<span class="jz" data-tip="间谍：此处指侦察消息的探子，非现代秘密情报人员">间谍</span>问曰：“魏王何如？”匈奴使答曰：“魏王<u>雅望</u><u>非常</u><u>然</u>床头捉刀人<u>乃</u>英雄也”魏武闻之，追杀此使。<br>
-    <div class="jz-hint">💡 点击带虚线下划线的词，可查看注释</div>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词</div>
     <strong>常识</strong> 本文选自《世说新语·容止》。刘义庆，南朝宋文学家。本文写曹操接见匈奴使者时“捉刀立床头”的故事：曹操自嫌形貌丑陋，让崔季圭假扮魏王接见使者，自己握刀立于床头，却被使者识破“捉刀人乃英雄”，曹操随即追杀使者，表现了他的雄才大略与多疑狠辣。
     </div>
 <div class="container">
