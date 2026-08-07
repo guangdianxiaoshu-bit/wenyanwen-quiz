@@ -172,6 +172,9 @@
 .mar-tags { text-align: center; margin: 10px 0 14px; }
   .mar-tags .tag { background: #fff; border: 1px solid #d9cfc2; color: #8a6d5d; border-radius: 16px; padding: 5px 18px; margin: 3px 4px; font-size: 13px; cursor: pointer; transition: all .15s; }
   .mar-tags .tag.on { background: #b5533c; border-color: #b5533c; color: #fff; }
+  .mar-search{text-align:center;margin:0 0 12px;}
+  .mar-search input{width:70%;max-width:260px;padding:8px 14px;border:1px solid #d9cfc2;border-radius:18px;font-size:13px;outline:none;background:#fff;color:#333;}
+  .mar-search input:focus{border-color:#b5533c;}
   </style>
 
 </head>
@@ -197,7 +200,7 @@
 <div id="s1">
 
   <div class="sec">选择篇目（最多 5 篇）</div>
-  <div class="mar-tags"><button class="tag on" onclick="marTag(this,'')">全部</button><button class="tag" onclick="marTag(this,'小学')">小学</button><button class="tag" onclick="marTag(this,'初中')">初中</button></div>
+  <div class="mar-tags"><button class="tag on" onclick="marTag(this,'')">全部</button><button class="tag" onclick="marTag(this,'小学')">小学</button><button class="tag" onclick="marTag(this,'初中')">初中</button><button class="tag" onclick="marTag(this,'课外')">课外</button></div>    <div class="mar-search"><input id="marSearch" type="text" placeholder="🔍 搜索篇目" oninput="marSearch()"></div>
 
   <div id="pickList"></div>
 
@@ -10931,14 +10934,25 @@ var MAR_GRADE = {
   "书低": "课外"
 };
 
+var marCurTag = '';
 function marTag(btn, t){
+  marCurTag = t;
   var tags = document.querySelectorAll('.mar-tags .tag');
   for (var i = 0; i < tags.length; i++) tags[i].classList.remove('on');
   btn.classList.add('on');
+  applyMarFilter();
+}
+function marSearch(){ applyMarFilter(); }
+function applyMarFilter(){
+  var input = document.getElementById('marSearch');
+  var kw = input ? (input.value || '').trim() : '';
   var picks = document.querySelectorAll('#pickList .pick');
   for (var j = 0; j < picks.length; j++) {
-    var g = picks[j].getAttribute('data-tags') || '';
-    picks[j].style.display = (!t || g.indexOf(t) >= 0) ? '' : 'none';
+    var p = picks[j];
+    var g = p.getAttribute('data-tags') || '';
+    var okTag = (!marCurTag || g.indexOf(marCurTag) >= 0);
+    var okKw = (!kw || (p.textContent || '').indexOf(kw) >= 0);
+    p.style.display = (okTag && okKw) ? '' : 'none';
   }
 }
 (function(){
