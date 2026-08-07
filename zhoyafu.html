@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#d5dfe8;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#d5dfe8;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d5dfe8;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#3d5a80;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#3d5a80;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#3d5a80;}
 </style>
 </head>
 <body>
@@ -170,6 +179,7 @@
 
 
 <div style="text-align:center;background:#e9eef4;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cfd8e2"> <strong>常识</strong> 本文节选自《史记·绛侯周勃世家》（中华书局2013年版）。周亚夫（？—前143），西汉名将，绛侯周勃之子，封条侯。司马迁（约前145—？），字子长，夏阳（今陕西韩城）人，西汉历史学家。《史记》记述了从传说中的黄帝到汉武帝时的史事，全书一百三十篇，包括十二本纪、十表、八书、三十世家、七十列传。题目是编者加的。 </div>
+<div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 <div class="container">
   <div id="questionsContainer"></div>
 
@@ -205,7 +215,7 @@
 
 <script>
 const questions = [
-  { seg: "文帝之后六年，匈奴大入边。<u>乃</u>以宗正<small>〔宗正〕掌管皇族事务的官员</small>刘礼为将军，<u>军</u>霸上；祝兹侯<small>〔祝兹侯〕封号</small>徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：<u>以</u>备胡。" },
+  { seg: "文帝之后六年，匈奴大入边。<u>乃</u>以<span class="jz" data-tip="宗正：掌管皇族事务的官员">宗正</span>刘礼为将军，<u>军</u>霸上；<span class="jz" data-tip="祝兹侯：封号">祝兹侯</span>徐厉为将军，军棘门；以河内守亚夫为将军，军细柳：<u>以</u>备胡。" },
   { tag: "字词释义", q: '“<span class="highlight">乃</span>以宗正刘礼为将军”中“<span class="highlight">乃</span>”的意思是？', options: ["于是，就", "才", "竟然", "却"], answer: 0, explain: '“乃”意为“于是、就”。“乃以宗正刘礼为将军”即于是任命宗正刘礼为将军。' },
   { tag: "字词释义", q: '“<span class="highlight">军</span>霸上”中“<span class="highlight">军</span>”的活用和意思是？', options: ["名词作动词，驻军", "军队", "军营", "军事"], answer: 0, explain: '“军”名词作动词，意为“驻军”。“军霸上”即驻军霸上。' },
   { tag: "字词释义", q: '“<span class="highlight">以</span>备胡”中“<span class="highlight">以</span>”的意思是？', options: ["来，用来", "凭借", "因为", "认为"], answer: 0, explain: '“以”意为“来、用来”。“以备胡”即用来防备匈奴。' },
@@ -368,5 +378,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
