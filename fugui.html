@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#e5d0d5;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#e5d0d5;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#e5d0d5;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#7a2e3a;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#7a2e3a;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#7a2e3a;}
 </style>
 </head>
 <body>
@@ -206,7 +215,7 @@
 
 <script>
 const questions = [
-  { seg: "景春<small>〔景春〕与孟子同时代的人，纵横家</small>曰：“公孙衍<small>〔公孙衍(yǎn)〕战国魏国人，纵横家</small>、张仪<small>〔张仪〕战国魏国人，纵横家</small>岂不<u>诚</u><u>大丈夫</u>哉？一怒<u>而</u>诸侯惧，安居而天下<u>熄</u>。”" },
+  { seg: "<span class="jz" data-tip="景春：与孟子同时代的人，纵横家">景春</span>曰：“<span class="jz" data-tip="公孙衍(yǎn)：战国魏国人，纵横家">公孙衍</span>、<span class="jz" data-tip="张仪：战国魏国人，纵横家">张仪</span>岂不<u>诚</u><u>大丈夫</u>哉？一怒<u>而</u>诸侯惧，安居而天下<u>熄</u>。”" },
   { tag: "字词释义", q: '“岂不<span class="highlight">诚</span>大丈夫哉”中“<span class="highlight">诚</span>”的意思是？', options: ["真正，确实", "诚心诚意", "果真如此", "忠厚老实"], answer: 0, explain: '“诚”意为“真正、确实”。“岂不诚大丈夫哉”即难道不是真正的大丈夫吗？' },
   { tag: "字词释义", q: '“岂不诚<span class="highlight">大丈夫</span>哉”中“<span class="highlight">大丈夫</span>”的意思是？', options: ["有志气有节操的人", "成年男子", "大男人", "丈夫"], answer: 0, explain: '“大丈夫”指有志气、有节操、有作为的人。' },
   { tag: "字词释义", q: '“一怒<span class="highlight">而</span>诸侯惧”中“<span class="highlight">而</span>”的意思是？', options: ["表顺承，就，于是", "表转折，却", "表并列，并且", "表修饰"], answer: 0, explain: '“而”表顺承。“一怒而诸侯惧”即一发怒诸侯就害怕。' },
@@ -356,5 +365,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
