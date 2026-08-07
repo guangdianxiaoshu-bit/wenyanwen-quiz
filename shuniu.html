@@ -33,7 +33,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>《属牛》 · 10题</title>
+<title>《属牛》 · 9题</title>
 
 <style>
 
@@ -355,7 +355,7 @@
 
 <!-- ③ 原文（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；注音可加括号如 堙(yīn)） -->
     <div class="sticky-original" id="stickyOriginal">
-    <strong>原文</strong> 一官遇<u>生辰</u>，吏典<u>闻</u>其属鼠，乃<u>醵(jù)</u>黄金铸一鼠为寿。官<u>甚</u>喜，曰：“<u>汝等</u>可知<u>奶奶</u>生辰<u>亦</u>在<u>目下</u>乎？”众吏曰：“不知，请问其属？”官曰：“小我一岁，丑年生的。”<br>
+    <strong>原文</strong> 一官遇<u>生辰</u>，吏典<u>闻</u>其属鼠，乃<span class="jz" data-tip="醵(jù)：凑集（钱财），众人凑钱">醵(jù)</span>黄金铸一鼠为寿。官<u>甚</u>喜，曰：“<u>汝等</u>可知<u>奶奶</u>生辰<u>亦</u>在<u>目下</u>乎？”众吏曰：“不知，请问其属？”官曰：“小我一岁，丑年生的。”<br>
     <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词</div>
     </div>
 
@@ -387,7 +387,7 @@
 
     <div class="score-num" id="scoreNum">0</div>
 
-    <div class="score-detail">共 10 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 9 题 · 答对 <span id="correctCount">0</span> 题</div>
 
     <div class="result-stars" id="resultStars"></div>
 
@@ -421,7 +421,7 @@
 
 
 
-<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 10 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 9 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 
@@ -434,8 +434,7 @@
 
 // ⑤ 题目数组 { tag, q, options, answer, explain }（短文无 seg，直接列题目）
 const questions = [
-  { tag: "字词释义", q: '“乃<span class="highlight">醵</span>黄金铸一鼠为寿”中“<span class="highlight">醵</span>”的意思是？', options: ["凑集", "捐出", "交换", "酿造"], answer: 0, explain: '“醵”读 jù，意为凑集（钱财）。“醵黄金”即凑钱买黄金。' },
-  { tag: "字词释义", q: '“一官遇<span class="highlight">生辰</span>”中“生辰”的意思是？', options: ["生日", "时辰", "出生地", "八字"], answer: 0, explain: '“生辰”即生日。“遇生辰”即过生日。' },
+  { tag: "字词释义", q: '“一官遇<span class="highlight">生辰</span>”中“<span class="highlight">生辰</span>”的意思是？', options: ["生日", "时辰", "出生地", "八字"], answer: 0, explain: '“生辰”即生日。“遇生辰”即过生日。' },
   { tag: "字词释义", q: '“吏典<span class="highlight">闻</span>其属鼠”中“闻”的意思是？', options: ["听说", "听到", "闻到", "新闻"], answer: 0, explain: '“闻”意为听说。“吏典闻其属鼠”即下属听说官员属鼠。' },
   { tag: "字词释义", q: '“官<span class="highlight">甚</span>喜”中“甚”的意思是？', options: ["很，非常", "甚至", "过分", "什么"], answer: 0, explain: '“甚”意为很、非常。“官甚喜”即官员非常高兴。' },
   { tag: "字词释义", q: '“<span class="highlight">汝等</span>可知”中“<span class="highlight">汝等</span>”的意思是？', options: ["你们", "你的", "我等", "此人"], answer: 0, explain: '“汝”是你，“等”表复数，“汝等”即你们。' },
@@ -453,7 +452,7 @@ const sentenceData = [
   { original: "一官遇生辰，吏典闻其属鼠，乃醵黄金铸一鼠为寿。", notes: [{ word: "生辰", meaning: "生日" }, { word: "闻", meaning: "听说" }, { word: "醵", meaning: "凑集（钱财）" }], trans: "一个官员遇到生日，下属吏典听说他属鼠，就凑钱用黄金铸了一只老鼠祝寿。" },
   { original: "官甚喜，曰：“汝等可知奶奶生辰亦在目下乎？”", notes: [{ word: "甚", meaning: "很，非常" }, { word: "汝等", meaning: "你们" }, { word: "奶奶", meaning: "官员的夫人" }, { word: "亦", meaning: "也" }, { word: "目下", meaning: "眼前，近日" }], trans: "官员非常高兴，说：“你们可知道我夫人的生日也就在眼前吗？”" },
   { original: "众吏曰：“不知，请问其属？”官曰：“小我一岁，丑年生的。”", notes: [{ word: "其", meaning: "她的" }, { word: "丑年", meaning: "牛年（地支丑对应牛）" }], trans: "众吏说：“不知道，请问夫人属什么？”官员说：“（她）比我小一岁，是丑年（牛年）生的。”" },
-  { joke: "官员收下金鼠犹不满足，又借口夫人小他一岁、“丑年生”（丑对应牛），暗示属下如法炮制再送金牛。属下趋炎附势，官员贪得无厌，一问一答间讽刺了借生辰敛财、阿谀奉承的官场丑态。" }
+  { joke: "官员收下金鼠犹不满足，又借口夫人小他一岁、“丑年生”（丑对应牛），暗示属下如法炮制再送金牛。属下奉上的是小巧的金鼠，官员却暗示要送体型大得多的金牛——老鼠与牛的体积对比，把官员的贪得无厌衬托得愈发可笑；一问一答间，讽刺了借生辰敛财、阿谀奉承的官场丑态。" }
 ];
 
 
