@@ -157,6 +157,15 @@
   .float-home:hover { background: #3f5736; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#e8efe3;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#e8efe3;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#e8efe3;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#6a8d5a;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#6a8d5a;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#6a8d5a;}
 </style>
 </head>
 <body>
@@ -227,7 +236,7 @@ const questions = [
   { tag: "字词释义", q: '“则第二板已<span class="highlight">具</span>”中“<span class="highlight">具</span>”的意思是？', options: ["准备好", "工具", "具备", "具体"], answer: 0, explain: '“具”意为“准备好”。第二块板已经准备好了。' },
   { tag: "字词释义", q: '“<span class="highlight">更互</span>用之”中“<span class="highlight">更互</span>”的意思是？', options: ["交替", "更加", "更换", "互相"], answer: 0, explain: '“更互”意为“交替、轮流”。交替使用两块板。' },
   { tag: "字词释义", q: '“瞬息可<span class="highlight">就</span>”中“<span class="highlight">就</span>”的意思是？', options: ["完成", "靠近", "立即", "靠近"], answer: 0, explain: '“就”意为“完成”。转眼之间就能完成。（与“持就火炀之”的“就=靠近”对比）' },
-  { seg: "每一字皆有数印，如“之”“也”等字，每字有二十余印，以备一板内有重复者。不用，则以纸<u>帖</u>之，每韵为一帖，木格贮之。有奇字<small>〔奇字〕生僻字</small>素无备者，<u>旋</u>刻之，以草火烧，瞬息可成。不以木为之者，文<u>理</u>有疏密，沾水则高下不平，兼与药相粘，不可取；不若燔土，用讫再火令药熔，以手拂之，其印自落，<u>殊</u>不沾污。" },
+  { seg: "每一字皆有数印，如“之”“也”等字，每字有二十余印，以备一板内有重复者。不用，则以纸<u>帖</u>之，每韵为一帖，木格贮之。有<span class="jz" data-tip="奇字：生僻字">奇字</span>素无备者，<u>旋</u>刻之，以草火烧，瞬息可成。不以木为之者，文<u>理</u>有疏密，沾水则高下不平，兼与药相粘，不可取；不若燔土，用讫再火令药熔，以手拂之，其印自落，<u>殊</u>不沾污。" },
   { tag: "字词释义", q: '“则以纸<span class="highlight">帖</span>之”中“<span class="highlight">帖</span>”的意思是？', options: ["标注（动词）", "粘贴", "帖子", "字帖"], answer: 0, explain: '“帖”作动词，意为“标注”。就用纸标签标注它们。' },
   { tag: "字词释义", q: '“<span class="highlight">旋</span>刻之”中“<span class="highlight">旋</span>”的意思是？', options: ["随即", "旋转", "盘旋", "周转"], answer: 0, explain: '“旋”意为“随即、立刻”。随即刻制它。' },
   { tag: "字词释义", q: '“文<span class="highlight">理</span>有疏密”中“<span class="highlight">文</span>”的意思是？', options: ["同“纹”，纹理", "文章", "文字", "文化"], answer: 0, explain: '“文”同“纹”，意为“纹理”。木头的纹理有疏有密。' },
@@ -360,5 +369,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
