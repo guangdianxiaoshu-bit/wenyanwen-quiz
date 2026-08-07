@@ -456,14 +456,17 @@ localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STO
 </script><script>
 (function(){
   var qs = location.search;
-  if(qs.indexOf('from=zidian')<0) return;
+  var back = '';
+  if(qs.indexOf('from=zidian')>=0) back = 'zidian.html';
+  else if(qs.indexOf('from=zhuanyou')>=0) back = 'zhuanyou.html';
+  else return;
   var w = '';
   var m = qs.match(/w=([^&]*)/);
   if(m) w = decodeURIComponent(m[1]);
   var d = document.createElement('div');
   d.style.cssText = 'position:fixed;top:12px;left:12px;z-index:9999;background:#1a6fb5;color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);';
-  d.innerHTML = '← 返回字典';
-  d.onclick = function(){ location.href = 'zidian.html' + (w ? '?w=' + encodeURIComponent(w) : ''); };
+  d.innerHTML = '← 返回词典';
+  d.onclick = function(){ location.href = back + (w ? '?w=' + encodeURIComponent(w) : ''); };
   document.body.appendChild(d);
 })();
 </script></body>
