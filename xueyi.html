@@ -139,6 +139,15 @@
   .float-home:hover { background: #3d1f4e; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#d5c8e8;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#d5c8e8;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d5c8e8;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#5b2c6f;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#5b2c6f;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#5b2c6f;}
 </style>
 </head>
 <body>
@@ -150,8 +159,9 @@
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 弈秋，<u>通国</u>之<u>善</u>弈者也。<u>使</u>弈秋<u>诲</u>二人<u>弈</u>，其一人专心致志，<u>惟</u>弈秋之为听；一人虽听之，一心<u>以为</u>有鸿鹄<small>〔鸿鹄〕指天鹅、大雁一类的鸟</small>将至，思<u>援</u>弓缴(zhuó)而射之。虽与之<u>俱</u>学，<u>弗若</u>矣。<u>为</u>是其智<u>弗</u>若<u>与(yú)</u>？曰：非<u>然</u>也。<br>
+  <strong>原文</strong> 弈秋，<u>通国</u>之<u>善</u>弈者也。<u>使</u>弈秋<u>诲</u>二人<u>弈</u>，其一人专心致志，<u>惟</u>弈秋之为听；一人虽听之，一心<u>以为</u>有<span class="jz" data-tip="鸿鹄：指天鹅、大雁一类的鸟">鸿鹄</span>将至，思<u>援</u>弓缴(zhuó)而射之。虽与之<u>俱</u>学，<u>弗若</u>矣。<u>为</u>是其智<u>弗</u>若<u>与(yú)</u>？曰：非<u>然</u>也。<br>
 </div>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 
 
 <div style="text-align:center;background:#d5c8e8;color:#5b2c6f;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid rgba(0,0,0,0.08)"><strong>常识</strong> 本文选自《孟子·告子上》，题目为后人所加。弈秋，“秋”是人名，因善于下棋，所以称为弈秋。
@@ -345,5 +355,29 @@ resetBtn.addEventListener('click', function() {
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
