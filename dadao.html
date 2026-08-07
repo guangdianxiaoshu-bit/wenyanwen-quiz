@@ -168,7 +168,8 @@
 #jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#b85c38;}
 
 /* 进度菜单（原型） */
-.float-prog{cursor:pointer;pointer-events:auto;}
+.float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+.fp-hint{font-size:10px;color:#b85c38;font-weight:600;}
 #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
 .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
 .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
@@ -221,7 +222,7 @@
   </div>
 </div>
 
-<div class="float-prog" id="floatProg">已答 0 / 27 题</div><div id="progMenu"></div>
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 27 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
@@ -332,7 +333,7 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
 
   var progMenu = document.getElementById('progMenu');
   var floatProgEl = document.getElementById('floatProg');
