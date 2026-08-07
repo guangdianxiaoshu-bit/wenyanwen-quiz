@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>专有名词辞典 · 光点小塾</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background:#eef4f9; color:#333; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; background:#f5f9fc; }
+  .banner { background:linear-gradient(135deg,#2f8a6a,#4dab88); color:#fff; padding:16px 16px 12px; text-align:center; }
+  .banner h1 { font-size:19px; margin-bottom:3px; }
+  .banner p { font-size:11px; opacity:.85; }
+  .search-bar { position:sticky; top:0; z-index:60; background:#f5f9fc; padding:8px 14px 6px; }
+  .search-bar input { width:100%; padding:9px 14px; border:1px solid #cfe3f2; border-radius:18px; font-size:14px; outline:none; background:#fff; }
+  .letter-bar { position:sticky; top:46px; z-index:55; background:#f5f9fc; padding:4px 8px 6px; display:flex; flex-wrap:wrap; gap:3px; justify-content:center; }
+  .letter-bar .lb { width:26px; height:26px; line-height:26px; text-align:center; font-size:12px; font-weight:700; color:#5a8db8; background:#fff; border-radius:6px; cursor:pointer; border:1px solid #dceaf4; }
+  .letter-bar .lb.on { background:#2f8a6a; color:#fff; border-color:#2f8a6a; }
+  .stat { text-align:center; font-size:11px; color:#7a94a8; padding:2px 0 6px; }
+  .word-list { padding:0 14px 20px; }
+  .word-item { background:#fff; border-radius:10px; margin-bottom:8px; overflow:hidden; box-shadow:0 1px 3px rgba(47,138,106,.1); }
+  .word-head { display:flex; align-items:center; padding:10px 14px; cursor:pointer; }
+  .word-head .wz { font-size:18px; font-weight:700; color:#2f8a6a; width:auto; min-width:44px; }
+  .word-head .wm { flex:1; font-size:12px; color:#8aa4b8; }
+  .word-head .ar { color:#b0c4d6; font-size:14px; transition:transform .2s; }
+  .word-item.open .word-head .ar { transform:rotate(90deg); }
+  .yi-body { display:none; padding:0 14px 10px; border-top:1px dashed #e8f1f8; }
+  .word-item.open .yi-body { display:block; }
+  .yi-item { padding:8px 0; border-bottom:1px dashed #eef4f9; }
+  .yi-item:last-child { border-bottom:none; }
+  .yi-text { font-size:15px; color:#333; line-height:1.6; }
+  .yi-src { display:inline-block; font-size:10px; background:#e8f5ef; color:#3d8a6c; border-radius:4px; padding:1px 5px; margin-left:6px; vertical-align:middle; }
+  .yi-ex { font-size:12px; color:#6d8aa0; line-height:1.7; margin-top:4px; }
+  .yi-ex .ex-link { color:#2f8a6a; text-decoration:none; font-size:11px; border-bottom:1px dashed #2f8a6a; }
+  .no-result { text-align:center; color:#8aa4b8; padding:40px 0; font-size:14px; }
+  .footer { text-align:center; font-size:12px; color:#8aa4b8; padding:14px; }
+  .footer a { color:#2f8a6a; text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="banner">
+  <h1>📚 专有名词辞典</h1>
+  <p>光点小塾 · 多字词 / 固定短语 / 古今异义词 · 例句可跳转原文</p>
+</div>
+<div class="search-bar"><input id=s type=text placeholder="🔍 搜词 / 义项 / 例句…" oninput=f()></div>
+<div class="letter-bar" id=lb></div>
+<div class="stat" id=stat></div>
+<div class="word-list" id=list></div>
+<div class="no-result" id=empty style="display:none">没有找到相关词条</div>
+<div class="footer"><a href="zidian.html">📖 单字字典</a> · <a href="index.html">📚 返回首页</a> · 光点小塾</div>
+</div>
+<script src="dict_data2.js"></script>
+<script>
+var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var words = Object.keys(DICT2).sort(function(a,b){ return (DICT2[a].p||'#')!==(DICT2[b].p||'#') ? (DICT2[a].p||'#').localeCompare(DICT2[b].p||'#') : a.localeCompare(b,'zh'); });
+var curLetter = '';
+var curQ = '';
+
+function letterBar(){
+  var h='';
+  LETTERS.forEach(function(l){
+    var has = words.some(function(w){return DICT2[w].p===l;});
+    h+='<div class="lb'+(curLetter===l?' on':'')+'" style="'+(has?'':'opacity:.25')+'" onclick="setLetter(\''+l+'\')">'+l+'</div>';
+  });
+  document.getElementById('lb').innerHTML=h;
+}
+function setLetter(l){
+  curLetter = (curLetter===l)?'':l;
+  letterBar(); render();
+}
+function fmtEx(e, w){
+  var t = e.t || '';
+  if(e.l){ return t + ' <span class="ex-link" onclick="goEx(\''+e.l+'\',\''+w+'\')">'+(e.p||'')+' ↗</span>'; }
+  return t;
+}
+function goEx(link, w){
+  location.href = link + '?from=zhuanyou&w=' + encodeURIComponent(w);
+}
+function render(){
+  var q = curQ;
+  var hit = words.filter(function(w){
+    if(q){
+      if(w.indexOf(q)>=0) return true;
+      return DICT2[w].i.some(function(it){
+        if((it['义']||'').indexOf(q)>=0) return true;
+        return (it['例']||[]).some(function(e){ return (e.t||'').indexOf(q)>=0 || (e.p||'').indexOf(q)>=0; });
+      });
+    }
+    return curLetter ? DICT2[w].p===curLetter : true;
+  });
+  var html='';
+  hit.forEach(function(w){
+    var items = DICT2[w].i;
+    html+='<div class="word-item" id="w_'+w+'"><div class="word-head" onclick="toggle(this)"><span class="wz">'+w+'</span><span class="wm">'+items.length+' 个义项</span><span class="ar">›</span></div><div class="yi-body">';
+    items.forEach(function(it){
+      html+='<div class="yi-item"><div class="yi-text">'+it['义']+'<span class="yi-src">'+it.src+'</span></div>';
+      (it['例']||[]).forEach(function(e){ html+='<div class="yi-ex">'+fmtEx(e, w)+'</div>'; });
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('list').innerHTML=html;
+  document.getElementById('empty').style.display = hit.length?'none':'block';
+  document.getElementById('stat').textContent = q ? ('找到 '+hit.length+' 词') : (curLetter ? curLetter+' · '+hit.length+' 词' : '共 '+words.length+' 词');
+  var wParam = getParam('w');
+  if(wParam && document.getElementById('w_'+wParam)){
+    document.getElementById('w_'+wParam).classList.add('open');
+    document.getElementById('w_'+wParam).scrollIntoView({block:'center'});
+  }
+}
+function toggle(el){
+  var item = el.parentNode;
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.word-item.open').forEach(function(x){ x.classList.remove('open'); });
+  if(!wasOpen) item.classList.add('open');
+}
+function f(){
+  curQ = document.getElementById('s').value.trim();
+  curLetter = '';
+  letterBar(); render();
+}
+function getParam(k){
+  var m = new RegExp('[?&]'+k+'=([^&]*)').exec(location.search);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+letterBar();
+render();
+</script>
+</body>
+</html>
