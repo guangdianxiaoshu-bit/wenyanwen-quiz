@@ -139,6 +139,15 @@
   .float-home:hover { background: #004f59; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#c4f1f5;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#c4f1f5;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#c4f1f5;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#006d77;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#006d77;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#006d77;}
 </style>
 </head>
 <body>
@@ -150,8 +159,9 @@
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 初，权<u>谓</u>吕蒙曰：“<u>卿(qīng)</u>今当涂<small>当道，当权</small>掌事，不可不学！”蒙<u>辞</u>以军中多务。权曰：“<u>孤</u>岂欲卿<u>治经</u>为<u>博士</u>邪(yé)！<u>但</u>当<u>涉猎</u>，见往事耳。卿言多务<u>孰</u><u>若</u>孤孤常读书自<u>以为</u>大有所益。”蒙<u>乃</u>始就学。<u>及</u>鲁肃过寻阳，与蒙论议，大惊曰：“卿今者<u>才略</u>，非复吴下阿蒙<small>〔阿蒙〕吕蒙的小名</small>！”蒙曰：“士别三日，即<u>更(gēng)</u>刮目相待，大兄何见事之晚乎！”肃<u>遂</u>拜蒙母，结友而别。<br>
+  <strong>原文</strong> 初，权<u>谓</u>吕蒙曰：“<u>卿(qīng)</u>今当涂<small>当道，当权</small>掌事，不可不学！”蒙<u>辞</u>以军中多务。权曰：“<u>孤</u>岂欲卿<u>治经</u>为<u>博士</u>邪(yé)！<u>但</u>当<u>涉猎</u>，见往事耳。卿言多务<u>孰</u><u>若</u>孤孤常读书自<u>以为</u>大有所益。”蒙<u>乃</u>始就学。<u>及</u>鲁肃过寻阳，与蒙论议，大惊曰：“卿今者<u>才略</u>，非复吴下<span class="jz" data-tip="阿蒙：吕蒙的小名">阿蒙</span>！”蒙曰：“士别三日，即<u>更(gēng)</u>刮目相待，大兄何见事之晚乎！”肃<u>遂</u>拜蒙母，结友而别。<br>
 </div>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 
 
 <div style="text-align:center;background:#f0f0f5;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #ddd"><strong>常识</strong> 本文节选自《资治通鉴》卷六十六（中华书局1956年版），题目是编者加的。《资治通鉴》是北宋司马光主持编纂的一部编年体通史，记载了从战国到五代共1362年间的史事。司马光（1019—1086），字君实，北宋政治家、史学家。孙权（182—252），字仲谋，三国时吴国的创建者。
@@ -356,5 +366,29 @@ resetBtn.addEventListener('click', function() {
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
