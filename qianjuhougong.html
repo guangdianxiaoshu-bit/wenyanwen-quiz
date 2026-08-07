@@ -1,0 +1,731 @@
+<!-- ================================================================================ -->
+<!-- ================================================================
+  光点小塾 · 文言文自测模板（短文本 · 单段式）
+  本模板含示例内容（《精卫填海》），可双击本地预览；
+  制作新篇目时在此文件基础上改造，替换以下区块：
+
+  ① 标题：<title> 与 <h1>（含题数，如《XXX》· 12题）
+  ② 副标题：<h1> 下方 <p>（年级 · 出处）
+  ③ 配色：CSS 区的颜色值（主题色一组，见"配色说明"注释）
+  ④ 原文：
+     短文（本模板）= <div class="sticky-original"> 内原文
+     长文（分段模板）= const questions 里 { seg: "..." } 对象（每段一个）
+     - 考点词用 <u>黄底</u>（题目考察的词）
+     - 注释词用 <span class="jz" data-tip="词：注释">词</span>（点击出气泡）
+     - 长文 seg 字符串内 HTML 属性必须用单引号（class='jz'），否则白屏！
+     - 断句考察句原文去掉标点
+  ⑤ 常识：<strong>常识</strong> 后文本（来源 + 作者 + 内容简介）
+  ⑥ 题目：const questions 数组 { tag, q, options, answer, explain }
+     - q 用单引号；HTML 属性用双引号；引号统一中文弯引号
+     - 选项规范见 自测题制作规范.md（无括号、字数均衡、避近义）
+  ⑦ 逐句精读：const sentenceData（original / notes / trans，直译）
+  ⑧ 收尾：paper: '《篇名》'、STORAGE_PREFIX = '文件名_'
+  完成后：上传 → 同步 index/marathon/题库.json/wrong.html（见 自测题制作规范.md）
+================================================================ -->
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>《前倨后恭》 · 13题</title>
+
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+
+    background: #f5f0fa;
+
+    color: #2c2c2c;
+
+    padding: 0 0 48px;
+
+    line-height: 1.8;
+
+  }
+
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+
+
+  .banner {
+
+    background: linear-gradient(135deg, #5b3a7a 0%, #8a6db0 100%);
+
+    color: #fff;
+
+    text-align: center;
+
+    padding: 28px 20px 22px;
+
+  }
+
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .banner .badge {
+
+    display: inline-block; background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+
+  }
+
+
+
+  .sticky-original {
+
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+
+    background: #5b3a7a; color: #e2d4f0;
+
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+
+    max-height: 35vh; overflow-y: auto;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+  }
+
+  .sticky-original strong { color: #c5b2d8; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+
+  .sticky-original u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e2d4f0; }
+
+  .q-card.correct { border-left: 4px solid #4caf50; }
+
+  .q-card.wrong { border-left: 4px solid #e53935; }
+
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #5b3a7a; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+
+  .q-tag { font-size: 11px; color: #8a6db0; background: #e2d4f0; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+
+  .q-text .highlight { color: #5b3a7a; font-weight: 600; }
+
+
+
+  .opts { margin-top: 4px; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #e2d4f0; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+
+  .opts label:hover { border-color: #a88fc4; background: #f3edfa; }
+
+  .opts label.selected { border-color: #5b3a7a; background: #e2d4f0; }
+
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+
+  .opts input[type="radio"] { display: none; }
+
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #e2d4f0; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+
+  .opts label.selected .opt-letter { background: #5b3a7a; color: #fff; }
+
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f3edfa; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+
+  .explanation.show { display: block; }
+
+  .explanation strong { color: #5b3a7a; }
+
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+
+  .btn-primary { background: linear-gradient(135deg, #5b3a7a, #8a6db0); color: #fff; box-shadow: 0 2px 8px rgba(26,82,118,0.3); }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,82,118,0.35); }
+
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .btn-secondary { background: #fff; color: #5b3a7a; border: 2px solid #a88fc4; }
+
+  .btn-secondary:hover { background: #f3edfa; }
+
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+
+
+  .result-panel { background: linear-gradient(135deg, #5b3a7a, #8a6db0); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+
+  .result-panel.show { display: block; }
+
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #e2d4f0; display: none; }
+
+  .translation-panel.show { display: block; }
+
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #5b3a7a; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e2d4f0; }
+
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f3edfa; }
+
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+
+  .s-line-original { color: #333; font-weight: 500; }
+
+  .s-line-notes { color: #5b3a7a; font-size: 13px; margin-bottom: 4px; }
+
+  .s-line-notes .note-word { display: inline-block; background: #f3edfa; border: 1px solid #e2d4f0; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+
+  .s-line-trans { color: #666; font-size: 13px; }
+
+
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+
+  .footer .divider { width: 40px; height: 2px; background: #e2d4f0; margin: 0 auto 12px; border-radius: 2px; }
+
+
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+
+  .toast.show { opacity: 1; }
+
+
+
+  @media (max-width: 400px) {
+
+    .banner { padding: 24px 14px 18px; }
+
+    .banner h1 { font-size: 19px; }
+
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+
+    .q-card { padding: 14px; }
+
+    .opts label { padding: 9px 12px; font-size: 13px; }
+
+    .result-panel .score-num { font-size: 42px; }
+
+  }
+
+  @media (min-width: 600px) {
+
+    body { padding: 20px 0 48px; }
+
+    .container { padding: 0 20px; }
+
+    .banner, .sticky-original { border-radius: 0; }
+
+  }
+
+
+
+  .float-home {
+
+    position: fixed;
+
+    right: 16px;
+
+    bottom: 24px;
+
+    z-index: 900;
+
+    background: rgba(26,82,118,0.92);
+
+    color: #fff;
+
+    padding: 10px 18px;
+
+    border-radius: 24px;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    transition: all 0.2s;
+
+  }
+
+  .float-home:hover { background: #432a5c; transform: translateY(-2px); }
+
+  .float-home:active { transform: translateY(0); }
+
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+  /* 配色说明：主题色三处（背景 / 浅色文字 / 强调色），新篇目整体替换
+     jingwei 蓝色：背景 #5b3a7a ｜ 文字 #e2d4f0 ｜ 强调 #c5b2d8 */
+  /* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+  .jz{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer;color:inherit;}
+  .sticky-original u.jz{text-decoration:underline;text-decoration-color:#e2d4f0;}
+  .jz:active{background:rgba(255,255,255,.15);}
+  .jz-hint{font-size:12px;color:#c5b2d8;margin-top:6px;line-height:1.7;}
+  #jzTip{position:fixed;z-index:9999;max-width:72vw;background:#5b3a7a;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+  #jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#5b3a7a;}
+  #jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#5b3a7a;}
+
+  /* 进度菜单（全站） */
+  .float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+  .fp-hint{font-size:10px;color:#e67e22;font-weight:600;}
+  #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
+  .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+  .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
+  .pm-item:active{background:#f5f5f5;}
+  .pm-no{font-weight:500;}
+  .pm-done{color:#2e7d32;}
+  .pm-undone{color:#c62828;}
+  .pm-ok{color:#2e7d32;}
+  .pm-bad{color:#c62828;}
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="banner">
+
+  <!-- ①② 标题 + 副标题（替换为《篇名》与年级 · 出处） -->
+    <h1>📖 《前倨后恭》</h1>
+
+  <p>课外古文 · 初级 · 唐代笔记</p>
+
+  
+
+</div>
+
+
+
+<!-- ③ 原文（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；注音可加括号如 堙(yīn)） -->
+    <div class="sticky-original" id="stickyOriginal">
+    <strong>原文</strong> 裴佶少时，姑夫为<span class="jz" data-tip="朝官：在朝廷任职的官员">朝官</span>，有<u>雅望</u>。佶至宅看其姑，<u>会</u>其朝退，深叹曰：“崔昭何人？众口称美，此必行贿者也。如此<u>安得</u>不乱？”言未<u>竟</u>，<u>阍者</u>报崔使君候<u>谒</u>。姑夫怒呵阍者，将鞭之。<u>良</u>久，<span class="jz" data-tip="束带：整理衣带，指穿戴整齐">束带</span><u>强</u>出。<span class="jz" data-tip="须臾：一会儿，片刻">须臾</span>，命茶甚急，又命酒馔，又令秣马、<u>饭</u>仆。姑曰：“前何<u>倨</u>而后何恭也！”<u>及</u>入门，有得色，揖佶曰：“且憩<u>学院</u>中。”佶未下阶，出怀中一纸，<u>乃</u>昭赠<span class="jz" data-tip="官缣(jiān)：官府的细绢">官缣</span>千匹。<br>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词</div>
+    </div>
+
+
+
+
+<div style="text-align:center;background:#f0eaf6;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #dcd2ee"> <strong>常识</strong> 本文为唐代笔记小说名篇。写裴佶的姑夫（朝官）听说崔昭受人称赞，断言“此必行贿者也”，怒斥门人；待到崔昭亲自上门、以官缣千匹相赠，姑夫立刻前倨后恭、殷勤备至——讽刺趋炎附势、见钱眼开的势利小人。 </div>
+<div class="container">
+
+
+
+  <div id="questionsContainer"></div>
+
+
+
+  <div class="btn-bar">
+
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+
+  </div>
+
+
+
+  <div class="result-panel" id="resultPanel">
+
+    <div class="score-label">你的得分</div>
+
+    <div class="score-num" id="scoreNum">0</div>
+
+    <div class="score-detail">共 13 题 · 答对 <span id="correctCount">0</span> 题</div>
+
+    <div class="result-stars" id="resultStars"></div>
+
+    <div class="score-comment" id="scoreComment"></div>
+
+  </div>
+
+
+
+  <div class="translation-panel" id="translationPanel">
+
+    <h3>📖 逐句精读</h3>
+
+    <div id="translationContent"></div>
+
+  </div>
+
+
+
+  <div class="footer">
+
+    <div class="divider"></div>
+
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+
+    
+
+  </div>
+
+</div>
+
+
+
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 13 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+
+
+<div class="toast" id="toast"></div>
+
+
+
+<script>
+
+// ⑤ 题目数组 { tag, q, options, answer, explain }（短文无 seg，直接列题目）
+const questions = [
+  { tag: "字词释义", q: '“有<span class="highlight">雅望</span>”中“<span class="highlight">雅望</span>”的意思是？', options: ["美好的声望", "高雅的期望", "公正的评价", "远大的志向"], answer: 0, explain: '“雅”意为美好，“望”意为声望。“雅望”即美好的声望，指高尚的名声。其余三项均为字面拆解。' },
+  { tag: "字词释义", q: '“<span class="highlight">会</span>其朝退”中“<span class="highlight">会</span>”的意思是？', options: ["恰逢", "聚会", "领会", "必然"], answer: 0, explain: '“会”意为恰逢、正赶上。“会其朝退”即正赶上他退朝回来。' },
+  { tag: "字词释义", q: '“如此<span class="highlight">安得</span>不乱”中“<span class="highlight">安得</span>”的意思是？', options: ["怎么能", "如何获得", "从何而来", "怎么不会"], answer: 0, explain: '“安得”意为怎么能够，表反问。“如此安得不乱”即这样怎么能够不乱呢。' },
+  { tag: "字词释义", q: '“言未<span class="highlight">竟</span>”中“<span class="highlight">竟</span>”的意思是？', options: ["结束", "竟然", "毕竟", "最终"], answer: 0, explain: '“竟”意为完毕、结束。“言未竟”即话没说完。' },
+  { tag: "字词释义", q: '“<span class="highlight">阍者</span>报崔使君候谒”中“<span class="highlight">阍者</span>”的意思是？', options: ["守门人", "使者", "仆人", "官员"], answer: 0, explain: '“阍”指守门，“阍者”即守门人。“阍者报”即守门人禀报。' },
+  { tag: "字词释义", q: '“崔使君候<span class="highlight">谒</span>”中“<span class="highlight">谒</span>”的意思是？', options: ["拜见", "报告", "邀请", "命令"], answer: 0, explain: '“谒”意为拜见（进见尊长）。“候谒”即等候拜见。' },
+  { tag: "字词释义", q: '“<span class="highlight">良</span>久”中“<span class="highlight">良</span>”的意思是？', options: ["很，甚", "良好", "确实", "善良"], answer: 0, explain: '“良久”意为很久，“良”表程度，很、甚。' },
+  { tag: "字词释义", q: '“束带<span class="highlight">强</span>出”中“<span class="highlight">强</span>”的意思是？', options: ["勉强", "强硬", "强大", "强迫"], answer: 0, explain: '“强”意为勉强。“强出”即勉强出来（接见）。' },
+  { tag: "字词释义", q: '“又令秣马、<span class="highlight">饭</span>仆”中“<span class="highlight">饭</span>”的意思是？', options: ["给……吃饭", "吃饭", "饭菜", "休息"], answer: 0, explain: '“饭”名词作动词，给……吃饭（使动）。“饭仆”即给仆人吃饭。' },
+  { tag: "字词释义", q: '“前何<span class="highlight">倨</span>而后何恭也”中“<span class="highlight">倨</span>”的意思是？', options: ["傲慢", "谨慎", "急切", "慌张"], answer: 0, explain: '“倨”意为傲慢。“前何倨而后何恭”即先前为何傲慢、后来为何恭敬。' },
+  { tag: "字词释义", q: '“<span class="highlight">及</span>入门”中“<span class="highlight">及</span>”的意思是？', options: ["等到", "及时", "涉及", "趁着"], answer: 0, explain: '“及”意为等到。“及入门”即等到（他）进门。' },
+  { tag: "字词释义", q: '“且憩<span class="highlight">学院</span>中”中“<span class="highlight">学院</span>”的意思是？', options: ["书房", "学校", "官署", "客厅"], answer: 0, explain: '“学院”在文中指书房（私人读书处）。“憩学院中”即在书房里休息。' },
+  { tag: "字词释义", q: '“<span class="highlight">乃</span>昭赠官缣千匹”中“<span class="highlight">乃</span>”的意思是？', options: ["是", "竟然", "于是", "才"], answer: 0, explain: '“乃”表判断，是。“乃昭赠官缣千匹”即（纸上写的）是崔昭赠送官缣千匹（的凭证）。' }
+];
+
+
+
+// ⑥ 逐句精读（original 原文 / notes 注释 / trans 直译）
+const sentenceData = [
+  { original: "裴佶少时，姑夫为朝官，有雅望。", notes: [{ word: "朝官", meaning: "在朝廷任职的官员" }, { word: "雅望", meaning: "美好的声望" }], trans: "裴佶年少时，姑夫是朝廷官员，有美好的声望。" },
+  { original: "佶至宅看其姑，会其朝退，深叹曰：“崔昭何人？众口称美，此必行贿者也。如此安得不乱？”", notes: [{ word: "会", meaning: "恰逢" }, { word: "行贿", meaning: "行贿，以财物买通" }, { word: "安得", meaning: "怎么能" }], trans: "裴佶到宅子看望姑母，正赶上姑夫退朝回来，（姑夫）深深地叹息说：“崔昭是什么人？众口称赞他好，这一定是行贿得来的。这样怎么能够不乱呢？”" },
+  { original: "言未竟，阍者报崔使君候谒。", notes: [{ word: "竟", meaning: "结束" }, { word: "阍者", meaning: "守门人" }, { word: "谒", meaning: "拜见" }], trans: "话没说完，守门人禀报崔使君等候拜见。" },
+  { original: "姑夫怒呵阍者，将鞭之。良久，束带强出。", notes: [{ word: "鞭", meaning: "用鞭子打" }, { word: "良", meaning: "很，甚" }, { word: "束带", meaning: "整理衣带，指穿戴整齐" }, { word: "强", meaning: "勉强" }], trans: "姑夫生气地呵斥守门人，要用鞭子打他。过了很久，（姑夫）整理好衣带勉强出来（见客）。" },
+  { original: "须臾，命茶甚急，又命酒馔，又令秣马、饭仆。", notes: [{ word: "须臾", meaning: "一会儿" }, { word: "馔", meaning: "食物" }, { word: "秣马", meaning: "喂马" }, { word: "饭", meaning: "给……吃饭" }], trans: "一会儿，（姑夫）急着命人上茶，又命人备酒食，又让人喂马、给仆人吃饭。" },
+  { original: "姑曰：“前何倨而后何恭也！”及入门，有得色，揖佶曰：“且憩学院中。”", notes: [{ word: "倨", meaning: "傲慢" }, { word: "及", meaning: "等到" }, { word: "得色", meaning: "得意的神色" }, { word: "学院", meaning: "书房" }], trans: "姑母说：“先前为何傲慢，后来为何恭敬啊！”等到（姑夫）进门，一脸得意的神色，向裴佶作揖说：“暂且到书房里休息吧。”" },
+  { original: "佶未下阶，出怀中一纸，乃昭赠官缣千匹。", notes: [{ word: "乃", meaning: "是" }, { word: "昭", meaning: "崔昭" }, { word: "官缣", meaning: "官府的细绢" }], trans: "裴佶还没走下台阶，（姑夫）从怀中掏出一张纸，（上面写的）是崔昭赠送官缣千匹（的凭证）。" }
+];
+
+
+
+const container = document.getElementById('questionsContainer');
+
+const submitBtn = document.getElementById('submitBtn');
+
+const resetBtn = document.getElementById('resetBtn');
+
+const resultPanel = document.getElementById('resultPanel');
+
+const scoreNum = document.getElementById('scoreNum');
+
+const correctCountEl = document.getElementById('correctCount');
+
+const resultStars = document.getElementById('resultStars');
+
+const scoreComment = document.getElementById('scoreComment');
+
+const toast = document.getElementById('toast');
+
+const translationPanel = document.getElementById('translationPanel');
+
+const translationContent = document.getElementById('translationContent');
+
+const STORAGE_PREFIX = 'qianjuhougong_';
+
+
+
+let submitted = false;
+
+let shuffles = {};
+
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+
+function renderTranslation() {
+
+  translationContent.innerHTML = '';
+
+  sentenceData.forEach(s => {
+
+    const block = document.createElement('div'); block.className = 'sentence-block';
+
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+
+    translationContent.appendChild(block);
+
+  });
+
+}
+
+function renderQuestions() {
+
+  container.innerHTML = '';
+
+  questions.forEach((q, i) => {
+
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+
+    container.appendChild(card);
+
+  });
+
+}
+
+function selectOption(qIdx, optIdx) {
+
+  if (submitted) return;
+
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+
+  if (label) label.classList.add('selected');
+
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+
+  const done = getAnswered();
+
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+
+function restoreFromStorage() {
+
+  const answers = getStoredAnswers(); const answered = getAnswered();
+
+  if (!answered.length) return;
+
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function updateProgress() { const done = getAnswered().length; const total = questions.length; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+
+  var progMenu = document.getElementById('progMenu');
+  var floatProgEl = document.getElementById('floatProg');
+  function renderProgMenu(){
+    var html = '<div class="pm-title">答题进度 · 点击题号跳转</div>';
+    var no = 0;
+    questions.forEach(function(q, i){
+      if(q.seg) return;
+      no++;
+      var stCls, stTxt;
+      if(submitted){
+        var card = document.getElementById('q-' + i);
+        if(card && card.classList.contains('correct')){ stCls = 'pm-ok'; stTxt = '✅'; }
+        else { stCls = 'pm-bad'; stTxt = '❌'; }
+      } else {
+        if(getAnswered().indexOf(i) >= 0){ stCls = 'pm-done'; stTxt = '已完成'; }
+        else { stCls = 'pm-undone'; stTxt = '未完成'; }
+      }
+      html += '<div class="pm-item" data-i="' + i + '"><span class="pm-no">第' + no + '题</span><span class="' + stCls + '">' + stTxt + '</span></div>';
+    });
+    progMenu.innerHTML = html;
+  }
+  if (floatProgEl) {
+    floatProgEl.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(progMenu.style.display === 'block'){ progMenu.style.display = 'none'; return; }
+      renderProgMenu();
+      progMenu.style.display = 'block';
+    });
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest ? e.target.closest('.pm-item') : null;
+    if(item){
+      var card = document.getElementById('q-' + item.getAttribute('data-i'));
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+      progMenu.style.display = 'none';
+      return;
+    }
+    if(progMenu.style.display === 'block' && !(e.target.closest ? e.target.closest('#progMenu') : null) && e.target !== floatProgEl){
+      progMenu.style.display = 'none';
+    }
+  });
+  function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+
+submitBtn.addEventListener('click', function() {
+
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ // ⑦ 篇目标识
+paper: '《前倨后恭》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+
+  });
+
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+
+  const pct = correct / questions.length; let stars = '', comment = '';
+
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+
+  renderTranslation(); translationPanel.classList.add('show');
+
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+
+});
+
+resetBtn.addEventListener('click', function() {
+
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+
+  generateShuffles(); renderQuestions(); updateProgress();
+
+  scrollTo({ top: 0, behavior: 'smooth' });
+
+});
+
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
+
+</script>
+
+
+<!-- 气泡注释 JS（点击 .jz 弹出；点别处关闭；滚动隐藏） -->
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script>
+</body>
+
+</html>
+
