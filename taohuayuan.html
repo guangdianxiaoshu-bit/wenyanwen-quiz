@@ -166,6 +166,19 @@
 #jzTip{position:fixed;z-index:9999;max-width:72vw;background:#a8547c;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
 #jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#a8547c;}
 #jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#a8547c;}
+
+  /* 进度菜单（全站） */
+  .float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+  .fp-hint{font-size:10px;color:#e67e22;font-weight:600;}
+  #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
+  .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+  .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
+  .pm-item:active{background:#f5f5f5;}
+  .pm-no{font-weight:500;}
+  .pm-done{color:#2e7d32;}
+  .pm-undone{color:#c62828;}
+  .pm-ok{color:#2e7d32;}
+  .pm-bad{color:#c62828;}
 </style>
 </head>
 <body>
@@ -208,7 +221,7 @@
   </div>
 </div>
 
-<div class="float-prog" id="floatProg">已答 0 / 44 题</div>
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 44 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 <div class="toast" id="toast"></div>
@@ -344,8 +357,50 @@ function restoreFromStorage() {
   Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
   updateProgress(); checkSubmitReady();
 }
-function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('floatProg').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
-function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+  var progMenu = document.getElementById('progMenu');
+  var floatProgEl = document.getElementById('floatProg');
+  function renderProgMenu(){
+    var html = '<div class="pm-title">答题进度 · 点击题号跳转</div>';
+    var no = 0;
+    questions.forEach(function(q, i){
+      if(q.seg) return;
+      no++;
+      var stCls, stTxt;
+      if(submitted){
+        var card = document.getElementById('q-' + i);
+        if(card && card.classList.contains('correct')){ stCls = 'pm-ok'; stTxt = '✅'; }
+        else { stCls = 'pm-bad'; stTxt = '❌'; }
+      } else {
+        if(getAnswered().indexOf(i) >= 0){ stCls = 'pm-done'; stTxt = '已完成'; }
+        else { stCls = 'pm-undone'; stTxt = '未完成'; }
+      }
+      html += '<div class="pm-item" data-i="' + i + '"><span class="pm-no">第' + no + '题</span><span class="' + stCls + '">' + stTxt + '</span></div>';
+    });
+    progMenu.innerHTML = html;
+  }
+  if (floatProgEl) {
+    floatProgEl.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(progMenu.style.display === 'block'){ progMenu.style.display = 'none'; return; }
+      renderProgMenu();
+      progMenu.style.display = 'block';
+    });
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest ? e.target.closest('.pm-item') : null;
+    if(item){
+      var card = document.getElementById('q-' + item.getAttribute('data-i'));
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+      progMenu.style.display = 'none';
+      return;
+    }
+    if(progMenu.style.display === 'block' && !(e.target.closest ? e.target.closest('#progMenu') : null) && e.target !== floatProgEl){
+      progMenu.style.display = 'none';
+    }
+  });
+  function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
 submitBtn.addEventListener('click', function() {
   if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
   submitted = true; const answers = getStoredAnswers(); let correct = 0;
