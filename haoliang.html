@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#d5e6e0;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#d5e6e0;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d5e6e0;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#2f7d6e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#2f7d6e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#2f7d6e;}
 </style>
 </head>
 <body>
@@ -170,6 +179,7 @@
 
 
 <div style="text-align:center;background:#e9f3ef;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cddde6"> <strong>常识</strong> 本文节选自《庄子·秋水》（《庄子集释》，中华书局1961年版）。庄子，名周，战国时期宋国蒙人，道家学派的代表人物；惠子（惠施）是战国时期哲学家，庄子的好友。本文写庄子与惠子在濠水桥上关于"鱼之乐"的著名辩论，庄子从物我相融的审美视角观照外物，惠子则从逻辑推理出发质疑。 </div>
+<div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 <div class="container">
   <div id="questionsContainer"></div>
 
@@ -205,7 +215,7 @@
 
 <script>
 const questions = [
-  { seg: "庄子与惠子<small>〔惠子〕即惠施，战国时期哲学家，庄子的好友</small>游于濠梁<small>〔濠梁〕濠水上的桥。濠，水名，在今安徽凤阳</small>之上。庄子曰：“鲦鱼出游<u>从容</u>，<u>是</u>鱼之乐也。”惠子曰：“子非鱼，<u>安</u>知鱼<u>之</u>乐？”庄子曰：“子非我，安知我不知鱼之乐？”惠子曰：“我非子，<u>固</u>不知子矣；子固非鱼也，子<u>之</u>不知鱼之乐，<u>全</u>矣！”" },
+  { seg: "庄子与<span class="jz" data-tip="惠子：即惠施，战国时期哲学家，庄子的好友">惠子</span>游于<span class="jz" data-tip="濠梁：濠水上的桥。濠，水名，在今安徽凤阳">濠梁</span>之上。庄子曰：“鲦鱼出游<u>从容</u>，<u>是</u>鱼之乐也。”惠子曰：“子非鱼，<u>安</u>知鱼<u>之</u>乐？”庄子曰：“子非我，安知我不知鱼之乐？”惠子曰：“我非子，<u>固</u>不知子矣；子固非鱼也，子<u>之</u>不知鱼之乐，<u>全</u>矣！”" },
   { tag: "字词释义", q: '“鲦鱼出游<span class="highlight">从容</span>”中“<span class="highlight">从容</span>”的意思是？', options: ["悠闲自得", "从容不迫", "急急忙忙", "焦躁不安"], answer: 0, explain: '“从容”意为“悠闲自得”。“出游从容”即在水里悠闲自在地游动。' },
   { tag: "字词释义", q: '“<span class="highlight">是</span>鱼之乐也”中“<span class="highlight">是</span>”的意思是？', options: ["表判断", "这", "正确", "这样"], answer: 1, explain: '“是”是指示代词，这。“是鱼之乐也”即这就是鱼的快乐。' },
   { tag: "字词释义", q: '“子非鱼，<span class="highlight">安</span>知鱼之乐”中“<span class="highlight">安</span>”的意思是？', options: ["哪里", "怎么", "安全", "为何"], answer: 1, explain: '“安”意为“怎么”。“安知鱼之乐”即怎么知道鱼的快乐。' },
@@ -349,5 +359,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
