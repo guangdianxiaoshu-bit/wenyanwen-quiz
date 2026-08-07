@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#e2d8c2;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#e2d8c2;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#e2d8c2;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#7a5c2e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#7a5c2e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#7a5c2e;}
 </style>
 </head>
 <body>
@@ -170,6 +179,7 @@
 
 
 <div style="text-align:center;background:#f1ebdd;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #ddd2b8"> <strong>常识</strong> 本文选自《列子·汤问》（《列子集释》，中华书局1979年版）。《列子》旧题为战国时期列御寇所著，今本多为晋人整理，内容多为民间故事、寓言和神话传说。题目是编者加的。 </div>
+<div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 <div class="container">
   <div id="questionsContainer"></div>
 
@@ -240,7 +250,7 @@ const questions = [
   { tag: "字词释义", q: '“有子存<span class="highlight">焉</span>”中“<span class="highlight">焉</span>”的意思是？', options: ["语气词，了，啊", "哪里", "于此", "怎么"], answer: 0, explain: '“焉”是句末语气词，表陈述语气。“有子存焉”即还有儿子在啊。' },
   { tag: "字词释义", q: '“何<span class="highlight">苦</span>而不平”中“<span class="highlight">苦</span>”的意思是？', options: ["愁，担心", "痛苦", "辛苦", "苦于"], answer: 0, explain: '“苦”意为“愁、担心”。“何苦而不平”即还担心挖不平吗？' },
   { tag: "字词释义", q: '“河曲智叟<span class="highlight">亡</span>以应”中“<span class="highlight">亡</span>”的意思是？', options: ["同“无”，没有", "死亡", "灭亡", "逃亡"], answer: 0, explain: '“亡”同“无”，没有。“亡以应”即无话可答。' },
-  { seg: "操蛇之神<small>〔操蛇之神〕手里拿着蛇的神。操，持</small>闻之，惧其不已也，告之于帝。帝感其诚，命夸娥氏<small>〔夸娥氏〕神话中的大力神</small>二子负二山，一<u>厝</u>朔东<small>〔朔东〕朔方东部，今山西北部一带。朔，朔方，今内蒙古自治区南部一带</small>，一厝雍南。自此，冀之南，汉之阴，无<u>陇</u>断焉。" },
+  { seg: "<span class="jz" data-tip="操蛇之神：手里拿着蛇的神。操，持">操蛇之神</span>闻之，惧其不已也，告之于帝。帝感其诚，命<span class="jz" data-tip="夸娥氏：神话中的大力神">夸娥氏</span>二子负二山，一<u>厝</u><span class="jz" data-tip="朔东：朔方东部，今山西北部一带。朔，朔方，今内蒙古自治区南部一带">朔东</span>，一厝雍南。自此，冀之南，汉之阴，无<u>陇</u>断焉。" },
   { tag: "字词释义", q: '“一<span class="highlight">厝</span>朔东”中“<span class="highlight">厝</span>”的意思是？', options: ["放置，安放", "处理", "磨刀石", "错过"], answer: 0, explain: '“厝”意为“放置、安放”。“一厝朔东”即一座放在朔方东部。“厝”通“措”。' },
   { tag: "字词释义", q: '“无<span class="highlight">陇</span>断焉”中“<span class="highlight">陇</span>”的意思是？', options: ["同“垄”，山冈，高地", "陇西", "田地", "丘陵"], answer: 0, explain: '“陇”同“垄”，山冈、高地。“无陇断焉”即再也没有山冈阻隔了。' },
   { tag: "字词释义", q: '对“毕力平险”中词语的用法，分析正确的一项是？', options: ["险：动词，冒险", "险：形容词作名词，险峻的大山", "毕：名词，完毕", "无词类活用现象"], answer: 1, explain: '“险”形容词作名词，指险峻的大山；“毕”是“尽、用尽”。' },
@@ -373,5 +383,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
