@@ -139,6 +139,15 @@
   .float-home:hover { background: #1a237e; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#c5cae9;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#c5cae9;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#c5cae9;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#283593;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#283593;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#283593;}
 </style>
 </head>
 <body>
@@ -150,8 +159,9 @@
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 陈太丘与友<u>期</u>行，期日中。过中不至，太丘<u>舍</u><u>去</u>，去后<u>乃</u>至。元方时年七岁，门外<u>戏</u>。客问元方：“<u>尊君</u>在<u>不</u>？”答曰：“待君久不至，已去。”友人便怒曰：“非人哉！与人期行，相<u>委</u>而去。”元方曰：“君与家君<small>〔家君〕对人谦称自己的父亲</small>期日中。日中不至，则是无信；对子骂父，则是无礼。”友人惭，下车<u>引</u>之。元方入门不<u>顾</u>。<br>
+  <strong>原文</strong> 陈太丘与友<u>期</u>行，期日中。过中不至，太丘<u>舍</u><u>去</u>，去后<u>乃</u>至。元方时年七岁，门外<u>戏</u>。客问元方：“<u>尊君</u>在<u>不</u>？”答曰：“待君久不至，已去。”友人便怒曰：“非人哉！与人期行，相<u>委</u>而去。”元方曰：“君与<span class="jz" data-tip="家君：对人谦称自己的父亲">家君</span>期日中。日中不至，则是无信；对子骂父，则是无礼。”友人惭，下车<u>引</u>之。元方入门不<u>顾</u>。<br>
 </div>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 
 
 <div style="text-align:center;background:#c5cae9;color:#283593;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid rgba(0,0,0,0.08)"><strong>常识</strong> 本文选自《世说新语·方正》。刘义庆（南朝宋）组织编写。陈太丘即陈寔(shí)，字仲弓，东汉颍川人，曾任太丘长。元方即陈纪，陈寔的长子。
@@ -332,5 +342,29 @@ resetBtn.addEventListener('click', function() {
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
