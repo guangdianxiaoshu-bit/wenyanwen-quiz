@@ -191,9 +191,9 @@
 
 
 
-<div style="text-align:center;background:#e8efe3;color:#3f5736;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #c4d8b8"><strong>常识</strong> 本文选自《梦溪笔谈》卷十八。作者沈括（1031—1095），字存中，北宋科学家、政治家。本文详细记载了毕昇发明的活字印刷术。
-</div>
-<div class="container">
+<div style="text-align:center;background:#e8efe3;color:#3f5736;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #c4d8b8"><strong>常识</strong> 本文选自《梦溪笔谈》卷十八。作者沈括（1031—1095），字存中，北宋科学家、政治家。本文详细记载了毕昇发明的活字印刷术。 </div>
+<div class="jz-hint" style="color:#5a6b8c;font-size:12px;margin:6px 14px 2px;text-align:left">💡 点击带虚线下划线的词，可查看注释；<b style="background:#ffe58a;color:#2c2c2c;padding:0 3px;border-radius:3px">黄色高亮</b>为考察的实词</div>
+ <div class="container">
 
   <div id="questionsContainer"></div>
 
@@ -230,29 +230,29 @@
 <script>
 const questions = [
   { seg: "板印书籍，唐人尚未<u>盛</u>为之。<u>已</u>后典籍皆为板本。庆历中，有<u>布衣</u>毕昇，又<u>为</u>活板。" },
-  { tag: "字词释义", q: '“<span class="highlight">板</span>印书籍”中“<span class="highlight">板</span>”的意思是？', options: ["用雕版（同“版”，名作状）", "木板", "印刷", "版面"], answer: 0, explain: '“板”同“版”，名词作状语，意为“用雕版”。用雕版印刷书籍。' },
-  { tag: "字词释义", q: '“尚未<span class="highlight">盛</span>为之”中“<span class="highlight">盛</span>”的意思是？', options: ["大规模地", "茂盛", "丰富", "隆重"], answer: 0, explain: '“盛”意为“大规模地”。唐朝人还没有大规模地这样做。' },
+  { tag: "字词释义", q: '“<span class="highlight">板</span>印书籍”中“<span class="highlight">板</span>”的意思是？', options: ["雕版", "木板", "印刷", "版面"], answer: 0, explain: '“板”同“版”，名词作状语，意为“用雕版”。用雕版印刷书籍。' },
+  { tag: "字词释义", q: '“尚未<span class="highlight">盛</span>为之”中“<span class="highlight">盛</span>”的意思是？', options: ["大规模", "茂盛", "丰富", "隆重"], answer: 0, explain: '“盛”意为“大规模地”。唐朝人还没有大规模地这样做。' },
   { tag: "字词释义", q: '“<span class="highlight">已</span>后典籍”中“<span class="highlight">已</span>”的读音和意思是？', options: ["yǐ，同“以”", "yǐ，已经", "jǐ，自己", "yì，已经"], answer: 0, explain: '“已”读yǐ，同“以”，“已后”即“以后”。' },
-  { tag: "字词释义", q: '“有<span class="highlight">布衣</span>毕昇”中“<span class="highlight">布衣</span>”的意思是？', options: ["平民", "布做的衣服", "布衣人家", "粗布衣裳"], answer: 0, explain: '“布衣”借代指平民（穿布衣的人）。有个平民叫毕昇。' },
+  { tag: "字词释义", q: '“有<span class="highlight">布衣</span>毕昇”中“<span class="highlight">布衣</span>”的意思是？', options: ["平民", "布做的衣服", "粗布衣裳", "布匹"], answer: 0, explain: '“布衣”借代指平民（穿布衣的人）。有个平民叫毕昇。' },
   { tag: "字词释义", q: '“又<span class="highlight">为</span>活板”中“<span class="highlight">为</span>”的意思是？', options: ["制作", "为了", "被", "作为"], answer: 0, explain: '“为”意为“制作”。又发明（制作）了活字印刷。' },
   { seg: "其法：用胶泥刻字，薄如钱<u>唇</u>，每字为一<u>印</u>，<u>火</u>烧令坚。先设一铁板，其上以松脂、蜡和纸灰之类<u>冒</u>之。欲印，则以一铁范置铁板上，乃密布字印，满铁范为一板，持<u>就</u>火炀(yáng)之，药稍熔，则以一平板按其面，则字平如<u>砥</u>。" },
   { tag: "字词释义", q: '“薄如钱<span class="highlight">唇</span>”中“<span class="highlight">唇</span>”的意思是？', options: ["边缘", "嘴唇", "钱孔", "中心"], answer: 0, explain: '“唇”意为“边缘”。字模薄得像铜钱的边缘。' },
   { tag: "字词释义", q: '“每字为一<span class="highlight">印</span>”中“<span class="highlight">印</span>”的意思是？', options: ["字印", "印刷", "印刻", "印象"], answer: 0, explain: '“印”指字印（印章）。每个字做一个字印。' },
-  { tag: "字词释义", q: '“<span class="highlight">火</span>烧令坚”中“<span class="highlight">火</span>”的意思是？', options: ["用火（名词作状语）", "火焰", "火烧", "火烤"], answer: 0, explain: '“火”名词作状语，意为“用火”。用火烧使它坚硬。' },
+  { tag: "字词释义", q: '“<span class="highlight">火</span>烧令坚”中“<span class="highlight">火</span>”的意思是？', options: ["用火", "火焰", "火烧", "火烤"], answer: 0, explain: '“火”名词作状语，意为“用火”。用火烧使它坚硬。' },
   { tag: "字词释义", q: '“以松脂、蜡和纸灰之类<span class="highlight">冒</span>之”中“<span class="highlight">冒</span>”的意思是？', options: ["覆盖", "冒犯", "冒出", "冒充"], answer: 0, explain: '“冒”意为“覆盖”。用松脂、蜡混合纸灰这类东西覆盖（铁板）。' },
   { tag: "字词释义", q: '“持<span class="highlight">就</span>火炀之”中“<span class="highlight">就</span>”的意思是？', options: ["靠近", "完成", "立即", "于是"], answer: 0, explain: '“就”意为“靠近”。拿着（铁板）靠近火烘烤。' },
   { tag: "字词释义", q: '“持就火<span class="highlight">炀(yáng)</span>之”中“<span class="highlight">炀(yáng)</span>”的意思是？', options: ["烤", "加热", "烧灼", "点火"], answer: 0, explain: '“炀”读yáng，意为“烤”。拿着（铁板）靠近火烘烤。' },
   { tag: "字词释义", q: '“则字平如<span class="highlight">砥</span>”中“<span class="highlight">砥</span>”的意思是？', options: ["磨刀石", "地面", "平地", "基础"], answer: 0, explain: '“砥”意为“磨刀石”。字模平整得像磨刀石一样。' },
-  { seg: "若<u>止</u>印三二本，未为简易；若印数十百千本，则极为神速。常作二铁板，一板印刷，一板已自<u>布字</u>，此印者才毕，则第二板已<u>具</u>，<u>更互</u>用之，瞬息可<u>就</u>。" },
+  { seg: "若<u>止</u>印三二本，未为简易；若印数十百千本，则极为神速。常作二铁板一板印刷一板已自<u>布字</u>此印者才毕则第二板已<u>具</u><u>更互</u>用之瞬息可<u>就</u>" },
   { tag: "字词释义", q: '“若<span class="highlight">止</span>印三二本”中“<span class="highlight">止</span>”的意思是？', options: ["只", "停止", "阻止", "还是"], answer: 0, explain: '“止”意为“只、仅”。如果只印两三本。' },
   { tag: "字词释义", q: '“一板已自<span class="highlight">布字</span>”中“<span class="highlight">布字</span>”的意思是？', options: ["排字", "布置", "分布", "写字"], answer: 0, explain: '“布字”意为“排字”。另一块板已经在自行排字。' },
-  { tag: "字词释义", q: '“则第二板已<span class="highlight">具</span>”中“<span class="highlight">具</span>”的意思是？', options: ["准备好", "工具", "具备", "具体"], answer: 0, explain: '“具”意为“准备好”。第二块板已经准备好了。' },
+  { tag: "字词释义", q: '“则第二板已<span class="highlight">具</span>”中“<span class="highlight">具</span>”的意思是？', options: ["备好", "工具", "具备", "具体"], answer: 0, explain: '“具”意为“准备好”。第二块板已经准备好了。' },
   { tag: "字词释义", q: '“<span class="highlight">更互</span>用之”中“<span class="highlight">更互</span>”的意思是？', options: ["交替", "更加", "更换", "互相"], answer: 0, explain: '“更互”意为“交替、轮流”。交替使用两块板。' },
-  { tag: "字词释义", q: '“瞬息可<span class="highlight">就</span>”中“<span class="highlight">就</span>”的意思是？', options: ["完成", "靠近", "立即", "靠近"], answer: 0, explain: '“就”意为“完成”。转眼之间就能完成。（与“持就火炀之”的“就=靠近”对比）' },
+  { tag: "字词释义", q: '“瞬息可<span class="highlight">就</span>”中“<span class="highlight">就</span>”的意思是？', options: ["完成", "靠近", "立即", "于是"], answer: 0, explain: '“就”意为“完成”。转眼之间就能完成。（与“持就火炀之”的“就=靠近”对比）' },
   { seg: "每一字皆有数印，如“之”“也”等字，每字有二十余印，以备一板内有重复者。不用，则以纸<u>帖</u>之，每韵为一帖，木格贮之。有<span class='jz' data-tip='奇字：生僻字'>奇字</span>素无备者，<u>旋</u>刻之，以草火烧，瞬息可成。不以木为之者，文<u>理</u>有疏密，沾水则高下不平，兼与药相粘，不可取；不若燔土，用讫再火令药熔，以手拂之，其印自落，<u>殊</u>不沾污。" },
-  { tag: "字词释义", q: '“则以纸<span class="highlight">帖</span>之”中“<span class="highlight">帖</span>”的意思是？', options: ["标注（动词）", "粘贴", "帖子", "字帖"], answer: 0, explain: '“帖”作动词，意为“标注”。就用纸标签标注它们。' },
+  { tag: "字词释义", q: '“则以纸<span class="highlight">帖</span>之”中“<span class="highlight">帖</span>”的意思是？', options: ["标注", "粘贴", "帖子", "字帖"], answer: 0, explain: '“帖”作动词，意为“标注”。就用纸标签标注它们。' },
   { tag: "字词释义", q: '“<span class="highlight">旋</span>刻之”中“<span class="highlight">旋</span>”的意思是？', options: ["随即", "旋转", "盘旋", "周转"], answer: 0, explain: '“旋”意为“随即、立刻”。随即刻制它。' },
-  { tag: "字词释义", q: '“文<span class="highlight">理</span>有疏密”中“<span class="highlight">文</span>”的意思是？', options: ["同“纹”，纹理", "文章", "文字", "文化"], answer: 0, explain: '“文”同“纹”，意为“纹理”。木头的纹理有疏有密。' },
+  { tag: "字词释义", q: '“文<span class="highlight">理</span>有疏密”中“<span class="highlight">文</span>”的意思是？', options: ["纹理", "文章", "文字", "文化"], answer: 0, explain: '“文”同“纹”，意为“纹理”。木头的纹理有疏有密。' },
   { tag: "字词释义", q: '“<span class="highlight">殊</span>不沾污”中“<span class="highlight">殊</span>”的意思是？', options: ["根本", "特殊", "不同", "非常"], answer: 0, explain: '“殊”意为“根本、绝对”。根本不会被弄脏。' },
   { tag: "内容理解", q: '“常作二铁板一板印刷一板已自布字此印者才毕则第二板已具更互用之瞬息可就”断句正确的一项是？', options: ["常作二铁板，一板印刷，一板已自布字，此印者才毕，则第二板已具，更互用之，瞬息可就。", "常作二铁板一板，印刷一板，已自布字此印者，才毕则第二板，已具更互用之，瞬息可就。", "常作二铁板，一板印刷一板已，自布字此印者才毕，则第二板已具更互，用之瞬息可就。", "常作二铁板一板印刷，一板已自布字此印者，才毕则第二板已具，更互用之瞬息可就。"], answer: 0, explain: '正确断句为“常作二铁板，一板印刷，一板已自布字，此印者才毕，则第二板已具，更互用之，瞬息可就。”意为常常做两块铁板，一块印刷，一块排字，交替使用，转眼完成。' },
   { tag: "内容理解", q: '下列句子中是被动句的是？', options: ["昇死，其印为余群从所得", "板印书籍，唐人尚未盛为之", "火烧令坚", "不以木为之者"], answer: 0, explain: '“其印为余群从所得”中“为……所”表被动，是被动句，意为“字印被我的堂兄弟和子侄辈得到”。' },
