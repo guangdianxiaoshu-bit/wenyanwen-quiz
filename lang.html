@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#d5d6e0;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#d5d6e0;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d5d6e0;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#25274d;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#25274d;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#25274d;}
 </style>
 </head>
 <body>
@@ -224,7 +233,7 @@ const questions = [
   { tag: "字词释义", q: '“并驱<span class="highlight">如故</span>”中“<span class="highlight">如故</span>”的意思是？',
     options: ["像原来一样", "如同故人", "按照旧例", "装作没事"], answer: 0,
     explain: '“如故”意为“像原来一样”。两只狼像原来一样一起追赶。' },
-  { seg: "屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，苫<small>〔苫〕shàn，盖上</small>蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，眈眈<small>〔眈眈〕凶狠注视的样子</small>相向。" },
+  { seg: "屠大<u>窘</u>，恐前后受其<u>敌</u>。<u>顾</u>野有麦场，场主积<u>薪</u>其中，<span class="jz" data-tip="苫：shàn，盖上">苫</span>蔽成丘。屠<u>乃</u>奔倚其下，<u>弛</u>担持刀。狼不敢<u>前</u>，<span class="jz" data-tip="眈眈：凶狠注视的样子">眈眈</span>相向。" },
   { tag: "字词释义", q: '“屠大<span class="highlight">窘</span>”中“<span class="highlight">窘</span>”的意思是？',
     options: ["困迫", "贫穷", "害怕", "着急"], answer: 0,
     explain: '“窘”意为“处境困迫、为难”。屠户十分困迫。' },
@@ -246,7 +255,7 @@ const questions = [
   { tag: "字词释义", q: '“狼不敢<span class="highlight">前</span>”中“<span class="highlight">前</span>”的意思是？',
     options: ["上前", "前方", "先前", "前进"], answer: 0,
     explain: '“前”名词作动词，意为“上前”。狼不敢上前。' },
-  { seg: "<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露尻<small>〔尻〕kāo，屁股</small>尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。" },
+  { seg: "<u>少时</u>，一狼<u>径</u>去，其一<u>犬</u>坐于前。久之，目似<u>瞑</u>，意<u>暇</u>甚。屠<u>暴</u>起，以刀劈狼首，又数刀毙之。<u>方</u>欲行，转视积薪后，一狼<u>洞</u>其中，意将<u>隧</u>入以攻其后也。身已半入，止露<span class="jz" data-tip="尻：kāo，屁股">尻</span>尾。屠自后断其<u>股</u>，亦毙之。<u>乃</u>悟前狼假寐，<u>盖</u>以诱敌。狼亦黠矣，而顷刻两毙，禽兽之变诈<u>几何</u>哉？止增笑<u>耳</u>。" },
   { tag: "字词释义", q: '“<span class="highlight">少时</span>”中“<span class="highlight">少</span>”的读音是？',
     options: ["shāo", "sháo", "shǎo", "shào"], answer: 2,
     explain: '“少时”的“少”读shǎo，意为“一会儿、时间短暂”。' },
@@ -408,5 +417,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
