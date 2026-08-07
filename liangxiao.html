@@ -139,6 +139,15 @@
   .float-home:hover { background: #7e5109; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#fdebd0;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#fdebd0;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#fdebd0;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#b9770e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#b9770e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#b9770e;}
 </style>
 </head>
 <body>
@@ -150,8 +159,9 @@
 </div>
 
 <div class="sticky-original" id="stickyOriginal">
-  <strong>原文</strong> 孔子<u>东</u>游，见两小儿<u>辩斗</u>，问其<u>故</u>。一儿曰：“我<u>以</u>日始出时<u>去</u>人近，而日中<small>〔日中〕正午</small>时远也。”一儿曰：“我以日初出远，而日中时近也。”一儿曰：“日初出大如车盖<small>〔车盖〕古时车上的圆形篷盖，像雨伞一样</small>，<u>及</u>日中则如盘盂<small>〔盘盂〕盛物的器皿，圆的为盘，方的为盂</small>，此不为远者小而近者大乎？”一儿曰：“日初出沧沧凉凉<small>〔沧沧凉凉〕寒凉</small>，及其日中如探<u>汤</u>，此不为近者热而远者凉乎？”孔子不能<u>决</u>也。两小儿笑曰：“<u>孰(shú)</u><u>为</u><u>汝</u>多<u>知</u>乎？”<br>
+  <strong>原文</strong> 孔子<u>东</u>游，见两小儿<u>辩斗</u>，问其<u>故</u>。一儿曰：“我<u>以</u>日始出时<u>去</u>人近，而<span class="jz" data-tip="日中：正午">日中</span>时远也。”一儿曰：“我以日初出远，而日中时近也。”一儿曰：“日初出大如<span class="jz" data-tip="车盖：古时车上的圆形篷盖，像雨伞一样">车盖</span>，<u>及</u>日中则如<span class="jz" data-tip="盘盂：盛物的器皿，圆的为盘，方的为盂">盘盂</span>，此不为远者小而近者大乎？”一儿曰：“日初出<span class="jz" data-tip="沧沧凉凉：寒凉">沧沧凉凉</span>，及其日中如探<u>汤</u>，此不为近者热而远者凉乎？”孔子不能<u>决</u>也。两小儿笑曰：“<u>孰(shú)</u><u>为</u><u>汝</u>多<u>知</u>乎？”<br>
 </div>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 
 
 <div style="text-align:center;background:#fed7aa;color:#b9770e;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid rgba(0,0,0,0.08)"><strong>常识</strong> 本文选自《列子·汤问》，题目为后人所加。
@@ -338,5 +348,29 @@ resetBtn.addEventListener('click', function() {
 function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
 localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
