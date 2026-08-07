@@ -1,0 +1,475 @@
+<!-- ================================================================================ -->
+<!-- ================================================================
+  光点小塾 · 文言文自测模板（长文本 · 分段式）
+  本模板含示例内容（《狼》），可双击本地预览；
+  制作新篇目时在此文件基础上改造，替换以下区块：
+
+  ① 标题：<title> 与 <h1>（含题数，如《XXX》· 12题）
+  ② 副标题：<h1> 下方 <p>（年级 · 出处）
+  ③ 配色：CSS 区的颜色值（主题色一组，见"配色说明"注释）
+  ④ 原文：
+     短文（本模板）= <div class="sticky-original"> 内原文
+     长文（分段模板）= const questions 里 { seg: "..." } 对象（每段一个）
+     - 考点词用 <u>黄底</u>（题目考察的词）
+     - 注释词用 <span class="jz" data-tip="词：注释">词</span>（点击出气泡）
+     - 长文 seg 字符串内 HTML 属性必须用单引号（class='jz'），否则白屏！
+     - 断句考察句原文去掉标点
+  ⑤ 常识：<strong>常识</strong> 后文本（来源 + 作者 + 内容简介）
+  ⑥ 题目：const questions 数组 { tag, q, options, answer, explain }
+     - q 用单引号；HTML 属性用双引号；引号统一中文弯引号
+     - 选项规范见 自测题制作规范.md（无括号、字数均衡、避近义）
+  ⑦ 逐句精读：const sentenceData（original / notes / trans，直译）
+  ⑧ 收尾：paper: '《篇名》'、STORAGE_PREFIX = '文件名_'
+  完成后：上传 → 同步 index/marathon/题库.json/wrong.html（见 自测题制作规范.md）
+================================================================ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《马说》 · 26题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #7a4a2b 0%, #8a5a3b 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #7a4a2b; color: #ecd9c8;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #b08968; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ecd9c8; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7a4a2b; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #8a5a3b; background: #ecd9c8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #7a4a2b; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #f5e9dd; border-left: 4px solid #8a5a3b;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a4a2b; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b08968; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .seg-orig small { font-size: 10px; color: #b08968; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #ecd9c8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #c9a88a; background: #faf1e8; }
+  .opts label.selected { border-color: #7a4a2b; background: #ecd9c8; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #ecd9c8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #7a4a2b; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #faf1e8; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #7a4a2b; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #7a4a2b, #8a5a3b); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #7a4a2b; border: 2px solid #c9a88a; }
+  .btn-secondary:hover { background: #faf1e8; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #7a4a2b, #8a5a3b); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #ecd9c8; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7a4a2b; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #ecd9c8; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #faf1e8; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #7a4a2b; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #faf1e8; border: 1px solid #ecd9c8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #ecd9c8; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #f5e9dd; border-left: 4px solid #8a5a3b;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #7a4a2b; border-radius: 4px;
+  }
+  .seg-orig strong { color: #b08968; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .seg-orig small { font-size: 10px; color: #b08968; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#ecd9c8;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#ecd9c8;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#ecd9c8;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#7a4a2b;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#7a4a2b;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#7a4a2b;}
+
+  /* 进度菜单（全站） */
+  .float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+  .fp-hint{font-size:10px;color:#e67e22;font-weight:600;}
+  #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
+  .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+  .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
+  .pm-item:active{background:#f5f5f5;}
+  .pm-no{font-weight:500;}
+  .pm-done{color:#2e7d32;}
+  .pm-undone{color:#c62828;}
+  .pm-ok{color:#2e7d32;}
+  .pm-bad{color:#c62828;}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <!-- ①② 标题 + 副标题（替换为《篇名》与年级 · 出处） -->
+    <h1>📖 《马说》</h1>
+  <p>部编版八年级下册 · （唐）韩愈《杂说》</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#f5e9dd;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e5d3c3">
+  <strong>常识</strong> 本文选自《韩昌黎文集校注》卷一，是韩愈《杂说》四篇中的第四篇，题目为后人所加。韩愈（768—824），字退之，自谓郡望昌黎，世称“韩昌黎”，唐代文学家、思想家、教育家。文章借千里马不遇伯乐，讽刺统治者不识人才。 </div>
+<div class="jz-hint" style="color:#8a5a3b;font-size:12px;margin:6px 14px 2px;text-align:left">💡 点击带虚线下划线的词，可查看注释；<b style="background:#ffe58a;color:#2c2c2c;padding:0 3px;border-radius:3px">黄色高亮</b>为考察的实词</div>
+ <div class="container">
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 26 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 26 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ⑤ 题目数组：长文先写 { seg: "本段原文" } 再紧跟本段题目（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；seg 内属性必须单引号！）
+const questions = [
+  { seg: "世有伯乐，<u>然后</u>有千里马。千里马常有，<u>而</u>伯乐不常有。<u>故</u><u>虽</u>有名马，<u>祗</u>辱于<span class='jz' data-tip='奴隶人：奴仆'>奴隶人</span>之手，<u>骈死</u>于<span class='jz' data-tip='槽枥：马槽'>槽枥</span>之间，不<u>以</u>千里称也。" },
+  { tag: "字词释义", q: '“<span class="highlight">然后</span>有千里马”中“<span class="highlight">然后</span>”的意思是？', options: ["这样以后", "于是", "接着", "然而"], answer: 0, explain: '“然后”意为这样以后。“然后有千里马”即这样以后才有千里马。' },
+  { tag: "字词释义", q: '“千里马常有，<span class="highlight">而</span>伯乐不常有”中“<span class="highlight">而</span>”的意思是？', options: ["却，表转折", "并且", "然后", "如果"], answer: 0, explain: '“而”表转折，却。“而伯乐不常有”即可是伯乐不常有。' },
+  { tag: "字词释义", q: '“<span class="highlight">故</span>虽有名马”中“<span class="highlight">故</span>”的意思是？', options: ["所以", "原因", "过去", "故意"], answer: 0, explain: '“故”意为所以。“故虽有名马”即因此即使有名马。' },
+  { tag: "字词释义", q: '“故<span class="highlight">虽</span>有名马”中“<span class="highlight">虽</span>”的意思是？', options: ["即使", "虽然", "虽然如此", "唯独"], answer: 0, explain: '“虽”意为即使（表让步）。“虽有名马”即即使有名贵的马。' },
+  { tag: "字词释义", q: '“<span class="highlight">祗</span>辱于奴隶人之手”中“<span class="highlight">祗</span>”的意思是？', options: ["只是", "恭敬", "到达", "原本"], answer: 0, explain: '“祗”同“只”，只是。“祗辱于奴隶人之手”即只是受辱于奴仆之手。' },
+  { tag: "字词释义", q: '“<span class="highlight">骈死</span>于槽枥之间”中“<span class="highlight">骈死</span>”的意思是？', options: ["并列而死", "先后而死", "安然死去", "迅速死去"], answer: 0, explain: '“骈死”意为并列而死（和普通马一起死）。“骈死于槽枥之间”即一同死在马槽之间。' },
+  { tag: "字词释义", q: '“不<span class="highlight">以</span>千里称也”中“<span class="highlight">以</span>”的意思是？', options: ["凭借", "因为", "按照", "认为"], answer: 0, explain: '“以”意为凭借。“不以千里称”即不凭千里（的才能）著称。' },
+  { seg: "马<u>之</u>千里者，一食<u>或</u>尽粟一石。<u>食</u>马者不知其能千里而食也。<u>是</u>马也，虽有千里之能，食不饱，力不足，才美不外<u>见</u>，<u>且</u>欲与常马等不可得，<u>安</u>求其能千里也？" },
+  { tag: "句式", q: '“马<span class="highlight">之</span>千里者”中“<span class="highlight">之</span>”的用法是？', options: ["定语后置的标志", "结构助词，的", "代词，它", "动词，去"], answer: 0, explain: '“之”是定语后置的标志，“马之千里者”即日行千里的马。' },
+  { tag: "字词释义", q: '“一食<span class="highlight">或</span>尽粟一石”中“<span class="highlight">或</span>”的意思是？', options: ["有时", "或者", "有人", "或许"], answer: 0, explain: '“或”意为有时。“一食或尽粟一石”即一顿有时能吃下一石粮食。' },
+  { tag: "字词释义", q: '“<span class="highlight">食</span>马者不知其能千里而食也”中“<span class="highlight">食</span>”的意思是？', options: ["喂养", "食物", "吃", "粮食"], answer: 0, explain: '“食”读 sì，意为喂养、饲养。“食马者”即喂马的人。' },
+  { tag: "字词释义", q: '“<span class="highlight">是</span>马也”中“<span class="highlight">是</span>”的意思是？', options: ["这", "表判断", "正确", "于是"], answer: 0, explain: '“是”作代词，这。“是马也”即这样的马。' },
+  { tag: "字词释义", q: '“才美不外<span class="highlight">见</span>”中“<span class="highlight">见</span>”的意思是？', options: ["表现", "看见", "出现", "拜见"], answer: 0, explain: '“见”同“现”，表现。“才美不外见”即才能和美好的素质不能表现出来。' },
+  { tag: "字词释义", q: '“<span class="highlight">且</span>欲与常马等不可得”中“<span class="highlight">且</span>”的意思是？', options: ["尚且", "并且", "而且", "暂且"], answer: 0, explain: '“且”意为尚且。“且欲与常马等不可得”即想要跟普通马一样尚且办不到。' },
+  { tag: "字词释义", q: '“<span class="highlight">安</span>求其能千里也”中“<span class="highlight">安</span>”的意思是？', options: ["怎么", "安全", "安放", "哪里"], answer: 0, explain: '“安”意为怎么（表反问）。“安求其能千里也”即怎么能要求它日行千里呢？' },
+  { seg: "<u>策</u>之不<u>以</u>其<span class='jz' data-tip='道：正确的方法'>道</span>，食之不能尽其<u>材</u>，鸣之而不能<u>通</u>其意，执策而<u>临</u>之，曰：“天下无马！”呜呼！<u>其</u>真无马邪？其真不知马也！" },
+  { tag: "词类活用", q: '“<span class="highlight">策</span>之不以其道”中“<span class="highlight">策</span>”的意思是？', options: ["驱赶", "马鞭", "策略", "督促"], answer: 0, explain: '“策”是名词作动词，用马鞭驱赶。“策之”即鞭打它。' },
+  { tag: "字词释义", q: '“不<span class="highlight">以</span>其道”中“<span class="highlight">以</span>”的意思是？', options: ["按照", "用", "因为", "认为"], answer: 0, explain: '“以”意为按照。“不以其道”即不按照（驱使千里马的）正确方法。' },
+  { tag: "字词释义", q: '“食之不能尽其<span class="highlight">材</span>”中“<span class="highlight">材</span>”的意思是？', options: ["才能", "材料", "木材", "资质"], answer: 0, explain: '“材”同“才”，才能。“尽其材”即竭尽它的才能。' },
+  { tag: "字词释义", q: '“鸣之而不能<span class="highlight">通</span>其意”中“<span class="highlight">通</span>”的意思是？', options: ["通晓", "通过", "通畅", "沟通"], answer: 0, explain: '“通”意为通晓。“通其意”即通晓它的意思。' },
+  { tag: "字词释义", q: '“执策而<span class="highlight">临</span>之”中“<span class="highlight">临</span>”的意思是？', options: ["面对", "临近", "降临", "俯视"], answer: 0, explain: '“临”意为面对。“执策而临之”即拿着马鞭面对着它。' },
+  { tag: "字词释义", q: '“<span class="highlight">其</span>真无马邪”中“<span class="highlight">其</span>”的意思是？', options: ["难道", "代词，它", "其中", "大概"], answer: 0, explain: '“其”表反问语气，难道。“其真无马邪”即难道真的没有千里马吗？（“其真不知马也”的“其”表推测，大概。）' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["祗辱于 / 奴隶人之手", "食马者 / 不知其能千里而食也", "才美不外 / 见", "其真无马 / 邪其真不知马也"], answer: 1, explain: 'B 正确，“食马者”后停顿。A 应为“祗辱 / 于奴隶人之手”；C 应为“才美 / 不外见”；D 应为“其真无马邪？/ 其真不知马也”。' },
+  { tag: "句式", q: '下面句式判断错误的一项是？', options: ["“马之千里者”是定语后置，译为日行千里的马", "“祗辱于奴隶人之手”属于状语后置句", "“食马者不知其能千里而食也”是被动句", "“其真不知马也”为表推测语气的陈述句"], answer: 2, explain: 'C 判断错误。“食马者不知其能千里而食也”是陈述句，不是被动句。其余三项判断均正确。' },
+  { tag: "词类活用", q: '对词类活用分析正确的一项是？', options: ["“策之不以其道”中“策”，名词，马鞭", "“策之不以其道”中“策”，名词作动词，用马鞭驱赶", "“食之不能尽其材”中“尽”，形容词，尽头", "“食之不能尽其材”中“尽”，名词作状语，尽力"], answer: 1, explain: 'B 分析正确。“策”名词作动词，用马鞭驱赶。A 未看出活用；C、D 对“尽”分析错误，“尽”是形容词作动词，竭尽。' },
+  { tag: "翻译", q: '对“其真无马邪？其真不知马也”翻译正确的一项是？', options: ["难道真的没有千里马吗？大概是（他们）真的不认识千里马吧！", "难道真的没有马吗？其实是真的不认识马啊！", "它真的没有马吗？是真的不知道马吧！", "难道真的没有千里马吗？确实是他们不认识千里马啊！"], answer: 0, explain: '前一个“其”表反问（难道），后一个“其”表推测（大概）。A 翻译准确。D 把后一句译成肯定语气，与前文推测语气不符。' },
+  { tag: "内容理解", q: '下列对文章内容理解分析有误的一项是？', options: ["“千里马常有，而伯乐不常有”开篇点明核心，伯乐对千里马命运起决定作用", "“才美不外见”写出千里马的才能被埋没，无法展现", "文中“食马者”指善于发掘人才的贤明君主", "全文托物言志，借千里马的遭遇写有才之士怀才不遇"], answer: 2, explain: 'C 有误。“食马者”指喂马的人，比喻愚昧、不识人才的统治者，并非贤明君主。' },
+  { tag: "内容理解", q: '下面对本文艺术手法与主旨理解，说法错误的一项是？', options: ["以千里马比喻有才之士，伯乐比喻识才的明君", "“其真无马邪？其真不知马也”设问，抒发作者的感慨与批判", "作者认为千里马本身能力不足，所以才会被埋没", "文章层层蓄势，结尾点出问题根源在于统治者不识人才"], answer: 2, explain: 'C 错误。作者认为千里马被埋没的根源是“食马者”不识马、不善养，并非千里马本身能力不足。' }
+];
+
+// ⑥ 逐句精读（original 原文 / notes 注释 / trans 直译，每段一条）
+const sentenceData = [
+  { original: "世有伯乐，然后有千里马。千里马常有，而伯乐不常有。故虽有名马，祗辱于奴隶人之手，骈死于槽枥之间，不以千里称也。", notes: [{ word: "然后", meaning: "这样以后" }, { word: "而", meaning: "却，表转折" }, { word: "故", meaning: "所以" }, { word: "虽", meaning: "即使" }, { word: "祗", meaning: "同“只”，只是" }, { word: "骈死", meaning: "并列而死" }, { word: "以", meaning: "凭借" }], trans: "世上先有伯乐，然后才有千里马。千里马经常有，可是伯乐不会经常有。因此，即使是很名贵的马，也只能在奴仆的手下受到屈辱，（和普通马）一同死在马槽里，不以千里马而著称。" },
+  { original: "马之千里者，一食或尽粟一石。食马者不知其能千里而食也。是马也，虽有千里之能，食不饱，力不足，才美不外见，且欲与常马等不可得，安求其能千里也？", notes: [{ word: "之", meaning: "定语后置的标志" }, { word: "或", meaning: "有时" }, { word: "食", meaning: "喂养，读 sì" }, { word: "是", meaning: "这" }, { word: "见", meaning: "同“现”，表现" }, { word: "且", meaning: "尚且" }, { word: "安", meaning: "怎么" }], trans: "日行千里的马，一顿有时能吃下一石粮食。喂马的人不懂得要根据它日行千里的本领来喂养它。这样的马，虽然有日行千里的才能，（但是）吃不饱，力气不足，它的才能和美好的素质也就不能表现在外面，想要跟普通的马一样尚且办不到，又怎么能要求它日行千里呢？" },
+  { original: "策之不以其道，食之不能尽其材，鸣之而不能通其意，执策而临之，曰：“天下无马！”呜呼！其真无马邪？其真不知马也！", notes: [{ word: "策", meaning: "用马鞭驱赶" }, { word: "以", meaning: "按照" }, { word: "材", meaning: "同“才”，才能" }, { word: "通", meaning: "通晓" }, { word: "临", meaning: "面对" }, { word: "其", meaning: "难道（表反问）" }], trans: "用马鞭赶它，不按照（驱使千里马的）正确方法，喂它，却不能让它竭尽才能，它鸣叫，却不能通晓它的意思。拿着马鞭面对着它，说：“天下没有千里马！”唉！难道真的没有千里马吗？其实是他们真的不认识千里马啊！" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'mashuo_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+  var progMenu = document.getElementById('progMenu');
+  var floatProgEl = document.getElementById('floatProg');
+  function renderProgMenu(){
+    var html = '<div class="pm-title">答题进度 · 点击题号跳转</div>';
+    var no = 0;
+    questions.forEach(function(q, i){
+      if(q.seg) return;
+      no++;
+      var stCls, stTxt;
+      if(submitted){
+        var card = document.getElementById('q-' + i);
+        if(card && card.classList.contains('correct')){ stCls = 'pm-ok'; stTxt = '✅'; }
+        else { stCls = 'pm-bad'; stTxt = '❌'; }
+      } else {
+        if(getAnswered().indexOf(i) >= 0){ stCls = 'pm-done'; stTxt = '已完成'; }
+        else { stCls = 'pm-undone'; stTxt = '未完成'; }
+      }
+      html += '<div class="pm-item" data-i="' + i + '"><span class="pm-no">第' + no + '题</span><span class="' + stCls + '">' + stTxt + '</span></div>';
+    });
+    progMenu.innerHTML = html;
+  }
+  if (floatProgEl) {
+    floatProgEl.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(progMenu.style.display === 'block'){ progMenu.style.display = 'none'; return; }
+      renderProgMenu();
+      progMenu.style.display = 'block';
+    });
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest ? e.target.closest('.pm-item') : null;
+    if(item){
+      var card = document.getElementById('q-' + item.getAttribute('data-i'));
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+      progMenu.style.display = 'none';
+      return;
+    }
+    if(progMenu.style.display === 'block' && !(e.target.closest ? e.target.closest('#progMenu') : null) && e.target !== floatProgEl){
+      progMenu.style.display = 'none';
+    }
+  });
+  function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ // ⑦ 篇目标识
+paper: '《马说》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
+</html>
