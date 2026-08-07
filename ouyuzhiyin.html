@@ -1,0 +1,732 @@
+<!-- ================================================================================ -->
+<!-- ================================================================
+  光点小塾 · 文言文自测模板（短文本 · 单段式）
+  本模板含示例内容（《精卫填海》），可双击本地预览；
+  制作新篇目时在此文件基础上改造，替换以下区块：
+
+  ① 标题：<title> 与 <h1>（含题数，如《XXX》· 12题）
+  ② 副标题：<h1> 下方 <p>（年级 · 出处）
+  ③ 配色：CSS 区的颜色值（主题色一组，见"配色说明"注释）
+  ④ 原文：
+     短文（本模板）= <div class="sticky-original"> 内原文
+     长文（分段模板）= const questions 里 { seg: "..." } 对象（每段一个）
+     - 考点词用 <u>黄底</u>（题目考察的词）
+     - 注释词用 <span class="jz" data-tip="词：注释">词</span>（点击出气泡）
+     - 长文 seg 字符串内 HTML 属性必须用单引号（class='jz'），否则白屏！
+     - 断句考察句原文去掉标点
+  ⑤ 常识：<strong>常识</strong> 后文本（来源 + 作者 + 内容简介）
+  ⑥ 题目：const questions 数组 { tag, q, options, answer, explain }
+     - q 用单引号；HTML 属性用双引号；引号统一中文弯引号
+     - 选项规范见 自测题制作规范.md（无括号、字数均衡、避近义）
+  ⑦ 逐句精读：const sentenceData（original / notes / trans，直译）
+  ⑧ 收尾：paper: '《篇名》'、STORAGE_PREFIX = '文件名_'
+  完成后：上传 → 同步 index/marathon/题库.json/wrong.html（见 自测题制作规范.md）
+================================================================ -->
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>《偶遇知音》 · 12题</title>
+
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+
+    background: #f8f0dc;
+
+    color: #2c2c2c;
+
+    padding: 0 0 48px;
+
+    line-height: 1.8;
+
+  }
+
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+
+
+  .banner {
+
+    background: linear-gradient(135deg, #7a5c21 0%, #a8832f 100%);
+
+    color: #fff;
+
+    text-align: center;
+
+    padding: 28px 20px 22px;
+
+  }
+
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .banner .badge {
+
+    display: inline-block; background: rgba(255,255,255,0.15);
+
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+
+  }
+
+
+
+  .sticky-original {
+
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+
+    background: #7a5c21; color: #f0e2c8;
+
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+
+    max-height: 35vh; overflow-y: auto;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+  }
+
+  .sticky-original strong { color: #d9c08a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+
+  .sticky-original u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0e2c8; }
+
+  .q-card.correct { border-left: 4px solid #4caf50; }
+
+  .q-card.wrong { border-left: 4px solid #e53935; }
+
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #7a5c21; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+
+  .q-tag { font-size: 11px; color: #a8832f; background: #f0e2c8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+
+  .q-text .highlight { color: #7a5c21; font-weight: 600; }
+
+
+
+  .opts { margin-top: 4px; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #f0e2c8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+
+  .opts label:hover { border-color: #c4a24e; background: #faf3e3; }
+
+  .opts label.selected { border-color: #7a5c21; background: #f0e2c8; }
+
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+
+  .opts input[type="radio"] { display: none; }
+
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #f0e2c8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+
+  .opts label.selected .opt-letter { background: #7a5c21; color: #fff; }
+
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #faf3e3; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+
+  .explanation.show { display: block; }
+
+  .explanation strong { color: #7a5c21; }
+
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+
+  .btn-primary { background: linear-gradient(135deg, #7a5c21, #a8832f); color: #fff; box-shadow: 0 2px 8px rgba(26,82,118,0.3); }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,82,118,0.35); }
+
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .btn-secondary { background: #fff; color: #7a5c21; border: 2px solid #c4a24e; }
+
+  .btn-secondary:hover { background: #faf3e3; }
+
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+
+
+  .result-panel { background: linear-gradient(135deg, #7a5c21, #a8832f); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+
+  .result-panel.show { display: block; }
+
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #f0e2c8; display: none; }
+
+  .translation-panel.show { display: block; }
+
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #7a5c21; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f0e2c8; }
+
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #faf3e3; }
+
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+
+  .s-line-original { color: #333; font-weight: 500; }
+
+  .s-line-notes { color: #7a5c21; font-size: 13px; margin-bottom: 4px; }
+
+  .s-line-notes .note-word { display: inline-block; background: #faf3e3; border: 1px solid #f0e2c8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+
+  .s-line-trans { color: #666; font-size: 13px; }
+
+
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+
+  .footer .divider { width: 40px; height: 2px; background: #f0e2c8; margin: 0 auto 12px; border-radius: 2px; }
+
+
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+
+  .toast.show { opacity: 1; }
+
+
+
+  @media (max-width: 400px) {
+
+    .banner { padding: 24px 14px 18px; }
+
+    .banner h1 { font-size: 19px; }
+
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+
+    .q-card { padding: 14px; }
+
+    .opts label { padding: 9px 12px; font-size: 13px; }
+
+    .result-panel .score-num { font-size: 42px; }
+
+  }
+
+  @media (min-width: 600px) {
+
+    body { padding: 20px 0 48px; }
+
+    .container { padding: 0 20px; }
+
+    .banner, .sticky-original { border-radius: 0; }
+
+  }
+
+
+
+  .float-home {
+
+    position: fixed;
+
+    right: 16px;
+
+    bottom: 24px;
+
+    z-index: 900;
+
+    background: rgba(26,82,118,0.92);
+
+    color: #fff;
+
+    padding: 10px 18px;
+
+    border-radius: 24px;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    transition: all 0.2s;
+
+  }
+
+  .float-home:hover { background: #5c4318; transform: translateY(-2px); }
+
+  .float-home:active { transform: translateY(0); }
+
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+  /* 配色说明：主题色三处（背景 / 浅色文字 / 强调色），新篇目整体替换
+     jingwei 蓝色：背景 #7a5c21 ｜ 文字 #f0e2c8 ｜ 强调 #d9c08a */
+  /* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+  .jz{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer;color:inherit;}
+  .sticky-original u.jz{text-decoration:underline;text-decoration-color:#f0e2c8;}
+  .jz:active{background:rgba(255,255,255,.15);}
+  .jz-hint{font-size:12px;color:#d9c08a;margin-top:6px;line-height:1.7;}
+  #jzTip{position:fixed;z-index:9999;max-width:72vw;background:#7a5c21;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+  #jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#7a5c21;}
+  #jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#7a5c21;}
+
+  /* 进度菜单（全站） */
+  .float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+  .fp-hint{font-size:10px;color:#e67e22;font-weight:600;}
+  #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
+  .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+  .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
+  .pm-item:active{background:#f5f5f5;}
+  .pm-no{font-weight:500;}
+  .pm-done{color:#2e7d32;}
+  .pm-undone{color:#c62828;}
+  .pm-ok{color:#2e7d32;}
+  .pm-bad{color:#c62828;}
+
+  .joke-box{background:#fdf3e3;border:1px solid #e8d5a8;border-left:4px solid #a8832f;border-radius:10px;padding:12px 14px;margin-top:14px;}
+  .joke-title{font-size:13px;font-weight:700;color:#7a5c21;margin-bottom:6px;}
+  .joke-text{font-size:13px;line-height:1.9;color:#5c4318;}
+</style>
+
+</head>
+
+<body>
+
+
+
+<div class="banner">
+
+  <!-- ①② 标题 + 副标题（替换为《篇名》与年级 · 出处） -->
+    <h1>📖 《偶遇知音》</h1>
+
+  <p>课外古文 · 初级 · 《笑林广记》</p>
+
+  
+
+</div>
+
+
+
+<!-- ③ 原文（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；注音可加括号如 堙(yīn)） -->
+    <div class="sticky-original" id="stickyOriginal">
+    <strong>原文</strong> 某生<u>素</u>善琴，<u>尝</u><u>谓</u>世无知音，<span class="jz" data-tip="抑抑：郁郁不乐的样子">抑抑</span>不乐。一日无事，抚琴消遣，忽闻隔邻，有叹息声，大喜，以为知音在<u>是</u>，<u>款</u>扉<u>叩</u>之，邻媪曰：“无他，亡儿存日，以<span class="jz" data-tip="弹絮：弹棉花。絮，棉絮">弹絮</span>为业，今客<u>鼓</u>此，<u>酷</u>类其音，闻之，不觉悲从中<u>耳</u>。”<br>
+    <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词</div>
+    </div>
+
+
+
+
+<div style="text-align:center;background:#f8f0dc;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #e8dcb8"> <strong>常识</strong> 本文选自《笑林广记》（清代游戏主人编撰的笑话集）。故事写书生自认琴艺高超、世无知音，听到隔壁叹息便以为遇到知音，谁知老妇人叹的是他弹琴声像自己死去的儿子弹棉花的声音——讽刺自我感觉良好、附庸风雅之人。 </div>
+<div class="container">
+
+
+
+  <div id="questionsContainer"></div>
+
+
+
+  <div class="btn-bar">
+
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+
+  </div>
+
+
+
+  <div class="result-panel" id="resultPanel">
+
+    <div class="score-label">你的得分</div>
+
+    <div class="score-num" id="scoreNum">0</div>
+
+    <div class="score-detail">共 12 题 · 答对 <span id="correctCount">0</span> 题</div>
+
+    <div class="result-stars" id="resultStars"></div>
+
+    <div class="score-comment" id="scoreComment"></div>
+
+  </div>
+
+
+
+  <div class="translation-panel" id="translationPanel">
+
+    <h3>📖 逐句精读</h3>
+
+    <div id="translationContent"></div>
+
+  </div>
+
+
+
+  <div class="footer">
+
+    <div class="divider"></div>
+
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+
+    
+
+  </div>
+
+</div>
+
+
+
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 12 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+
+
+<div class="toast" id="toast"></div>
+
+
+
+<script>
+
+// ⑤ 题目数组 { tag, q, options, answer, explain }（短文无 seg，直接列题目）
+const questions = [
+  { tag: "字词释义", q: '“某生<span class="highlight">素</span>善琴”中“<span class="highlight">素</span>”的意思是？', options: ["一向", "白色", "朴素", "平时"], answer: 0, explain: '“素”意为向来、一向。“素善琴”即向来擅长弹琴。' },
+  { tag: "字词释义", q: '“<span class="highlight">尝</span>谓世无知音”中“<span class="highlight">尝</span>”的意思是？', options: ["曾经", "品尝", "尝试", "常常"], answer: 0, explain: '“尝”意为曾经。“尝谓”即曾经说。' },
+  { tag: "字词释义", q: '“尝<span class="highlight">谓</span>世无知音”中“<span class="highlight">谓</span>”的意思是？', options: ["说", "称呼", "叫做", "告诉"], answer: 0, explain: '“谓”意为说。“尝谓世无知音”即曾经说世上没有知音。' },
+  { tag: "字词释义", q: '“以为知音在<span class="highlight">是</span>”中“<span class="highlight">是</span>”的意思是？', options: ["这里", "正确", "判断词", "这样"], answer: 0, explain: '“是”意为这里（代词，表处所）。“知音在是”即知音在这里。' },
+  { tag: "字词释义", q: '“<span class="highlight">款</span>扉叩之”中“<span class="highlight">款</span>”的意思是？', options: ["敲", "款待", "缓慢", "款式"], answer: 0, explain: '“款”意为敲。“款扉”即敲门。' },
+  { tag: "字词释义", q: '“款扉<span class="highlight">叩</span>之”中“<span class="highlight">叩</span>”的意思是？', options: ["询问", "叩头", "敲打", "跪拜"], answer: 0, explain: '“叩”意为敲（门）并询问。“叩之”即敲门问他。' },
+  { tag: "字词释义", q: '“今客<span class="highlight">鼓</span>此”中“<span class="highlight">鼓</span>”的意思是？', options: ["弹奏", "敲鼓", "鼓起", "鼓动"], answer: 0, explain: '“鼓”名词作动词，弹奏。“鼓此”即弹这个（琴）。' },
+  { tag: "字词释义", q: '“<span class="highlight">酷</span>类其音”中“<span class="highlight">酷</span>”的意思是？', options: ["很，非常", "残酷", "酷热", "酷刑"], answer: 0, explain: '“酷”意为很、非常。“酷类其音”即非常像他的（弹棉花）声音。' },
+  { tag: "字词释义", q: '“不觉悲从中<span class="highlight">耳</span>”中“<span class="highlight">耳</span>”的意思是？', options: ["罢了", "耳朵", "听闻", "然而"], answer: 0, explain: '“耳”是句末语气词，罢了。“悲从中耳”即悲从中来罢了。' },
+  { tag: "翻译", q: '对“亡儿存日，以弹絮为业”翻译正确的一项是？', options: ["死去的儿子在世时，以弹棉花为职业", "死去的儿子存在时，用弹棉花作为产业", "死去的儿子每天用弹棉花来打发日子", "死去的儿子生前靠卖棉花维持生计"], answer: 0, explain: '“亡儿”即死去的儿子，“存日”即在世时，“弹絮”即弹棉花。A 翻译准确。B 误译“存日”；C 误译“为业”；D 误译“弹絮”为卖棉花。' },
+  { tag: "翻译", q: '对“今客鼓此，酷类其音”翻译正确的一项是？', options: ["如今客人弹这个（琴），声音非常像他的（弹棉花声）", "如今客人敲这个鼓，声音很像他的声音", "如今客人弹奏这个，酷似他的音乐", "今天客人弹这琴，像他唱歌的声音"], answer: 0, explain: '“鼓”意为弹奏，“酷”意为非常，“类”意为像。A 翻译准确。B 误译“鼓”为敲鼓；C“其音”指代不明；D 误以为“弹絮”是唱歌。' },
+  { tag: "内容理解", q: '下列对文章内容理解正确的一项是？', options: ["老妇人叹息是因为书生弹琴的声音像她死去的儿子弹棉花的声音", "老妇人认为书生琴艺高超，是难得的知音", "书生弹琴声音太差，老妇人听了感到心烦", "老妇人的儿子生前也喜欢弹琴，所以听到琴声伤感"], answer: 0, explain: 'A 正确。老妇人说“今客鼓此，酷类其音”，她叹息是触景伤情，想起弹棉花的亡儿，并非把书生当作知音。B、C、D 均与文意不符。' }
+];
+
+
+
+// ⑥ 逐句精读（original 原文 / notes 注释 / trans 直译）
+const sentenceData = [
+  { original: "某生素善琴，尝谓世无知音，抑抑不乐。", notes: [{ word: "素", meaning: "一向" }, { word: "尝", meaning: "曾经" }, { word: "谓", meaning: "说" }, { word: "抑抑", meaning: "郁郁不乐的样子" }], trans: "有个书生向来擅长弹琴，曾经说世上没有知音，郁郁不乐。" },
+  { original: "一日无事，抚琴消遣，忽闻隔邻，有叹息声，大喜，以为知音在是，款扉叩之。", notes: [{ word: "是", meaning: "这里" }, { word: "款", meaning: "敲" }, { word: "叩", meaning: "询问" }], trans: "一天没事，弹琴消遣，忽然听到隔壁有叹息声，（他）非常高兴，以为知音就在这里，（便）敲门询问。" },
+  { original: "邻媪曰：“无他，亡儿存日，以弹絮为业，今客鼓此，酷类其音，闻之，不觉悲从中耳。”", notes: [{ word: "媪", meaning: "老妇人" }, { word: "存日", meaning: "在世时" }, { word: "弹絮", meaning: "弹棉花" }, { word: "鼓", meaning: "弹奏" }, { word: "酷", meaning: "很，非常" }, { word: "耳", meaning: "罢了" }], trans: "邻居老妇人说：“没有别的（原因），我死去的儿子在世时，以弹棉花为职业，如今客人弹这个（琴），（声音）非常像他的（弹棉花声），听了，不由得悲伤从心中涌起罢了。”" },
+  { joke: "书生抚琴自赏，自以为曲高和寡、世无知音；听到隔壁叹息声，顿时大喜过望，以为终于遇到知音——谁知老妇人一句“亡儿存日，以弹絮为业”，道破真相：他引以为傲的琴声，在老妇人耳中不过是弹棉花的声响。书生自诩的“高山流水”，竟与市井弹絮之声无异，讽刺自命清高、附庸风雅之人。" }
+];
+
+
+
+const container = document.getElementById('questionsContainer');
+
+const submitBtn = document.getElementById('submitBtn');
+
+const resetBtn = document.getElementById('resetBtn');
+
+const resultPanel = document.getElementById('resultPanel');
+
+const scoreNum = document.getElementById('scoreNum');
+
+const correctCountEl = document.getElementById('correctCount');
+
+const resultStars = document.getElementById('resultStars');
+
+const scoreComment = document.getElementById('scoreComment');
+
+const toast = document.getElementById('toast');
+
+const translationPanel = document.getElementById('translationPanel');
+
+const translationContent = document.getElementById('translationContent');
+
+const STORAGE_PREFIX = 'ouyuzhiyin_';
+
+
+
+let submitted = false;
+
+let shuffles = {};
+
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function generateShuffles() { questions.forEach((_, i) => { shuffles[i] = shuffleArray([0, 1, 2, 3]); }); localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === questions.length) { shuffles = s; return; } } catch {} generateShuffles(); }
+
+function renderTranslation() {
+
+  translationContent.innerHTML = '';
+
+  sentenceData.forEach(s => {
+    if (s.joke) { const jk = document.createElement('div'); jk.className = 'joke-box'; jk.innerHTML = '<div class="joke-title">🤣 笑点解析</div><div class="joke-text">' + s.joke + '</div>'; translationContent.appendChild(jk); return; }
+
+    const block = document.createElement('div'); block.className = 'sentence-block';
+
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+
+    translationContent.appendChild(block);
+
+  });
+
+}
+
+function renderQuestions() {
+
+  container.innerHTML = '';
+
+  questions.forEach((q, i) => {
+
+    const card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+
+    const letters = ['A', 'B', 'C', 'D']; const order = shuffles[i] || [0, 1, 2, 3];
+
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (i + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map((oi, di) => '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>').join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+
+    container.appendChild(card);
+
+  });
+
+}
+
+function selectOption(qIdx, optIdx) {
+
+  if (submitted) return;
+
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+
+  if (label) label.classList.add('selected');
+
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+
+  const done = getAnswered();
+
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+
+function restoreFromStorage() {
+
+  const answers = getStoredAnswers(); const answered = getAnswered();
+
+  if (!answered.length) return;
+
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+
+  updateProgress(); checkSubmitReady();
+
+}
+
+function updateProgress() { const done = getAnswered().length; const total = questions.length; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+
+  var progMenu = document.getElementById('progMenu');
+  var floatProgEl = document.getElementById('floatProg');
+  function renderProgMenu(){
+    var html = '<div class="pm-title">答题进度 · 点击题号跳转</div>';
+    var no = 0;
+    questions.forEach(function(q, i){
+      if(q.seg) return;
+      no++;
+      var stCls, stTxt;
+      if(submitted){
+        var card = document.getElementById('q-' + i);
+        if(card && card.classList.contains('correct')){ stCls = 'pm-ok'; stTxt = '✅'; }
+        else { stCls = 'pm-bad'; stTxt = '❌'; }
+      } else {
+        if(getAnswered().indexOf(i) >= 0){ stCls = 'pm-done'; stTxt = '已完成'; }
+        else { stCls = 'pm-undone'; stTxt = '未完成'; }
+      }
+      html += '<div class="pm-item" data-i="' + i + '"><span class="pm-no">第' + no + '题</span><span class="' + stCls + '">' + stTxt + '</span></div>';
+    });
+    progMenu.innerHTML = html;
+  }
+  if (floatProgEl) {
+    floatProgEl.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(progMenu.style.display === 'block'){ progMenu.style.display = 'none'; return; }
+      renderProgMenu();
+      progMenu.style.display = 'block';
+    });
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest ? e.target.closest('.pm-item') : null;
+    if(item){
+      var card = document.getElementById('q-' + item.getAttribute('data-i'));
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+      progMenu.style.display = 'none';
+      return;
+    }
+    if(progMenu.style.display === 'block' && !(e.target.closest ? e.target.closest('#progMenu') : null) && e.target !== floatProgEl){
+      progMenu.style.display = 'none';
+    }
+  });
+  function checkSubmitReady() { const done = getAnswered().length; const total = questions.length; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+
+submitBtn.addEventListener('click', function() {
+
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+
+  questions.forEach((q, i) => { const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ // ⑦ 篇目标识
+paper: '《偶遇知音》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+
+  });
+
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + questions.length; correctCountEl.textContent = correct;
+
+  const pct = correct / questions.length; let stars = '', comment = '';
+
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+
+  renderTranslation(); translationPanel.classList.add('show');
+
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+
+});
+
+resetBtn.addEventListener('click', function() {
+
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+
+  generateShuffles(); renderQuestions(); updateProgress();
+
+  scrollTo({ top: 0, behavior: 'smooth' });
+
+});
+
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
+
+</script>
+
+
+<!-- 气泡注释 JS（点击 .jz 弹出；点别处关闭；滚动隐藏） -->
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script>
+</body>
+
+</html>
+
