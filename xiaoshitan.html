@@ -157,6 +157,15 @@
   .float-home:hover { background: #181a33; transform: translateY(-2px); }
   .float-home:active { transform: translateY(0); }
 .float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:#d2e2ee;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:#d2e2ee;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d2e2ee;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#2e6e9e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#2e6e9e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#2e6e9e;}
 </style>
 </head>
 <body>
@@ -170,6 +179,7 @@
 
 
 <div style="text-align:center;background:#e9f0f7;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #ccdbe8"> <strong>常识</strong> 本文选自《柳河东集》卷二十九（上海古籍出版社2008年版）。原题为《至小丘西小石潭记》。柳宗元（773—819），字子厚，河东（今山西永济西）人，唐代文学家，"唐宋八大家"之一。他参加永贞元年（805）王叔文领导的政治革新运动，失败后被贬。本文写于贬官永州期间。 </div>
+<div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词（点击可看注音）</div>
 <div class="container">
   <div id="questionsContainer"></div>
 
@@ -205,7 +215,7 @@
 
 <script>
 const questions = [
-  { seg: "从小丘<u>西</u>行百二十步，隔篁竹，闻水声，如鸣珮环<small>〔如鸣珮环〕好像珮环碰撞的声音。珮、环，都是玉饰</small>，心<u>乐</u>之。伐竹取道，<u>下</u>见小潭，水尤清冽。全石<u>以为</u>底，近岸，卷石底以出，为<u>坻</u><small>〔坻(chí)〕</small>，为屿，为<u>嵁</u><small>〔嵁(kān)〕</small>，为岩。青树翠蔓，<u>蒙络</u>摇缀，参差披拂<small>〔蒙络摇缀，参差披拂〕蒙盖缠绕，摇曳牵连，参差不齐，随风飘拂</small>。" },
+  { seg: "从小丘<u>西</u>行百二十步，隔篁竹，闻水声，<span class="jz" data-tip="如鸣珮环：好像珮环碰撞的声音。珮、环，都是玉饰">如鸣珮环</span>，心<u>乐</u>之。伐竹取道，<u>下</u>见小潭，水尤清冽。全石<u>以为</u>底，近岸，卷石底以出，为<u class="jz" data-tip="坻(chí)">坻</u>，为屿，为<u class="jz" data-tip="嵁(kān)">嵁</u>，为岩。青树翠蔓，<u>蒙络</u>摇缀，参差披拂。" },
   { tag: "字词释义", q: '“从小丘<span class="highlight">西</span>行”中“<span class="highlight">西</span>”的意思是？', options: ["西方", "西边", "西面", "向西"], answer: 3, explain: '“西”名词作状语，向西。“西行”即向西走。' },
   { tag: "字词释义", q: '“心<span class="highlight">乐</span>之”中“<span class="highlight">乐</span>”的活用和意思是？', options: ["快乐", "欢乐", "高兴", "以……为乐"], answer: 3, explain: '“乐”意动用法，以……为乐，对……感到快乐。' },
   { tag: "字词释义", q: '“<span class="highlight">下</span>见小潭”中“<span class="highlight">下</span>”的意思是？', options: ["下方", "下面", "低处", "向下"], answer: 3, explain: '“下”名词作状语，向下。“下见小潭”即向下看见一个小潭。' },
@@ -213,19 +223,19 @@ const questions = [
   { tag: "字词释义", q: '“为<span class="highlight">坻</span>”中“<span class="highlight">坻</span>”的意思是？', options: ["水中小岛", "水中岩石", "水中土堆", "水中高地"], answer: 3, explain: '“坻”指水中高地。与“屿”（小岛）、“嵁”（不平的岩石）、“岩”（山岩）都是石头的不同形态。' },
   { tag: "字词释义", q: '“为<span class="highlight">嵁</span>”中“<span class="highlight">嵁</span>”的意思是？', options: ["水中小岛", "水中高地", "不平的岩石", "水中土堆"], answer: 2, explain: '“嵁”指不平的岩石。' },
   { tag: "字词释义", q: '“青树翠蔓，<span class="highlight">蒙络</span>摇缀”中“<span class="highlight">蒙络</span>”的意思是？', options: ["缠绕摇晃", "蒙蔽璎珞", "摇动连接", "覆盖缠绕"], answer: 3, explain: '“蒙络”意为“覆盖缠绕”；“摇缀”为“摇曳牵连”。' },
-  { seg: "潭中鱼<u>可百许</u>头，皆<u>若</u>空游无所依，日光下<u>澈</u>，影布石上。<u>佁然</u><small>〔佁(yǐ)〕</small>不动，<u>俶尔</u><small>〔俶(chù)〕</small>远逝，往来<u>翕忽</u><small>〔翕(xī)〕</small>，似与游者相乐。" },
+  { seg: "潭中鱼<u>可百许</u>头，皆<u>若</u>空游无所依，日光下<u>澈</u>，影布石上。<u class="jz" data-tip="佁(yǐ)">佁然</u>不动，<u class="jz" data-tip="俶(chù)">俶尔</u>远逝，往来<u class="jz" data-tip="翕(xī)">翕忽</u>，似与游者相乐。" },
   { tag: "字词释义", q: '“潭中鱼<span class="highlight">可百许</span>头”中“<span class="highlight">可</span>”的意思是？', options: ["可以", "可能", "可是", "大约"], answer: 3, explain: '“可”意为“大约”。“可百许头”即大约一百来条（许：表示约数，左右）。' },
   { tag: "字词释义", q: '“皆<span class="highlight">若</span>空游无所依”中“<span class="highlight">若</span>”的意思是？', options: ["如果", "假若", "比得上", "好像"], answer: 3, explain: '“若”意为“好像”。“皆若空游无所依”即都好像在空中游动，没有什么依傍。' },
   { tag: "字词释义", q: '“日光下<span class="highlight">澈</span>”中“<span class="highlight">澈</span>”的意思是？', options: ["清澈", "澄澈", "透明", "穿透"], answer: 3, explain: '“澈”意为“穿透”。日光向下穿透（潭水）直到水底。' },
   { tag: "字词释义", q: '“<span class="highlight">佁然</span>不动”中“<span class="highlight">佁然</span>”的意思是？', options: ["悠闲地", "安然的样子", "静止的样子", "忽然地"], answer: 2, explain: '“佁然”意为“静止不动的样子”。' },
   { tag: "字词释义", q: '“<span class="highlight">俶尔</span>远逝”中“<span class="highlight">俶尔</span>”的意思是？', options: ["停止", "长久", "缓慢", "忽然"], answer: 3, explain: '“俶尔”意为“忽然”。“俶尔远逝”即忽然间向远处游去。' },
   { tag: "字词释义", q: '“往来<span class="highlight">翕忽</span>”中“<span class="highlight">翕忽</span>”的意思是？', options: ["忽然", "轻快的样子", "笨拙的样子", "迟缓的样子"], answer: 1, explain: '“翕忽”意为“轻快敏捷的样子”。' },
-  { seg: "潭<u>西南</u>而望，<u>斗</u>折<u>蛇</u>行，明灭可见。其岸势犬牙<u>差互</u><small>〔差(chā)互〕</small>，不可知其源。" },
+  { seg: "潭<u>西南</u>而望，<u>斗</u>折<u>蛇</u>行，明灭可见。其岸势犬牙<u class="jz" data-tip="差(chā)互">差互</u>，不可知其源。" },
   { tag: "字词释义", q: '“潭<span class="highlight">西南</span>而望”中“<span class="highlight">西南</span>”的意思是？', options: ["西南方", "西南边", "西南面", "向西南"], answer: 3, explain: '“西南”名词作状语，向西南。“潭西南而望”即向潭水的西南方向望去。' },
   { tag: "字词释义", q: '“<span class="highlight">斗</span>折蛇行”中“<span class="highlight">斗</span>”的活用和意思是？', options: ["弯曲，名词作形容词", "北斗星，没有活用", "像北斗星一样，名作状", "折叠，名作动"], answer: 2, explain: '“斗”名词作状语，像北斗星那样。“斗折”即（溪水）像北斗星那样曲折。' },
   { tag: "字词释义", q: '“斗折<span class="highlight">蛇</span>行”中“<span class="highlight">蛇</span>”的活用和意思是？', options: ["蛇，名词", "蜿蜒，名作状", "爬行，名作动", "像蛇一样，名作状"], answer: 3, explain: '“蛇”名词作状语，像蛇那样。“蛇行”即像蛇那样蜿蜒前行。' },
   { tag: "字词释义", q: '“其岸势犬牙<span class="highlight">差互</span>”中“<span class="highlight">差互</span>”的意思是？', options: ["差异", "互相", "整齐", "交错"], answer: 3, explain: '“差互”意为“交错”。“犬牙差互”即像狗的牙齿那样交错。' },
-  { seg: "坐潭上，四面竹树<u>环合</u>，寂寥无人，<u>凄</u>神<u>寒</u>骨，<u>悄怆</u><small>〔悄怆(qiǎo chuàng)〕</small>幽<u>邃</u><small>〔邃(suì)〕</small>。<u>以</u>其境过<u>清</u><small>〔清〕凄清</small>，不可久居，<u>乃</u>记之而<u>去</u>。" },
+  { seg: "坐潭上，四面竹树<u>环合</u>，寂寥无人，<u>凄</u>神<u>寒</u>骨，<u class="jz" data-tip="悄怆(qiǎo chuàng)">悄怆</u>幽<u class="jz" data-tip="邃(suì)">邃</u>。<u>以</u>其境过<u class="jz" data-tip="清：凄清">清</u>，不可久居，<u>乃</u>记之而<u>去</u>。" },
   { tag: "字词释义", q: '“四面竹树<span class="highlight">环合</span>”中“<span class="highlight">环合</span>”的意思是？', options: ["像圆环一样", "环绕合围", "环抱合拢", "环形合拢"], answer: 1, explain: '“环合”意为“环绕合抱”。' },
   { tag: "字词释义", q: '“<span class="highlight">凄</span>神寒骨”中“<span class="highlight">凄</span>”的活用和意思是？', options: ["凄凉", "凄惨", "寒冷", "使……凄凉"], answer: 3, explain: '“凄”使动用法，使……凄凉。与“寒”（使……寒冷）同为使动。' },
   { tag: "字词释义", q: '“凄神<span class="highlight">寒</span>骨”中“<span class="highlight">寒</span>”的活用和意思是？', options: ["寒冷", "寒心", "寒气", "使……寒冷"], answer: 3, explain: '“寒”使动用法，使……寒冷。' },
@@ -235,7 +245,7 @@ const questions = [
   { tag: "字词释义", q: '“以其境过<span class="highlight">清</span>”中“<span class="highlight">清</span>”的意思是？', options: ["清澈", "清静", "清楚", "凄清"], answer: 3, explain: '“清”意为“凄清、冷清”。' },
   { tag: "字词释义", q: '“<span class="highlight">乃</span>记之而去”中“<span class="highlight">乃</span>”的意思是？', options: ["才", "竟然", "却", "于是，就"], answer: 3, explain: '“乃”意为“于是、就”。“乃记之而去”即于是记下（当时的情景）就离开了。' },
   { tag: "字词释义", q: '“乃记之而<span class="highlight">去</span>”中“<span class="highlight">去</span>”的意思是？', options: ["去除", "过去", "前往", "离开"], answer: 3, explain: '“去”意为“离开”。' },
-  { seg: "同游者：吴武陵<small>〔吴武陵〕作者的朋友，当时也被贬到永州</small>，龚古<small>〔龚古〕作者的朋友</small>，余弟宗玄<small>〔宗玄〕作者的堂弟</small>。<u>隶</u>而从者，崔氏二小生<small>〔二小生〕两个年轻人</small>，曰恕己，曰奉壹。" },
+  { seg: "同游者：<span class="jz" data-tip="吴武陵：作者的朋友，当时也被贬到永州">吴武陵</span>，<span class="jz" data-tip="龚古：作者的朋友">龚古</span>，余弟<span class="jz" data-tip="宗玄：作者的堂弟">宗玄</span>。<u>隶</u>而从者，崔氏<span class="jz" data-tip="二小生：两个年轻人">二小生</span>，曰恕己，曰奉壹。" },
   { tag: "字词释义", q: '“<span class="highlight">隶</span>而从者”中“<span class="highlight">隶</span>”的意思是？', options: ["隶属", "奴仆", "服从", "跟随"], answer: 3, explain: '“隶”意为“跟随”。“隶而从者”即跟着（我）一同去的人。' },
   { tag: "字词释义", q: '下列加点字词类活用类型与“从小丘<span class="highlight">西</span>行”的“<span class="highlight">西</span>”相同的一项是？', options: ["斗折蛇行", "凄神寒骨", "心乐之", "俶尔远逝"], answer: 0, explain: '“西”名词作状语，向西；“斗”“蛇”名词作状语，像北斗星那样、像蛇那样，活用类型相同。B 使动；C 意动；D 无活用。' },
   { tag: "字词释义", q: '对“心<span class="highlight">乐</span>之”中“<span class="highlight">乐</span>”的用法，分析正确的一项是？', options: ["名词，快乐", "意动用法，以……为乐", "使动用法，使……快乐", "形容词，欢乐"], answer: 1, explain: '“乐”意动用法，以……为乐，对……感到快乐。' },
@@ -363,5 +373,29 @@ function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); 
 generateShuffles(); renderQuestions();
 (function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
 </script>
-</body>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
 </html>
