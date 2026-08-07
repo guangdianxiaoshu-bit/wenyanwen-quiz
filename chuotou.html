@@ -283,7 +283,7 @@
 /* 覆盖模板：考点词（u）改为黄色高亮 + 深色字（黄底浅字会看不清） */
 .sticky-original u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
 /* 注释词：下划线标记，颜色与原文一致（inherit），下划线用原文色 */
-.jz{text-decoration:underline;text-decoration-color:#d4e6f1;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.jz{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer;color:inherit;}
 .jz:active{background:rgba(255,255,255,.15);}
 .jz-hint{font-size:12px;color:#7fa596;margin-top:6px;line-height:1.7;}
 #jzTip{position:fixed;z-index:9999;max-width:72vw;background:#2c5548;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
