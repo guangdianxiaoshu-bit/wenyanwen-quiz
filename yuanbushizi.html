@@ -34,7 +34,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>《原不识字》 · 13题</title>
+<title>《原不识字》 · 12题</title>
 
 <style>
 
@@ -329,6 +329,10 @@
   .pm-undone{color:#c62828;}
   .pm-ok{color:#2e7d32;}
   .pm-bad{color:#c62828;}
+
+  .joke-box{background:#fdf3e3;border:1px solid #e8d5a8;border-left:4px solid #a8832f;border-radius:10px;padding:12px 14px;margin-top:14px;}
+  .joke-title{font-size:13px;font-weight:700;color:#7a5c21;margin-bottom:6px;}
+  .joke-text{font-size:13px;line-height:1.9;color:#5c4318;}
 </style>
 
 </head>
@@ -352,7 +356,7 @@
 
 <!-- ③ 原文（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；注音可加括号如 堙(yīn)） -->
     <div class="sticky-original" id="stickyOriginal">
-    <strong>原文</strong> 有<u>延</u>师教其子者，师至，主人曰：“家贫，多失礼<u>于</u>先生，<u>奈何</u>！”师曰：“何言之谦，仆<u>固</u>无不可者。”主人曰：“<span class="jz" data-tip="蔬食：粗茶淡饭，简单的饭菜">蔬食</span>，可乎？”曰：“可。”主人曰：“家无<u>藏获</u>，<u>风</u>洒扫<span class="jz" data-tip="庭除：庭院和台阶，除即台阶">庭除</span>，启闭门户，劳先生<u>为</u>之，可乎？”曰：“可。”主人曰：“<u>或</u>家人妇子欲买零星杂物，屈先生一行，可乎？”曰：“可。”主人曰：“如此，<span class="jz" data-tip="幸甚：非常荣幸">幸甚</span>！”师曰：“<u>仆</u>亦有一言，<u>愿</u>主人勿讶焉。”主人问何言？师曰：“自愧幼时不学耳！”主人曰：“何言之谦。”师曰：“不敢欺，仆实不识一字。”<br>
+    <strong>原文</strong> 有<u>延</u>师教其子者，师至，主人曰：“家贫，多失礼<u>于</u>先生，<u>奈何</u>！”师曰：“何言之谦，仆<u>固</u>无不可者。”主人曰：“<span class="jz" data-tip="蔬食：粗茶淡饭，简单的饭菜">蔬食</span>，可乎？”曰：“可。”主人曰：“家无<u>臧获</u>，<u>凡</u>洒扫<span class="jz" data-tip="庭除：庭院和台阶，除即台阶">庭除</span>，启闭门户，劳先生<u>为</u>之，可乎？”曰：“可。”主人曰：“<u>或</u>家人妇子欲买零星杂物，屈先生一行，可乎？”曰：“可。”主人曰：“如此，<span class="jz" data-tip="幸甚：非常荣幸">幸甚</span>！”师曰：“<u>仆</u>亦有一言，<u>愿</u>主人勿讶焉。”主人问何言？师曰：“自愧幼时不学耳！”主人曰：“何言之谦。”师曰：“不敢欺，仆实不识一字。”<br>
     <div class="jz-hint">💡 带<b>下划线</b>的词可点击查看注释；<b>黄色高亮</b>为考察的实词</div>
     </div>
 
@@ -384,7 +388,7 @@
 
     <div class="score-num" id="scoreNum">0</div>
 
-    <div class="score-detail">共 13 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="score-detail">共 12 题 · 答对 <span id="correctCount">0</span> 题</div>
 
     <div class="result-stars" id="resultStars"></div>
 
@@ -418,7 +422,7 @@
 
 
 
-<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 13 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 12 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
 <a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
 
 
@@ -435,15 +439,14 @@ const questions = [
   { tag: "字词释义", q: '“多失礼<span class="highlight">于</span>先生”中“<span class="highlight">于</span>”的意思是？', options: ["对，向", "在", "从", "被"], answer: 0, explain: '“于”是介词，对、向。“失礼于先生”即对先生多有失礼。' },
   { tag: "字词释义", q: '“多失礼于先生，<span class="highlight">奈何</span>！”中“<span class="highlight">奈何</span>”的意思是？', options: ["怎么办", "为什么", "多么", "怎么"], answer: 0, explain: '“奈何”是固定结构，怎么办。“多失礼于先生，奈何”即对先生多有失礼，怎么办呢。' },
   { tag: "字词释义", q: '“仆<span class="highlight">固</span>无不可者”中“<span class="highlight">固</span>”的意思是？', options: ["本来", "坚固", "固然", "一定"], answer: 0, explain: '“固”是副词，本来。“仆固无不可者”即我本来没有什么不可以的。' },
-  { tag: "字词释义", q: '“家无<span class="highlight">藏获</span>”中“<span class="highlight">藏获</span>”的意思是？', options: ["奴婢", "钱财", "粮食", "藏品"], answer: 0, explain: '“藏获”是古代对奴婢的贱称。“家无藏获”即家里没有奴婢。' },
-  { tag: "字词释义", q: '“<span class="highlight">风</span>洒扫庭除”中“<span class="highlight">风</span>”的意思是？', options: ["早晨", "风里", "趁风", "刮风"], answer: 0, explain: '“风”同“夙”，早晨。“风洒扫庭除”即早晨打扫庭院台阶。' },
+  { tag: "字词释义", q: '“家无<span class="highlight">臧获</span>”中“<span class="highlight">臧获</span>”的意思是？', options: ["奴婢", "钱财", "粮食", "藏品"], answer: 0, explain: '“臧获”是古代对奴婢的贱称。“家无臧获”即家里没有奴婢。' },
+  { tag: "字词释义", q: '“<span class="highlight">凡</span>洒扫庭除”中“<span class="highlight">凡</span>”的意思是？', options: ["凡是，所有", "平常", "总共", "平凡"], answer: 0, explain: '“凡”是副词，凡是、所有的。“凡洒扫庭除”即凡是洒扫庭院台阶（的杂活）。' },
   { tag: "字词释义", q: '“劳先生<span class="highlight">为</span>之”中“<span class="highlight">为</span>”的意思是？', options: ["做", "是", "因为", "被"], answer: 0, explain: '“为”是动词，做。“为之”即做这些事。' },
   { tag: "字词释义", q: '“<span class="highlight">或</span>家人妇子欲买零星杂物”中“<span class="highlight">或</span>”的意思是？', options: ["有时", "或者", "有人", "或许"], answer: 0, explain: '“或”是副词，有时。“或家人妇子欲买零星杂物”即有时家里女眷孩子想买零碎杂物。' },
   { tag: "字词释义", q: '“<span class="highlight">仆</span>固无不可者”中“<span class="highlight">仆</span>”的意思是？', options: ["我", "仆人", "跌倒", "侍奉"], answer: 0, explain: '“仆”是谦称，我。“仆固无不可者”即我本来没有什么不可以的。' },
   { tag: "字词释义", q: '“<span class="highlight">愿</span>主人勿讶焉”中“<span class="highlight">愿</span>”的意思是？', options: ["希望", "情愿", "心愿", "甘心"], answer: 0, explain: '“愿”是动词，希望。“愿主人勿讶焉”即希望您不要惊讶。' },
   { tag: "翻译", q: '对“仆实不识一字”翻译正确的一项是？', options: ["我确实一个字也不认识", "仆人确实不认识一个字", "我确实一个字也写不出", "我实在不认识一个文字"], answer: 0, explain: '“仆”是谦称“我”，“实”是确实，“一字”是一个字。A 翻译准确。B 误把“仆”译成“仆人”。' },
-  { tag: "内容理解", q: '下列对文章内容理解有误的一项是？', options: ["主人因家贫，请先生原谅自己多有失礼", "先生对主人提出的各种要求都答应了", "先生说自己“不识一字”是谦虚之词", "故事讽刺了不学无术、不懂装懂的人"], answer: 2, explain: 'C 有误。先生说自己“不识一字”是实话，不是谦虚之词——正是这种“实话”与开头谦辞的反差构成了笑话的幽默。' },
-  { tag: "文学常识", q: '本文《原不识字》选自哪一部著作？', options: ["《笑林广记》", "《世说新语》", "《聊斋志异》", "《阅微草堂笔记》"], answer: 0, explain: '本文选自《笑林广记》，是清代的一部笑话集。' }
+  { tag: "内容理解", q: '下列对文章内容理解有误的一项是？', options: ["主人因家贫，请先生原谅自己多有失礼", "先生对主人提出的各种要求都答应了", "先生说自己“不识一字”是谦虚之词", "故事讽刺了不学无术、不懂装懂的人"], answer: 2, explain: 'C 有误。先生说自己“不识一字”是实话，不是谦虚之词——正是这种“实话”与开头谦辞的反差构成了笑话的幽默。' }
 ];
 
 
@@ -451,9 +454,10 @@ const questions = [
 // ⑥ 逐句精读（original 原文 / notes 注释 / trans 直译）
 const sentenceData = [
   { original: "有延师教其子者，师至，主人曰：“家贫，多失礼于先生，奈何！”师曰：“何言之谦，仆固无不可者。”", notes: [{ word: "延", meaning: "聘请" }, { word: "于", meaning: "对，向" }, { word: "奈何", meaning: "怎么办" }, { word: "固", meaning: "本来" }], trans: "有个人聘请老师教自己的儿子，老师到了，主人说：“家里贫穷，对先生多有失礼，怎么办呢！”老师说：“您说话何必如此谦虚，我本来没有什么不可以的。”" },
-  { original: "主人曰：“蔬食，可乎？”曰：“可。”主人曰：“家无藏获，风洒扫庭除，启闭门户，劳先生为之，可乎？”曰：“可。”", notes: [{ word: "蔬食", meaning: "粗茶淡饭" }, { word: "藏获", meaning: "奴婢" }, { word: "风", meaning: "同“夙”，早晨" }, { word: "为", meaning: "做" }], trans: "主人说：“吃粗茶淡饭，可以吗？”（老师）说：“可以。”主人说：“家里没有奴婢，早晨打扫庭院台阶、开关门户，劳累先生来做，可以吗？”（老师）说：“可以。”" },
+  { original: "主人曰：“蔬食，可乎？”曰：“可。”主人曰：“家无臧获，凡洒扫庭除，启闭门户，劳先生为之，可乎？”曰：“可。”", notes: [{ word: "蔬食", meaning: "粗茶淡饭" }, { word: "臧获", meaning: "奴婢" }, { word: "凡", meaning: "凡是" }, { word: "为", meaning: "做" }], trans: "主人说：“吃粗茶淡饭，可以吗？”（老师）说：“可以。”主人说：“家里没有奴婢，凡是打扫庭院台阶、开关门户这类杂活，劳累先生来做，可以吗？”（老师）说：“可以。”" },
   { original: "主人曰：“或家人妇子欲买零星杂物，屈先生一行，可乎？”曰：“可。”主人曰：“如此，幸甚！”师曰：“仆亦有一言，愿主人勿讶焉。”", notes: [{ word: "或", meaning: "有时" }, { word: "幸甚", meaning: "非常荣幸" }, { word: "仆", meaning: "我，谦称" }, { word: "愿", meaning: "希望" }], trans: "主人说：“有时家里女眷孩子想买零碎杂物，委屈先生跑一趟，可以吗？”（老师）说：“可以。”主人说：“如果这样，真是太荣幸了！”老师说：“我也有句话，希望您不要惊讶。”" },
-  { original: "主人问何言？师曰：“自愧幼时不学耳！”主人曰：“何言之谦。”师曰：“不敢欺，仆实不识一字。”", notes: [{ word: "耳", meaning: "罢了" }, { word: "实", meaning: "确实" }], trans: "主人问（是）什么话？老师说：“（我）惭愧自己小时候没有学习罢了！”主人说：“您说话何必如此谦虚。”老师说：“不敢欺骗您，我实在一个字也不认识。”" }
+  { original: "主人问何言？师曰：“自愧幼时不学耳！”主人曰：“何言之谦。”师曰：“不敢欺，仆实不识一字。”", notes: [{ word: "耳", meaning: "罢了" }, { word: "实", meaning: "确实" }], trans: "主人问（是）什么话？老师说：“（我）惭愧自己小时候没有学习罢了！”主人说：“您说话何必如此谦虚。”老师说：“不敢欺骗您，我实在一个字也不认识。”" },
+  { joke: "主人聘请老师教子读书，却不断要求老师做奴仆的杂活，把教书先生当作佣人；老师全部应允，最后坦言自己目不识丁，根本不能教书。讽刺主人本末倒置，重劳力而轻学识，造成啼笑皆非的喜剧效果。" }
 ];
 
 
@@ -499,6 +503,7 @@ function renderTranslation() {
   translationContent.innerHTML = '';
 
   sentenceData.forEach(s => {
+    if (s.joke) { const jk = document.createElement('div'); jk.className = 'joke-box'; jk.innerHTML = '<div class="joke-title">🤣 笑点解析</div><div class="joke-text">' + s.joke + '</div>'; translationContent.appendChild(jk); return; }
 
     const block = document.createElement('div'); block.className = 'sentence-block';
 
