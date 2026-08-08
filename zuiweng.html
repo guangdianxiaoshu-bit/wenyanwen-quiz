@@ -1,0 +1,494 @@
+<!-- ================================================================================ -->
+<!-- ================================================================
+  光点小塾 · 文言文自测模板（长文本 · 分段式）
+  本模板含示例内容（《狼》），可双击本地预览；
+  制作新篇目时在此文件基础上改造，替换以下区块：
+
+  ① 标题：<title> 与 <h1>（含题数，如《XXX》· 12题）
+  ② 副标题：<h1> 下方 <p>（年级 · 出处）
+  ③ 配色：CSS 区的颜色值（主题色一组，见"配色说明"注释）
+  ④ 原文：
+     短文（本模板）= <div class="sticky-original"> 内原文
+     长文（分段模板）= const questions 里 { seg: "..." } 对象（每段一个）
+     - 考点词用 <u>黄底</u>（题目考察的词）
+     - 注释词用 <span class="jz" data-tip="词：注释">词</span>（点击出气泡）
+     - 长文 seg 字符串内 HTML 属性必须用单引号（class='jz'），否则白屏！
+     - 断句考察句原文去掉标点
+  ⑤ 常识：<strong>常识</strong> 后文本（来源 + 作者 + 内容简介）
+  ⑥ 题目：const questions 数组 { tag, q, options, answer, explain }
+     - q 用单引号；HTML 属性用双引号；引号统一中文弯引号
+     - 选项规范见 自测题制作规范.md（无括号、字数均衡、避近义）
+  ⑦ 逐句精读：const sentenceData（original / notes / trans，直译）
+  ⑧ 收尾：paper: '《篇名》'、STORAGE_PREFIX = '文件名_'
+  完成后：上传 → 同步 index/marathon/题库.json/wrong.html（见 自测题制作规范.md）
+================================================================ -->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>《醉翁亭记》 · 43题</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Serif SC", "Source Han Serif SC", serif;
+    background: #f5f6fa;
+    color: #2c2c2c;
+    padding: 0 0 48px;
+    line-height: 1.8;
+  }
+  .container { max-width: 560px; margin: 0 auto; padding: 0 14px; }
+
+  .banner {
+    background: linear-gradient(135deg, #3a7a4e 0%, #2a5c39 100%);
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px 22px;
+  }
+  .banner h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; }
+  .banner p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+  .banner .badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;
+    padding: 2px 14px; font-size: 11px; margin-top: 8px;
+  }
+
+  .sticky-original {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 100;
+    background: #3a7a4e; color: #d8ead8;
+    padding: 10px 16px; font-size: 14px; line-height: 1.9;
+    max-height: 35vh; overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-original strong { color: #5a9e6a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .sticky-original u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .progress-text { text-align: center; font-size: 12px; color: #999; margin-bottom: 10px; }
+
+  .q-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d8ead8; }
+  .q-card.correct { border-left: 4px solid #4caf50; }
+  .q-card.wrong { border-left: 4px solid #e53935; }
+  .q-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .q-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: #3a7a4e; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .q-tag { font-size: 11px; color: #2a5c39; background: #d8ead8; border-radius: 4px; padding: 0 8px; margin-left: 4px; white-space: nowrap; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.7; margin-bottom: 8px; }
+  .q-text .highlight { color: #3a7a4e; font-weight: 600; }
+
+  .opts { margin-top: 4px; }
+    .seg-orig { position: static; } .seg-orig.active { position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+    background: #e4f0e4; border-left: 4px solid #2a5c39;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3a7a4e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #5a9e6a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .seg-orig small { font-size: 10px; color: #5a9e6a; opacity: 0.9; }
+
+  .opts label { display: block; padding: 10px 14px; margin: 5px 0; border-radius: 8px; border: 1.5px solid #d8ead8; font-size: 14px; cursor: pointer; transition: all 0.15s; }
+  .opts label:hover { border-color: #7dbb8c; background: #f0f7f0; }
+  .opts label.selected { border-color: #3a7a4e; background: #d8ead8; }
+  .opts label.disabled { pointer-events: none; opacity: 0.85; }
+  .opts label.show-correct { border-color: #4caf50; background: #e8f5e9; }
+  .opts label.show-wrong { border-color: #e53935; background: #fce4ec; }
+  .opts input[type="radio"] { display: none; }
+  .opt-letter { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; background: #d8ead8; font-size: 12px; font-weight: 600; margin-right: 8px; color: #666; }
+  .opts label.selected .opt-letter { background: #3a7a4e; color: #fff; }
+  .opts label.show-correct .opt-letter { background: #4caf50; color: #fff; }
+  .opts label.show-wrong .opt-letter { background: #e53935; color: #fff; }
+
+  .explanation { margin-top: 8px; padding: 10px 14px; background: #f0f7f0; border-radius: 8px; font-size: 13px; line-height: 1.8; display: none; color: #555; }
+  .explanation.show { display: block; }
+  .explanation strong { color: #3a7a4e; }
+  .explanation .result-tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 0 8px; border-radius: 4px; margin-right: 6px; }
+  .result-tag.correct-tag { background: #e8f5e9; color: #2e7d32; }
+  .result-tag.wrong-tag { background: #fce4ec; color: #c62828; }
+
+  .btn-bar { text-align: center; margin: 28px 0 12px; }
+  .btn { display: inline-block; padding: 14px 40px; border-radius: 28px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; margin: 4px 6px; font-family: inherit; }
+  .btn-primary { background: linear-gradient(135deg, #3a7a4e, #2a5c39); color: #fff; box-shadow: 0 2px 8px rgba(37,39,77,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,39,77,0.35); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: #fff; color: #3a7a4e; border: 2px solid #7dbb8c; }
+  .btn-secondary:hover { background: #f0f7f0; }
+  .btn-small { padding: 8px 20px; font-size: 13px; border-radius: 20px; }
+
+  .result-panel { background: linear-gradient(135deg, #3a7a4e, #2a5c39); color: #fff; border-radius: 16px; padding: 28px 20px; margin: 24px 0 16px; text-align: center; display: none; }
+  .result-panel.show { display: block; }
+  .result-panel .score-num { font-size: 52px; font-weight: 800; letter-spacing: 2px; }
+  .result-panel .score-label { font-size: 14px; opacity: 0.8; margin-top: 2px; }
+  .result-panel .score-comment { font-size: 15px; margin-top: 12px; opacity: 0.95; }
+  .result-panel .score-detail { font-size: 13px; margin-top: 8px; opacity: 0.7; }
+  .result-stars { font-size: 28px; margin-top: 8px; letter-spacing: 4px; }
+
+  .translation-panel { background: #fff; border-radius: 12px; padding: 18px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border: 1px solid #d8ead8; display: none; }
+  .translation-panel.show { display: block; }
+  .translation-panel h3 { font-size: 15px; font-weight: 600; color: #3a7a4e; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #d8ead8; }
+  .sentence-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f0f7f0; }
+  .sentence-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .s-line { font-size: 14px; line-height: 1.9; margin-bottom: 2px; }
+  .s-line .s-label { display: inline-block; font-size: 11px; font-weight: 600; color: #bbb; min-width: 3.2em; letter-spacing: 1px; }
+  .s-line-original { color: #333; font-weight: 500; }
+  .s-line-notes { color: #3a7a4e; font-size: 13px; margin-bottom: 4px; }
+  .s-line-notes .note-word { display: inline-block; background: #f0f7f0; border: 1px solid #d8ead8; border-radius: 4px; padding: 0 8px; margin: 2px 3px 2px 0; font-weight: 500; }
+  .s-line-trans { color: #666; font-size: 13px; }
+
+  .footer { text-align: center; padding: 30px 0 10px; font-size: 12px; color: #bbb; }
+  .footer .divider { width: 40px; height: 2px; background: #d8ead8; margin: 0 auto 12px; border-radius: 2px; }
+
+  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 400px) {
+    .banner { padding: 24px 14px 18px; }
+    .banner h1 { font-size: 19px; }
+    .sticky-original { font-size: 13px; padding: 8px 12px; max-height: 25vh; }
+    .q-card { padding: 14px; }
+      .seg-orig { position: static; top: 0; z-index: 50;
+    background: #e4f0e4; border-left: 4px solid #2a5c39;
+    padding: 10px 14px; margin: 12px 0 6px; font-size: 13px;
+    line-height: 1.9; color: #3a7a4e; border-radius: 4px;
+  }
+  .seg-orig strong { color: #5a9e6a; font-size: 11px; letter-spacing: 1px; margin-right: 4px; }
+  .seg-orig u { text-decoration: none; background: #ffe58a; color: #2c2c2c; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+  .seg-orig small { font-size: 10px; color: #5a9e6a; opacity: 0.9; }
+
+  .opts label { padding: 9px 12px; font-size: 13px; }
+    .result-panel .score-num { font-size: 42px; }
+  }
+  @media (min-width: 600px) {
+    body { padding: 20px 0 48px; }
+    .container { padding: 0 20px; }
+    .banner, .sticky-original { border-radius: 0; }
+  }
+
+  .float-home {
+    position: fixed;
+    right: 16px;
+    bottom: 24px;
+    z-index: 900;
+    background: rgba(37,39,77,0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .float-home:hover { background: #181a33; transform: translateY(-2px); }
+  .float-home:active { transform: translateY(0); }
+.float-prog { position: fixed; right: 14px; bottom: 68px; background: rgba(255,255,255,0.96); border: 1.5px solid #d5d5d5; border-radius: 18px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: #555; box-shadow: 0 2px 10px rgba(0,0,0,0.12); pointer-events: none; z-index: 95; white-space: nowrap; }
+
+/* 气泡注释：注释词下划线（颜色随原文），考点词黄底可点注音 */
+.jz{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer;color:inherit;}
+.sticky-original u.jz, .seg-orig u.jz{text-decoration:underline;text-decoration-color:currentColor;text-decoration-thickness:2px;}
+.jz:active{background:rgba(255,255,255,.15);}
+.jz-hint{font-size:12px;color:#d8ead8;margin-top:6px;line-height:1.7;}
+#jzTip{position:fixed;z-index:9999;max-width:72vw;background:#3a7a4e;color:#fff;font-size:13px;line-height:1.7;padding:9px 13px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);display:none;pointer-events:none;word-break:break-all;}
+#jzTip::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#3a7a4e;}
+#jzTip.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:#3a7a4e;}
+
+  /* 进度菜单（全站） */
+  .float-prog{display:flex;flex-direction:column;align-items:center;line-height:1.6;white-space:normal;cursor:pointer;pointer-events:auto;}
+  .fp-hint{font-size:10px;color:#e67e22;font-weight:600;}
+  #progMenu{position:fixed;right:14px;bottom:112px;z-index:998;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.16);max-height:46vh;overflow-y:auto;display:none;width:180px;padding:6px 0;font-size:12px;color:#333;}
+  .pm-title{font-size:11px;color:#999;padding:2px 14px 6px;border-bottom:1px solid #f0f0f0;margin-bottom:4px;}
+  .pm-item{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;cursor:pointer;}
+  .pm-item:active{background:#f5f5f5;}
+  .pm-no{font-weight:500;}
+  .pm-done{color:#2e7d32;}
+  .pm-undone{color:#c62828;}
+  .pm-ok{color:#2e7d32;}
+  .pm-bad{color:#c62828;}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <!-- ①② 标题 + 副标题（替换为《篇名》与年级 · 出处） -->
+    <h1>📖 《醉翁亭记》</h1>
+  <p>部编版九年级上册 · （宋）欧阳修</p>
+  
+</div>
+
+
+
+<div style="text-align:center;background:#e4f0e4;color:#555;font-size:12px;line-height:1.8;padding:8px 14px;margin:0 0 4px;border-bottom:1px solid #cfe3cf">
+  <strong>常识</strong> 本文选自《欧阳修全集》。欧阳修（1007—1072），字永叔，自号醉翁，晚号六一居士，北宋文学家，“唐宋八大家”之一。本文写于庆历五年（1045）欧阳修被贬滁州之后，借山水之乐排遣失意，寄寓“与民同乐”的政治理想。 </div>
+<div class="jz-hint" style="color:#3a7a4e;font-size:12px;margin:6px 14px 2px;text-align:left">💡 点击带虚线下划线的词，可查看注释；<b style="background:#ffe58a;color:#2c2c2c;padding:0 3px;border-radius:3px">黄色高亮</b>为考察的实词</div>
+ <div class="container">
+
+  <div id="questionsContainer"></div>
+
+  <div class="btn-bar">
+    <button class="btn btn-primary" id="submitBtn" disabled>📋 提交批改</button>
+    <button class="btn btn-secondary btn-small" id="resetBtn">🔄 重新答题</button>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-label">你的得分</div>
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-detail">共 43 题 · 答对 <span id="correctCount">0</span> 题</div>
+    <div class="result-stars" id="resultStars"></div>
+    <div class="score-comment" id="scoreComment"></div>
+  </div>
+
+  <div class="translation-panel" id="translationPanel">
+    <h3>📖 逐句精读</h3>
+    <div id="translationContent"></div>
+  </div>
+
+  <div class="footer">
+    <div class="divider"></div>
+    <p style="margin-bottom:4px;">📚 <strong>光点小塾</strong> · 专注语文学习轻量化、日常化</p>
+    
+  </div>
+</div>
+
+<div class="float-prog" id="floatProg"><span id="fpMain">已答 0 / 43 题</span><span class="fp-hint">点我试试</span></div><div id="progMenu"></div>
+<a class="float-home" href="https://guangdianxiaoshu-bit.github.io/wenyanwen-quiz/">📚 返回目录</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ⑤ 题目数组：长文先写 { seg: "本段原文" } 再紧跟本段题目（考点 <u>黄底</u>；注释词 <span class="jz" data-tip="词：注释">词</span>；seg 内属性必须单引号！）
+const questions = [
+  { seg: "<span class='jz' data-tip='环滁：环绕着滁州城。滁州在安徽东部'>环滁</span>皆山也。其西南诸峰，林<u>壑</u>尤美，望之<u>蔚然</u>而深<u>秀</u>者，<span class='jz' data-tip='琅琊：山名，在滁州西南'>琅琊</span>也。<u>山</u>行六七里，渐闻水声潺潺，而泻出于两峰之间者，<span class='jz' data-tip='酿泉：泉水名'>酿泉</span>也。峰<u>回</u>路转，有亭<u>翼然</u><u>临</u>于泉上者，醉翁亭也。作亭者谁？山之僧智仙也。<u>名</u>之者谁？太守自谓也。太守与客来饮于此，饮少<u>辄</u>醉，而年又最高，<u>故</u>自号曰醉翁也。醉翁之意不在酒，<u>在乎</u>山水之间也。山水之乐，得之心而<u>寓</u>之酒也。" },
+  { tag: "字词释义", q: '“林<span class="highlight">壑</span>尤美”中“<span class="highlight">壑</span>”的意思是？', options: ["山谷", "护城河", "田垄", "山峰"], answer: 0, explain: '“壑”意为山谷、山沟。“林壑尤美”即树林和山谷尤其优美。' },
+  { tag: "字词释义", q: '“望之<span class="highlight">蔚然</span>而深秀者”中“<span class="highlight">蔚然</span>”的意思是？', options: ["茂盛的样子", "蔚蓝", "高大的样子", "整齐的样子"], answer: 0, explain: '“蔚然”意为草木茂盛的样子。“望之蔚然”即一眼望去树木茂盛。' },
+  { tag: "字词释义", q: '“蔚然而深<span class="highlight">秀</span>者”中“<span class="highlight">秀</span>”的意思是？', options: ["秀丽", "优秀", "出众", "茂盛"], answer: 0, explain: '“秀”意为秀丽。“深秀”即幽深秀丽。' },
+  { tag: "字词释义", q: '“<span class="highlight">山</span>行六七里”中“<span class="highlight">山</span>”的意思是？', options: ["沿着山路", "大山", "山上", "山中"], answer: 0, explain: '“山”名词作状语，沿着山路。“山行六七里”即沿着山路走六七里。' },
+  { tag: "字词释义", q: '“峰<span class="highlight">回</span>路转”中“<span class="highlight">回</span>”的意思是？', options: ["回环", "回来", "回头", "回避"], answer: 0, explain: '“回”意为回环、曲折。“峰回路转”即山势回环、路也跟着转弯。' },
+  { tag: "字词释义", q: '“有亭<span class="highlight">翼然</span>临于泉上者”中“<span class="highlight">翼然</span>”的意思是？', options: ["像鸟张开翅膀的样子", "翅膀", "忽然", "俨然"], answer: 0, explain: '“翼然”意为像鸟张开翅膀的样子（名词作状语）。“有亭翼然”即有一座亭子像鸟展翅一样。' },
+  { tag: "字词释义", q: '“翼然<span class="highlight">临</span>于泉上者”中“<span class="highlight">临</span>”的意思是？', options: ["居高下视", "面临", "靠近", "光临"], answer: 0, explain: '“临”意为居高下视（从高处往下看）。“翼然临于泉上”即像鸟展翅一样居高临下地踞在泉边。' },
+  { tag: "字词释义", q: '“<span class="highlight">名</span>之者谁”中“<span class="highlight">名</span>”的意思是？', options: ["命名", "名字", "名声", "有名"], answer: 0, explain: '“名”名词作动词，命名。“名之者谁”即给它命名的人是谁。' },
+  { tag: "字词释义", q: '“饮少<span class="highlight">辄</span>醉”中“<span class="highlight">辄</span>”的意思是？', options: ["就", "总是", "立即", "才"], answer: 0, explain: '“辄”意为就。“饮少辄醉”即喝一点就醉了。' },
+  { tag: "字词释义", q: '“<span class="highlight">故</span>自号曰醉翁也”中“<span class="highlight">故</span>”的意思是？', options: ["所以", "原因", "过去", "故意"], answer: 0, explain: '“故”意为所以。“故自号曰醉翁”即所以给自己起别号叫醉翁。' },
+  { tag: "字词释义", q: '“醉翁之意不在酒，<span class="highlight">在乎</span>山水之间也”中“<span class="highlight">在乎</span>”的意思是？', options: ["在于", "在意", "存在", "关心"], answer: 0, explain: '“在乎”意为在于。“在乎山水之间”即在于山水之间的美景。' },
+  { tag: "字词释义", q: '“得之心而<span class="highlight">寓</span>之酒也”中“<span class="highlight">寓</span>”的意思是？', options: ["寄托", "居住", "寓言", "隐藏"], answer: 0, explain: '“寓”意为寄托。“寓之酒”即寄托在酒中。' },
+  { seg: "<u>若夫</u>日出而林<u>霏</u>开，云归而岩穴<u>暝</u>，晦明变化者，山间之朝暮也。野芳发而幽香，佳木<u>秀</u>而繁阴，风霜<u>高洁</u>，水落而石出者，山间之四时也。朝而往，暮而归，四时之景不同，而乐亦无穷也。" },
+  { tag: "字词释义", q: '“<span class="highlight">若夫</span>日出而林霏开”中“<span class="highlight">若夫</span>”的意思是？', options: ["像那", "如果", "假若", "至于"], answer: 0, explain: '“若夫”是发语词，像那，用来引出下文。“若夫日出”即像那太阳升起。' },
+  { tag: "字词释义", q: '“日出而林<span class="highlight">霏</span>开”中“<span class="highlight">霏</span>”的意思是？', options: ["雾气", "雨雪", "飞散", "弥漫"], answer: 0, explain: '“霏”意为雾气。“林霏开”即树林里的雾气散开。' },
+  { tag: "字词释义", q: '“云归而岩穴<span class="highlight">暝</span>”中“<span class="highlight">暝</span>”的意思是？', options: ["昏暗", "日落", "瞑目", "幽深"], answer: 0, explain: '“暝”意为昏暗。“岩穴暝”即山洞变得昏暗。' },
+  { tag: "字词释义", q: '“佳木<span class="highlight">秀</span>而繁阴”中“<span class="highlight">秀</span>”的意思是？', options: ["茂盛", "秀丽", "优秀", "秀美"], answer: 0, explain: '“秀”意为茂盛。“佳木秀而繁阴”即好的树木枝叶繁茂、形成浓阴。与第 3 题“秀”（秀丽）义不同。' },
+  { tag: "字词释义", q: '“风霜<span class="highlight">高洁</span>”中“<span class="highlight">高洁</span>”的意思是？', options: ["秋高气爽", "高尚纯洁", "高大洁净", "清高"], answer: 0, explain: '“风霜高洁”即风高霜洁，形容秋高气爽的景色。' },
+  { seg: "至于<u>负者</u>歌于途，行者休于树，前者呼，后者应，<u>伛偻</u><u>提携</u>，往来而不绝者，滁人游也。<u>临</u>溪而渔，溪深而鱼肥，酿泉为酒，泉香而酒<u>洌</u>，山肴野<u>蔌</u>，杂然而<u>前</u><u>陈</u>者，太守宴也。宴酣之乐，非丝非竹，射者中，弈者胜，<u>觥</u>筹交错，起坐而喧哗者，众宾欢也。苍颜白发，<u>颓然</u>乎其间者，太守醉也。" },
+  { tag: "字词释义", q: '“<span class="highlight">负者</span>歌于途”中“<span class="highlight">负者</span>”的意思是？', options: ["背东西的人", "失败的人", "负担的人", "赶路的人"], answer: 0, explain: '“负者”意为背东西的人。“负者歌于途”即背东西的人在路上唱歌。' },
+  { tag: "字词释义", q: '“<span class="highlight">伛偻</span>提携”中“<span class="highlight">伛偻</span>”的意思是？', options: ["老人", "弯腰", "驼背", "搀扶"], answer: 0, explain: '“伛偻”意为弯腰曲背的样子，借指老人（借代）。“伛偻提携”即老人和小孩。' },
+  { tag: "字词释义", q: '“伛偻<span class="highlight">提携</span>”中“<span class="highlight">提携</span>”的意思是？', options: ["小孩", "提拔", "带领", "搀扶"], answer: 0, explain: '“提携”意为牵扶、领着走，借指小孩（借代）。“伛偻提携”即老老少少。' },
+  { tag: "字词释义", q: '“<span class="highlight">临</span>溪而渔”中“<span class="highlight">临</span>”的意思是？', options: ["靠近", "面临", "居高", "临时"], answer: 0, explain: '“临”意为靠近。“临溪而渔”即到溪边捕鱼。与第 7 题“临”（居高下视）义不同。' },
+  { tag: "字词释义", q: '“泉香而酒<span class="highlight">洌</span>”中“<span class="highlight">洌</span>”的意思是？', options: ["清", "寒冷", "凛冽", "透彻"], answer: 0, explain: '“洌”读 liè，意为清（清澈）。“泉香而酒洌”即泉水香甜、酒水清澈。注意与“冽”（寒冷）区分。' },
+  { tag: "字词释义", q: '“山肴野<span class="highlight">蔌</span>”中“<span class="highlight">蔌</span>”的意思是？', options: ["菜蔬", "菜肴", "葱蒜", "调料"], answer: 0, explain: '“蔌”意为菜蔬（野菜）。“山肴野蔌”即山中的野味和野菜。' },
+  { tag: "字词释义", q: '“杂然而<span class="highlight">前</span>陈者”中“<span class="highlight">前</span>”的意思是？', options: ["在前面", "前面", "向前", "之前"], answer: 0, explain: '“前”名词作状语，在前面。“杂然而前陈”即杂乱地陈列在面前。' },
+  { tag: "字词释义", q: '“杂然而前<span class="highlight">陈</span>者”中“<span class="highlight">陈</span>”的意思是？', options: ["陈列", "陈述", "陈旧", "陈设"], answer: 0, explain: '“陈”意为陈列。“前陈”即陈列在面前。' },
+  { tag: "字词释义", q: '“<span class="highlight">觥</span>筹交错”中“<span class="highlight">觥</span>”的意思是？', options: ["酒杯", "酒筹", "酒器", "酒壶"], answer: 0, explain: '“觥”意为酒杯。“觥筹交错”即酒杯和酒筹交互错杂。' },
+  { tag: "字词释义", q: '“<span class="highlight">颓然</span>乎其间者”中“<span class="highlight">颓然</span>”的意思是？', options: ["醉倒的样子", "颓废", "坍塌", "衰败"], answer: 0, explain: '“颓然”意为醉倒的样子。“颓然乎其间”即醉倒在众人中间。' },
+  { seg: "<u>已而</u>夕阳在山，人影散乱，太守归而宾客从也。树林阴<u>翳</u>，鸣声上下，游人<u>去</u>而禽鸟乐也。然而禽鸟知山林之乐，<u>而</u>不知人之乐；人知从太守游而乐，而不知太守<u>之</u><u>乐</u>其乐也。醉能同其乐，醒能述以文者，太守也。太守<u>谓</u>谁？<span class='jz' data-tip='庐陵：今江西吉安，欧阳修的籍贯'>庐陵</span>欧阳修也。" },
+  { tag: "字词释义", q: '“<span class="highlight">已而</span>夕阳在山”中“<span class="highlight">已而</span>”的意思是？', options: ["不久", "已经", "然后", "罢了"], answer: 0, explain: '“已而”意为不久。“已而夕阳在山”即不久太阳落山。' },
+  { tag: "字词释义", q: '“树林阴<span class="highlight">翳</span>”中“<span class="highlight">翳</span>”的意思是？', options: ["遮盖", "树荫", "阴暗", "隐蔽"], answer: 0, explain: '“翳”意为遮盖、遮蔽。“树林阴翳”即树林枝叶茂密成荫。' },
+  { tag: "字词释义", q: '“游人<span class="highlight">去</span>而禽鸟乐也”中“<span class="highlight">去</span>”的意思是？', options: ["离开", "去除", "前往", "过去"], answer: 0, explain: '“去”意为离开。“游人去而禽鸟乐”即游人离去而禽鸟快乐。' },
+  { tag: "字词释义", q: '“然而禽鸟知山林之乐，<span class="highlight">而</span>不知人之乐”中“<span class="highlight">而</span>”的意思是？', options: ["却", "并且", "然后", "如果"], answer: 0, explain: '“而”表转折，却。“而不知人之乐”即却不知道人的乐趣。' },
+  { tag: "字词释义", q: '“而不知太守<span class="highlight">之</span>乐其乐也”中“<span class="highlight">之</span>”的用法是？', options: ["取消句子独立性", "结构助词，的", "代词，它", "动词，去"], answer: 0, explain: '“太守之乐其乐”中“之”用于主谓之间，取消句子独立性。' },
+  { tag: "字词释义", q: '“而不知太守之<span class="highlight">乐</span>其乐也”中第一个“<span class="highlight">乐</span>”的意思是？', options: ["以……为乐", "快乐", "音乐", "乐趣"], answer: 0, explain: '“乐”意动用法，以……为乐。“乐其乐”即以百姓的快乐为快乐。' },
+  { tag: "字词释义", q: '“太守<span class="highlight">谓</span>谁”中“<span class="highlight">谓</span>”的意思是？', options: ["是", "说", "称呼", "叫做"], answer: 0, explain: '“谓”意为是。“太守谓谁”即太守是谁。' },
+  { tag: "断句", q: '下列朗读停顿划分正确的一项是？', options: ["有亭翼然临于 / 泉上者", "望之 / 蔚然而深秀者", "人知从太守 / 游而乐", "而不知太守之乐其 / 乐也"], answer: 1, explain: 'B 停顿正确：“望之 / 蔚然而深秀者”。A 应在“翼然”后停顿；C 应在“人知”后停顿；D 应在“太守之乐”后停顿。' },
+  { tag: "句式", q: '下面对文言句式判断错误的一项是？', options: ["“有亭翼然临于泉上者，醉翁亭也”是判断句", "“泻出于两峰之间”属于状语后置句", "“行者休于树”翻译为走路的人在树下休息", "“行者休于树”是被动句"], answer: 3, explain: 'D 错误。“行者休于树”是状语后置句（于树休），不是被动句。A、B、C 判断均正确。' },
+  { tag: "翻译", q: '对“醉翁之意不在酒，在乎山水之间也”翻译理解正确的一项是？', options: ["醉翁的心意不在于喝酒，在于山水之间的美景", "醉翁不想喝酒，一心只游走在山水中间", "醉翁喝酒的目的，是为了欣赏山间流水", "醉翁喝醉，不是因为酒，而是山水让他沉醉"], answer: 0, explain: 'A 翻译准确。“意”指情趣、心意，“在乎”意为在于。B、C、D 均有偏差。' },
+  { tag: "词类活用", q: '下面词类活用分析正确的一项是？', options: ["“名之者谁”中“名”，名词，名字", "“有亭翼然临于泉上者”中“翼”，名词作状语，像鸟张开翅膀", "“山行六七里”中“山”，名词，大山", "“乐其乐”第一个“乐”，形容词，快乐"], answer: 1, explain: 'B 分析正确。“翼”名词作状语，像鸟张开翅膀。A“名”名词作动词（命名）；C“山”名词作状语（沿着山路）；D“乐”意动用法（以……为乐）。' },
+  { tag: "内容理解", q: '下列对“伛偻提携”理解正确的一项是？', options: ["指弯腰搀扶别人", "借代，指老人和小孩", "描写人们爬山互相扶持", "专指滁州当地的劳动者"], answer: 1, explain: 'B 正确。“伛偻”指弯腰曲背的老人，“提携”指被牵领的小孩，二者借代老人和小孩。' },
+  { tag: "内容理解", q: '下面对全文理解表述错误的一项是？', options: ["本文写于欧阳修被贬滁州之时，文中有山水之乐，也暗含失意的苦闷", "“醉”是外表，“乐”是核心，太守之乐的根本是乐百姓之乐", "文章结尾，点明禽鸟之乐、游人之乐、太守之乐，三层乐逐层递进", "禽鸟之乐，就是太守追求的“与民同乐”"], answer: 3, explain: 'D 错误。禽鸟之乐是山林自然之乐，太守之乐是“乐其乐”（以百姓的快乐为快乐），二者不同。A、B、C 表述均正确。' },
+  { tag: "翻译", q: '对“醉能同其乐，醒能述以文者，太守也”翻译正确的一项是？', options: ["喝醉了能够同大家一同欢乐，醒来能够用文章记述这件乐事的人，是太守", "醉了能够和大家一起快乐，醒来能够写文章纪念的人，是太守", "喝醉后能和大家同乐，清醒后能把文章写下来的人，是太守", "醉了同大家一起欢乐，醒来用文字描述太守的人，是太守"], answer: 0, explain: 'A 翻译准确。“同其乐”即同大家一同欢乐，“述以文”即用文章记述。B 漏“用文章”；C 语序不当；D 误译“太守也”。' },
+  { tag: "句式", q: '【联动七八年级】选出与例句“醒能述<span class="highlight">以</span>文者”中“<span class="highlight">以</span>”用法相同的选项。', options: ["以钱覆其口（《卖油翁》）", "自以为大有所益（《孙权劝学》）", "以我酌油知之（《卖油翁》）", "静以修身（《诫子书》）"], answer: 0, explain: '例句“述以文”中“以”意为用（介词）。A“以钱覆其口”（用铜钱盖住油葫芦口），“以”也是用，用法相同。B“以”意为认为；C“以”意为凭借；D“以”表目的，来。' },
+  { tag: "句式", q: '【联动七八年级】选出与例句“醉翁之<span class="highlight">之</span>意不在酒”中“<span class="highlight">之</span>”用法相同的选项。', options: ["水陆草木之花（《爱莲说》）", "何陋之有（《陋室铭》）", "予独爱莲之出淤泥而不染（《爱莲说》）", "久之，目似瞑（《狼》）"], answer: 0, explain: '例句“醉翁之意”中“之”是结构助词，的。A“草木之花”（的花）用法相同。B“之”是宾语前置的标志；C“之”用于主谓之间取消句子独立性；D“之”补足音节。' }
+];
+
+// ⑥ 逐句精读（original 原文 / notes 注释 / trans 直译，每段一条）
+const sentenceData = [
+  { original: "环滁皆山也。其西南诸峰，林壑尤美，望之蔚然而深秀者，琅琊也。山行六七里，渐闻水声潺潺，而泻出于两峰之间者，酿泉也。峰回路转，有亭翼然临于泉上者，醉翁亭也。作亭者谁？山之僧智仙也。名之者谁？太守自谓也。太守与客来饮于此，饮少辄醉，而年又最高，故自号曰醉翁也。醉翁之意不在酒，在乎山水之间也。山水之乐，得之心而寓之酒也。", notes: [{ word: "壑", meaning: "山谷" }, { word: "蔚然", meaning: "茂盛的样子" }, { word: "秀", meaning: "秀丽" }, { word: "山", meaning: "沿着山路" }, { word: "回", meaning: "回环" }, { word: "翼然", meaning: "像鸟张开翅膀的样子" }, { word: "临", meaning: "居高下视" }, { word: "名", meaning: "命名" }, { word: "辄", meaning: "就" }, { word: "故", meaning: "所以" }, { word: "在乎", meaning: "在于" }, { word: "寓", meaning: "寄托" }], trans: "环绕滁州的都是山。那西南方的几座山峰，树林和山谷尤其优美，一眼望去草木茂盛又幽深秀丽的，是琅琊山。沿着山路走六七里，渐渐听到潺潺的水声，从两座山峰之间倾泻而出的，是酿泉。山势回环，路也跟着转弯，有一座亭子像飞鸟展翅般踞在泉边，就是醉翁亭。造亭子的是谁？是山里的和尚智仙。给它取名的是谁？是自称为“醉翁”的太守。太守和宾客来此饮酒，喝一点就醉了，而且年纪最大，所以给自己起了“醉翁”的别号。醉翁的情趣不在酒上，而在山水之间。欣赏山水的乐趣，领会在心里，寄托在酒中。" },
+  { original: "若夫日出而林霏开，云归而岩穴暝，晦明变化者，山间之朝暮也。野芳发而幽香，佳木秀而繁阴，风霜高洁，水落而石出者，山间之四时也。朝而往，暮而归，四时之景不同，而乐亦无穷也。", notes: [{ word: "若夫", meaning: "像那" }, { word: "霏", meaning: "雾气" }, { word: "暝", meaning: "昏暗" }, { word: "秀", meaning: "茂盛" }, { word: "高洁", meaning: "秋高气爽" }], trans: "像那太阳升起而树林里的雾气散开，云气聚拢而山洞变得昏暗，明暗交替变化的，是山间的早晨和傍晚。野花开放而散发幽香，好的树木枝叶繁茂而形成浓阴，风高霜洁、秋高气爽，水位下落而石头露出，是山间的四季。早晨前往，傍晚归来，四季的景色不同，而乐趣也没有穷尽。" },
+  { original: "至于负者歌于途，行者休于树，前者呼，后者应，伛偻提携，往来而不绝者，滁人游也。临溪而渔，溪深而鱼肥，酿泉为酒，泉香而酒洌，山肴野蔌，杂然而前陈者，太守宴也。宴酣之乐，非丝非竹，射者中，弈者胜，觥筹交错，起坐而喧哗者，众宾欢也。苍颜白发，颓然乎其间者，太守醉也。", notes: [{ word: "负者", meaning: "背东西的人" }, { word: "伛偻", meaning: "老人" }, { word: "提携", meaning: "小孩" }, { word: "临", meaning: "靠近" }, { word: "洌", meaning: "清" }, { word: "蔌", meaning: "菜蔬" }, { word: "前", meaning: "在前面" }, { word: "陈", meaning: "陈列" }, { word: "觥", meaning: "酒杯" }, { word: "颓然", meaning: "醉倒的样子" }], trans: "至于背东西的人在路上歌唱，行人在树下休息，前面的呼唤，后面的应答，老老少少往来不断的，是滁州百姓在出游。到溪边捕鱼，溪水深而鱼儿肥，用酿泉造酒，泉水香而酒清冽，山中野味野菜，杂乱地陈列在前的，是太守的宴席。宴饮酣畅的乐趣，不在于音乐，投壶的中了，下棋的赢了，酒杯酒筹交互错杂，起身坐下大声喧哗的，是宾客在欢乐。脸色苍老、头发花白，醉倒在众人中间的，是太守喝醉了。" },
+  { original: "已而夕阳在山，人影散乱，太守归而宾客从也。树林阴翳，鸣声上下，游人去而禽鸟乐也。然而禽鸟知山林之乐，而不知人之乐；人知从太守游而乐，而不知太守之乐其乐也。醉能同其乐，醒能述以文者，太守也。太守谓谁？庐陵欧阳修也。", notes: [{ word: "已而", meaning: "不久" }, { word: "翳", meaning: "遮盖" }, { word: "去", meaning: "离开" }, { word: "而", meaning: "却" }, { word: "之", meaning: "取消句子独立性" }, { word: "乐", meaning: "以……为乐" }, { word: "谓", meaning: "是" }], trans: "不久夕阳落山，人影散乱，是太守归家而宾客跟随。树林枝叶茂密成荫，鸟声忽上忽下，是游人离去而禽鸟快乐。但禽鸟只知山林的乐趣，却不知人的乐趣；人们知道跟随太守游玩的乐趣，却不知太守以他们的快乐为乐。醉时能与民同乐，醒后能用文章记述这事的，是太守。太守是谁？是庐陵的欧阳修。" }
+];
+
+const container = document.getElementById('questionsContainer');
+const submitBtn = document.getElementById('submitBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultPanel = document.getElementById('resultPanel');
+const scoreNum = document.getElementById('scoreNum');
+const correctCountEl = document.getElementById('correctCount');
+const resultStars = document.getElementById('resultStars');
+const scoreComment = document.getElementById('scoreComment');
+const toast = document.getElementById('toast');
+const translationPanel = document.getElementById('translationPanel');
+const translationContent = document.getElementById('translationContent');
+const STORAGE_PREFIX = 'zuiweng_';
+var TOTAL_Q = questions.filter(function(q){ return !q.seg; }).length;
+
+let submitted = false;
+let shuffles = {};
+function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function generateShuffles() { for (var gi = 0; gi < TOTAL_Q; gi++) { shuffles[gi] = shuffleArray([0, 1, 2, 3]); } localStorage.setItem(STORAGE_PREFIX + 'shuffles', JSON.stringify(shuffles)); }
+function loadShuffles() { try { const s = JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'shuffles')); if (s && Object.keys(s).length === TOTAL_Q) { shuffles = s; return; } } catch {} generateShuffles(); }
+function renderTranslation() {
+  translationContent.innerHTML = '';
+  sentenceData.forEach(s => {
+    const block = document.createElement('div'); block.className = 'sentence-block';
+    const orig = document.createElement('div'); orig.className = 's-line s-line-original'; orig.innerHTML = '<span class="s-label">原文</span>' + s.original; block.appendChild(orig);
+    if (s.notes.length > 0) { const notes = document.createElement('div'); notes.className = 's-line s-line-notes'; notes.innerHTML = '<span class="s-label">注释</span>' + s.notes.map(n => '<span class="note-word">【' + n.word + '：' + n.meaning + '】</span>').join(''); block.appendChild(notes); }
+    const trans = document.createElement('div'); trans.className = 's-line s-line-trans'; trans.innerHTML = '<span class="s-label">译文</span>' + s.trans; block.appendChild(trans);
+    translationContent.appendChild(block);
+  });
+}
+function renderQuestions() {
+  container.innerHTML = '';
+  var qi = 0;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    if (q.seg) {
+      var s = document.createElement('div'); s.className = 'seg-orig';
+      s.innerHTML = '<strong>原文</strong> ' + q.seg;
+      container.appendChild(s);
+      continue;
+    }
+    var card = document.createElement('div'); card.className = 'q-card'; card.id = 'q-' + i;
+    var letters = ['A', 'B', 'C', 'D']; var order = shuffles[qi] || [0, 1, 2, 3];
+    card.innerHTML = '<div class="q-header"><span class="q-num">' + (qi + 1) + '</span><span class="q-tag">' + q.tag + '</span></div><div class="q-text">' + q.q + '</div><div class="opts">' + order.map(function(oi, di) { return '<label data-q="' + i + '" data-opt="' + oi + '" onclick="selectOption(' + i + ', ' + oi + ')"><input type="radio" name="q' + i + '" value="' + oi + '"><span class="opt-letter">' + letters[di] + '</span>' + q.options[oi] + '</label>'; }).join('') + '</div><div class="explanation" id="exp-' + i + '"><span class="result-tag" id="tag-' + i + '"></span><strong>解析：</strong>' + q.explain + '</div>';
+    container.appendChild(card);
+    qi++;
+  }
+}
+function selectOption(qIdx, optIdx) {
+  if (submitted) return;
+  document.querySelectorAll('label[data-q="' + qIdx + '"]').forEach(l => l.classList.remove('selected'));
+  const label = document.querySelector('label[data-q="' + qIdx + '"][data-opt="' + optIdx + '"]');
+  if (label) label.classList.add('selected');
+  const answers = getStoredAnswers(); answers[qIdx] = optIdx;
+  localStorage.setItem(STORAGE_PREFIX + 'answers', JSON.stringify(answers));
+  const done = getAnswered();
+  if (!done.includes(qIdx)) { done.push(qIdx); localStorage.setItem(STORAGE_PREFIX + 'done', JSON.stringify(done)); }
+  updateProgress(); checkSubmitReady();
+}
+function getStoredAnswers() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'answers')) || {}; } catch { return {}; } }
+function getAnswered() { try { return JSON.parse(localStorage.getItem(STORAGE_PREFIX + 'done')) || []; } catch { return []; } }
+function restoreFromStorage() {
+  const answers = getStoredAnswers(); const answered = getAnswered();
+  if (!answered.length) return;
+  Object.keys(answers).forEach(k => { const idx = parseInt(k), opt = answers[k]; const label = document.querySelector('label[data-q="' + idx + '"][data-opt="' + opt + '"]'); if (label) { label.classList.add('selected'); const r = label.querySelector('input[type="radio"]'); if (r) r.checked = true; } });
+  updateProgress(); checkSubmitReady();
+}
+function updateProgress() { const done = getAnswered().length; const total = TOTAL_Q; document.getElementById('fpMain').textContent = '已答 ' + done + ' / ' + total + ' 题'; }
+
+  var progMenu = document.getElementById('progMenu');
+  var floatProgEl = document.getElementById('floatProg');
+  function renderProgMenu(){
+    var html = '<div class="pm-title">答题进度 · 点击题号跳转</div>';
+    var no = 0;
+    questions.forEach(function(q, i){
+      if(q.seg) return;
+      no++;
+      var stCls, stTxt;
+      if(submitted){
+        var card = document.getElementById('q-' + i);
+        if(card && card.classList.contains('correct')){ stCls = 'pm-ok'; stTxt = '✅'; }
+        else { stCls = 'pm-bad'; stTxt = '❌'; }
+      } else {
+        if(getAnswered().indexOf(i) >= 0){ stCls = 'pm-done'; stTxt = '已完成'; }
+        else { stCls = 'pm-undone'; stTxt = '未完成'; }
+      }
+      html += '<div class="pm-item" data-i="' + i + '"><span class="pm-no">第' + no + '题</span><span class="' + stCls + '">' + stTxt + '</span></div>';
+    });
+    progMenu.innerHTML = html;
+  }
+  if (floatProgEl) {
+    floatProgEl.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(progMenu.style.display === 'block'){ progMenu.style.display = 'none'; return; }
+      renderProgMenu();
+      progMenu.style.display = 'block';
+    });
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest ? e.target.closest('.pm-item') : null;
+    if(item){
+      var card = document.getElementById('q-' + item.getAttribute('data-i'));
+      if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+      progMenu.style.display = 'none';
+      return;
+    }
+    if(progMenu.style.display === 'block' && !(e.target.closest ? e.target.closest('#progMenu') : null) && e.target !== floatProgEl){
+      progMenu.style.display = 'none';
+    }
+  });
+  function checkSubmitReady() { const done = getAnswered().length; const total = TOTAL_Q; submitBtn.disabled = done < total; submitBtn.textContent = done === total ? '📋 提交批改' : '📋 提交批改（还差 ' + (total - done) + ' 题）'; }
+submitBtn.addEventListener('click', function() {
+  if (submitted) return; if (submitBtn.disabled) { showToast('请先完成所有题目再提交'); return; }
+  submitted = true; const answers = getStoredAnswers(); let correct = 0;
+  questions.forEach((q, i) => { if (q.seg) return; const userAns = answers[i]; const isCorrect = userAns === q.answer; if (isCorrect) correct++; else { try { var _wl = JSON.parse(localStorage.getItem('gd_wrong') || '[]'); _wl.push({ // ⑦ 篇目标识
+paper: '《醉翁亭记》', time: new Date().toLocaleString(), tag: q.tag, q: q.q, options: q.options, userAns: userAns, correct: q.answer, explain: q.explain }); localStorage.setItem('gd_wrong', JSON.stringify(_wl)); } catch (e) {} }
+    const card = document.getElementById('q-' + i); card.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.querySelectorAll('label[data-q="' + i + '"]').forEach(l => l.classList.add('disabled'));
+    const cl = document.querySelector('label[data-q="' + i + '"][data-opt="' + q.answer + '"]'); if (cl) cl.classList.add('show-correct');
+    if (!isCorrect && userAns !== undefined) { const wl = document.querySelector('label[data-q="' + i + '"][data-opt="' + userAns + '"]'); if (wl) wl.classList.add('show-wrong'); }
+    const exp = document.getElementById('exp-' + i); exp.classList.add('show');
+    const tag = document.getElementById('tag-' + i); tag.className = isCorrect ? 'result-tag correct-tag' : 'result-tag wrong-tag'; tag.textContent = isCorrect ? '✓ 正确' : '✗ 错误';
+  });
+  resultPanel.classList.add('show'); scoreNum.textContent = correct + '/' + TOTAL_Q; correctCountEl.textContent = correct;
+  const pct = correct / TOTAL_Q; let stars = '', comment = '';
+  if (pct >= 0.9) { stars = '⭐⭐⭐⭐⭐'; comment = '🏆 掌握扎实，功底深厚！'; }
+  else if (pct >= 0.75) { stars = '⭐⭐⭐⭐'; comment = '👏 掌握得很不错！继续加油！'; }
+  else if (pct >= 0.5) { stars = '⭐⭐⭐'; comment = '💪 基础还可以，再复习一遍课下注释吧。'; }
+  else { stars = '⭐⭐'; comment = '📖 建议熟读课文，理解每个字的意思。'; }
+  resultStars.textContent = stars; scoreComment.textContent = comment;
+  submitBtn.disabled = true; submitBtn.textContent = '✅ 已批改'; submitBtn.classList.add('btn-secondary'); submitBtn.classList.remove('btn-primary');
+  renderTranslation(); translationPanel.classList.add('show');
+  setTimeout(function() { resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200);
+  localStorage.setItem(STORAGE_PREFIX + 'submitted', 'true');
+  localStorage.removeItem(STORAGE_PREFIX + 'answers');
+  localStorage.removeItem(STORAGE_PREFIX + 'done');
+  localStorage.removeItem(STORAGE_PREFIX + 'submitted');
+});
+resetBtn.addEventListener('click', function() {
+  if (submitted && !confirm('重新答题将清除当前成绩，确定吗？')) return;
+  submitted = false; ['answers','done','submitted','shuffles'].forEach(function(k) { localStorage.removeItem(STORAGE_PREFIX + k); });
+  document.querySelectorAll('.q-card').forEach(function(c) { c.className = 'q-card'; });
+  document.querySelectorAll('.opts label').forEach(function(l) { l.className = ''; var r = l.querySelector('input[type="radio"]'); if (r) r.checked = false; });
+  document.querySelectorAll('.explanation').forEach(function(e) { e.classList.remove('show'); });
+  translationPanel.classList.remove('show'); resultPanel.classList.remove('show');
+  submitBtn.disabled = true; submitBtn.textContent = '📋 提交批改'; submitBtn.classList.remove('btn-secondary'); submitBtn.classList.add('btn-primary');
+  generateShuffles(); renderQuestions(); updateProgress();
+  scrollTo({ top: 0, behavior: 'smooth' });
+});
+function showToast(msg) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2000); }
+localStorage.removeItem(STORAGE_PREFIX + 'answers'); localStorage.removeItem(STORAGE_PREFIX + 'done'); localStorage.removeItem(STORAGE_PREFIX + 'submitted'); generateShuffles(); renderQuestions();
+(function(){ function segUpd(){ var segs=document.querySelectorAll('.seg-orig'); if(!segs.length) return; var cur=null; segs.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<80 && r.bottom>0) cur=s; }); segs.forEach(function(s){ if(s===cur) s.classList.add('active'); else s.classList.remove('active'); }); } window.addEventListener('scroll', segUpd, {passive:true}); setInterval(segUpd, 600); segUpd(); })();
+</script>
+
+<script>
+(function(){
+  var tip=document.createElement('div');tip.id='jzTip';document.body.appendChild(tip);
+  function showTip(el){
+    var r=el.getBoundingClientRect();
+    tip.textContent=el.getAttribute('data-tip');
+    tip.style.display='block';
+    var tw=tip.offsetWidth,th=tip.offsetHeight;
+    var left=r.left+r.width/2-tw/2;
+    if(left<8)left=8;
+    if(left+tw>window.innerWidth-8)left=window.innerWidth-8-tw;
+    var top=r.top-th-10;
+    if(top<8){top=r.bottom+10;tip.classList.add('below');}else{tip.classList.remove('below');}
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  document.addEventListener('click',function(e){
+    var el=e.target;
+    var jz=el.closest?el.closest('.jz'):null;
+    if(jz){showTip(jz);return;}
+    if(el.id!=='jzTip'){tip.style.display='none';}
+  });
+  window.addEventListener('scroll',function(){tip.style.display='none';},{passive:true});
+})();
+</script></body>
+</html>
