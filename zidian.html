@@ -32,6 +32,7 @@
   .yi-src { display:inline-block; font-size:10px; background:#eaf4fb; color:#5a8db8; border-radius:4px; padding:1px 5px; margin-left:6px; vertical-align:middle; }
   .yi-ex { font-size:12px; color:#6d8aa0; line-height:1.7; margin-top:4px; }
   .yi-ex .ex-link { color:#1a6fb5; text-decoration:none; font-size:11px; border-bottom:1px dashed #1a6fb5; }
+  .yi-benyi { font-size:12px; color:#2f8a6a; background:#e8f5ef; border-radius:6px; padding:6px 8px; margin:8px 0 4px; line-height:1.6; }
   .no-result { text-align:center; color:#8aa4b8; padding:40px 0; font-size:14px; }
   .footer { text-align:center; font-size:12px; color:#8aa4b8; padding:14px; }
   .footer a { color:#1a6fb5; text-decoration:none; }
@@ -93,6 +94,7 @@ function render(){
   hit.forEach(function(w){
     var items = DICT[w].i;
     html+='<div class="word-item" id="w_'+w+'"><div class="word-head" onclick="toggle(this)"><span class="wz">'+w+'</span><span class="wm">'+items.length+' 个义项</span><span class="ar">›</span></div><div class="yi-body">';
+    if(DICT[w].b) html+='<div class="yi-benyi">🔍 '+DICT[w].b+'</div>';
     items.forEach(function(it){
       html+='<div class="yi-item"><div class="yi-text">'+it['义']+'<span class="yi-src">'+it.src+'</span></div>';
       (it['例']||[]).forEach(function(e){ html+='<div class="yi-ex">'+fmtEx(e, w)+'</div>'; });
