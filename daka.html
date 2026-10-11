@@ -93,6 +93,7 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
 .passage p:last-child{margin-bottom:0}
 .passage u{text-decoration:none;color:var(--jd);font-weight:700;background:linear-gradient(transparent 62%,#dcebfa 62%)}
 .passage small{font-size:12px;color:#7f9db8;margin:0 1px}
+.passage .jz{border-bottom:1px dotted #8fa9c2;cursor:help}
 .passage em.k, .qtext em.k{font-style:normal;color:var(--main);font-weight:700;background:linear-gradient(transparent 62%,#fbe0dd 62%)}
 .qtext u{text-decoration:none;color:var(--jd);font-weight:700}
 .common{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-2);line-height:1.85}
@@ -219,8 +220,8 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
   </section>
 
 </div>
-<script src="daka_data.js?v=20261011"></script>
-<script src="jd_data.js?v=20261011"></script>
+<script src="daka_data.js?v=20261011b"></script>
+<script src="jd_data.js?v=20261011b"></script>
 <script>
 (function(){
   "use strict";
@@ -254,15 +255,21 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
   }
   function sanitize(h){
     h = String(h || "");
-    h = h.replace(/<\s*(\/?)\s*(em|u|small|br|strong|b)([^>]*?)\/?\s*>/gi, function(m, close, tag, attrs){
+    h = h.replace(/<\s*(\/?)\s*(em|u|small|br|strong|b|span)([^>]*?)\/?\s*>/gi, function(m, close, tag, attrs){
       var t = tag.toLowerCase();
       if (t === "br") return "<br>";
       if (t === "b") return close ? "</b>" : "<b>";
+      if (t === "span"){
+        if (close) return "</span>";
+        if (!/class\s*=\s*['"]jz['"]/.test(attrs)) return "";
+        var ti = /title\s*=\s*['"]([^'"]*)['"]/.exec(attrs);
+        return '<span class="jz"' + (ti ? ' title="' + ti[1].replace(/"/g, "&quot;") + '"' : "") + ">";
+      }
       if (close) return "</" + t + ">";
       if (t === "em" && /class\s*=\s*['"]k['"]/.test(attrs)) return '<em class="k">';
       return "<" + t + ">";
     });
-    h = h.replace(/&(?!amp;|lt;|gt;|nbsp;)/g, "&amp;");
+    h = h.replace(/&(?!amp;|lt;|gt;|nbsp;|quot;)/g, "&amp;");
     return h;
   }
   function kx(s, isHtml){
@@ -400,9 +407,9 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
     qnoEl.className = "no" + (cur.g === "jd" ? " jd" : "");
     qnameEl.textContent = "　" + cur.t;
     paperEl.className = "paper" + (cur.g === "jd" ? " jd" : "");
-    passageEl.innerHTML = cur.html
-      ? kx(cur.p[0] || "", true)
-      : (cur.p.length ? cur.p.map(function(x){ return "<p>" + kx(x, false) + "</p>"; }).join("") : "<p>（原文缺失）</p>");
+    passageEl.innerHTML = cur.p.length
+      ? cur.p.map(function(x){ return "<p>" + kx(x, cur.html) + "</p>"; }).join("")
+      : "<p>（原文缺失）</p>";
     commonEl.hidden = !cur.common;
     commonEl.innerHTML = cur.common ? "<b>常识</b>　" + esc(cur.common) : "";
     transBody.innerHTML = cur.tr.length
