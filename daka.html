@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>文言文打卡题库 · 在线自测（221 篇）</title>
+<style>
+:root{
+  --main:#CD5452; --main-d:#b34543; --main-l:#FBEFED; --ink:#333333; --ink-2:#6b6b6b;
+  --line:#efdfdd; --ok:#2f7d5e; --ok-l:#eaf6f0; --no:#c0392b; --no-l:#fdeeea; --card:#ffffff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:#faf8f6;color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Source Han Sans SC",sans-serif;
+  font-size:16px;line-height:1.7;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px 60px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+[hidden]{display:none !important}
+
+/* ---------- 目录 ---------- */
+.banner{padding:26px 4px 16px;text-align:center}
+.banner h1{margin:0 0 8px;font-size:25px;letter-spacing:.02em;color:var(--main)}
+.banner .sub{margin:0 0 10px;font-size:13.5px;color:var(--main-d);opacity:.9}
+.banner .tip{margin:0;font-size:13px;color:var(--ink-2);line-height:1.75}
+.tools{display:flex;gap:8px;margin:16px 0 10px;flex-wrap:wrap}
+.tools input[type=search]{
+  flex:1 1 200px;min-width:0;padding:11px 14px;border:1px solid var(--line);border-radius:11px;
+  background:#fff;font-size:14.5px;color:var(--ink);outline:none;
+}
+.tools input[type=search]:focus{border-color:var(--main);box-shadow:0 0 0 3px var(--main-l)}
+.tools select{
+  padding:11px 10px;border:1px solid var(--line);border-radius:11px;background:#fff;
+  font-size:14px;color:var(--ink);outline:none
+}
+.stats{display:flex;gap:10px;margin:4px 0 14px;flex-wrap:wrap}
+.stat{flex:1 1 150px;background:var(--main-l);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--main-d)}
+.stat b{display:block;font-size:19px;color:var(--main);letter-spacing:.02em;line-height:1.3}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:12px 13px;
+  display:flex;flex-direction:column;gap:6px;text-align:left;transition:.15s;position:relative
+}
+.card:hover{border-color:var(--main);box-shadow:0 4px 14px rgba(205,84,82,.12);transform:translateY(-1px)}
+.card .top{display:flex;align-items:baseline;gap:8px}
+.card .no{font-size:12px;color:#fff;background:var(--main);border-radius:7px;padding:1px 7px;font-weight:600;flex:none}
+.card .name{font-size:15.5px;font-weight:600;line-height:1.45}
+.card .meta{font-size:12px;color:var(--ink-2);display:flex;gap:8px;flex-wrap:wrap}
+.card .meta .bg{border:1px solid var(--line);border-radius:6px;padding:0 5px}
+.card .bar{height:5px;border-radius:4px;background:#f2eae9;overflow:hidden;margin-top:2px}
+.card .bar i{display:block;height:100%;background:var(--main);border-radius:4px}
+.card .done{font-size:12px;color:var(--ok)}
+.card .flag{font-size:11.5px;color:#9a7b3f}
+.empty{color:var(--ink-2);font-size:14px;padding:24px 4px}
+.foot{margin-top:26px;text-align:center;font-size:12px;color:#a99}
+
+/* ---------- 刷题 ---------- */
+.qbar{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;
+  padding:10px 0;margin-bottom:10px;background:rgba(250,248,246,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line)
+}
+.ghost{
+  background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;
+  font-size:13.5px;color:var(--main-d);transition:.15s
+}
+.ghost:hover{border-color:var(--main);color:var(--main)}
+.qtitle{flex:1;min-width:0;font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qtitle .no{color:var(--main);margin-right:4px}
+.prog{font-size:13px;color:var(--ink-2);flex:none}
+.paper{background:#fff;border:1px solid var(--line);border-left:4px solid var(--main);border-radius:13px;padding:13px 15px;margin-bottom:14px}
+.sechead{font-size:13px;font-weight:700;color:var(--main-d);margin-bottom:8px;cursor:pointer;user-select:none}
+.sechead .hint{font-weight:400;color:#b39d9c;font-size:12px}
+.passage p{margin:0 0 9px;font-size:15.5px;line-height:2;text-align:justify}
+.passage p:last-child{margin-bottom:0}
+.passage em.k, .qtext em.k{font-style:normal;color:var(--main);font-weight:700;background:linear-gradient(transparent 62%,#fbe0dd 62%)}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:11px}
+.qhead{display:flex;gap:9px;align-items:baseline;margin-bottom:9px}
+.qnum{
+  flex:none;width:24px;height:24px;border-radius:50%;background:var(--main-l);color:var(--main);
+  font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:3px
+}
+.qtext{font-size:15.5px;line-height:1.85;flex:1;min-width:0}
+.opt{
+  display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;background:#fff;
+  border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:7px;
+  font-size:15px;line-height:1.7;color:var(--ink);transition:.13s
+}
+.opt:hover{border-color:var(--main);background:#fffafa}
+.opt .lt{
+  flex:none;width:21px;height:21px;border-radius:50%;border:1px solid var(--line);color:var(--ink-2);
+  font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px
+}
+.opt .tx{flex:1;min-width:0}
+.opt.right{border-color:var(--ok);background:var(--ok-l)}
+.opt.right .lt{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--no);background:var(--no-l)}
+.opt.wrong .lt{background:var(--no);border-color:var(--no);color:#fff}
+.opt.locked{cursor:default}
+.opt.locked:hover{border-color:var(--line);background:#fff}
+.opt.locked.right:hover{border-color:var(--ok);background:var(--ok-l)}
+.opt.locked.wrong:hover{border-color:var(--no);background:var(--no-l)}
+.res{margin-top:8px;font-size:13.5px;padding:8px 11px;border-radius:9px;background:#faf7f7;border-left:3px solid var(--main);color:var(--ink-2)}
+.res b{color:var(--main-d)}
+.res.ok{background:var(--ok-l);border-color:var(--ok)}
+.res.no{background:var(--no-l);border-color:var(--no)}
+.blank{background:#faf7f7;border:1px dashed var(--line);border-radius:10px;padding:9px 12px;font-size:14.5px;color:var(--ink-2);box-shadow:none}
+.blank b{color:var(--main-d)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 0}
+.btn{background:var(--main);border:none;border-radius:11px;padding:11px 18px;font-size:14.5px;color:#fff;font-weight:600}
+.btn:hover{background:var(--main-d)}
+.score{background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:13px;padding:14px 16px;margin-top:14px}
+.score b{color:var(--ok);font-size:19px}
+.float-home{
+  position:fixed;right:14px;bottom:16px;z-index:40;background:rgba(205,84,82,.92);color:#fff;border:none;
+  border-radius:22px;padding:10px 16px;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(205,84,82,.35)
+}
+.float-home:hover{background:var(--main-d)}
+@media (max-width:520px){
+  .banner h1{font-size:22px}
+  .list{grid-template-columns:1fr 1fr}
+  .card .name{font-size:14.5px}
+  .qtext,.opt{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="home">
+    <header class="banner">
+      <h1>文言文打卡题库</h1>
+      <p class="sub">光点小塾 · 岩小队语文｜221 篇 · 3992 题</p>
+      <p class="tip">点开任意一篇开始刷题：选完即时判对错，填空题可查看参考答案，每篇都配原文与全篇译文。</p>
+    </header>
+    <div class="tools">
+      <input id="kw" type="search" placeholder="搜篇名、编号或考点词，如：狐假虎威、118、之">
+      <select id="brand"><option value="">全部来源</option></select>
+      <select id="scope">
+        <option value="">全部篇目</option>
+        <option value="todo">未刷</option>
+        <option value="doing">刷过未完成</option>
+        <option value="done">已完成</option>
+      </select>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="list" id="list"></div>
+    <footer class="foot">光点小塾 · 文言文打卡题库｜内容仅供学员练习使用</footer>
+  </section>
+
+  <section id="quiz" hidden>
+    <div class="qbar">
+      <button class="ghost" id="back">← 目录</button>
+      <div class="qtitle"><span class="no" id="qno"></span><span id="qname"></span></div>
+      <div class="prog" id="prog"></div>
+    </div>
+    <div class="paper">
+      <div class="sechead" id="phead">原文<span class="hint">（点这里收起／展开）</span></div>
+      <div class="passage" id="passage"></div>
+    </div>
+    <div id="flag"></div>
+    <div id="qwrap"></div>
+    <div class="actions">
+      <button class="btn" id="nbtn">下一篇 →</button>
+      <button class="ghost" id="tbtn">显示译文</button>
+      <button class="ghost" id="rbtn">重做本篇</button>
+    </div>
+    <div class="paper" id="trans" hidden>
+      <div class="sechead">译文</div>
+      <div class="passage" id="transBody"></div>
+    </div>
+    <div class="score" id="score" hidden></div>
+    <button class="float-home" id="floatHome">📚 目录</button>
+  </section>
+
+</div>
+<script src="daka_data.js?v=20261011"></script>
+<script>
+(function(){
+  "use strict";
+  var PAPERS = DAKA, META = DAKA_META, LT = ["A","B","C","D","E","F"];
+  var KEY = "daka_v1";
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ store = {}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+  function esc(s){
+    return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function kx(s){ return esc(s).replace(/【([^】]+)】/g, '<em class="k">$1</em>'); }
+  function answered(p){
+    var rec = store[p.n] || {};
+    return Object.keys(rec).filter(function(k){ return rec[k] !== "" && rec[k] != null; }).length;
+  }
+  function isDone(p){ return answered(p) >= p.q.length; }
+  function correctCount(p){
+    var rec = store[p.n] || {}, c = 0;
+    p.q.forEach(function(q, i){
+      if (q.o && /^[A-F]$/.test(q.a || "") && rec[i] === q.a) c++;
+    });
+    return c;
+  }
+  function judgeable(p){
+    return p.q.filter(function(q){ return q.o && /^[A-F]$/.test(q.a || ""); }).length;
+  }
+
+  /* ---------------- 目录 ---------------- */
+  var listEl = document.getElementById("list"), statsEl = document.getElementById("stats");
+  var kwEl = document.getElementById("kw"), brandEl = document.getElementById("brand"), scopeEl = document.getElementById("scope");
+  META.brands.forEach(function(b){
+    var o = document.createElement("option"); o.value = b; o.textContent = b; brandEl.appendChild(o);
+  });
+
+  function totals(){
+    var d = 0, started = 0, ans = 0, cor = 0, judge = 0;
+    PAPERS.forEach(function(p){
+      var a = answered(p);
+      if (a > 0) started++;
+      if (isDone(p)) d++;
+      ans += a; cor += correctCount(p); judge += judgeable(p);
+    });
+    return {done:d, started:started, ans:ans, cor:cor, judge:judge};
+  }
+  function renderStats(){
+    var t = totals();
+    var rate = t.judge ? Math.round(t.cor / t.judge * 100) : 0;
+    statsEl.innerHTML =
+      '<div class="stat"><b>' + t.done + ' / ' + PAPERS.length + '</b>已完成篇目</div>' +
+      '<div class="stat"><b>' + t.ans + ' / ' + META.questions + '</b>已答题数</div>' +
+      '<div class="stat"><b>' + rate + '%</b>已答正确率（' + t.cor + '/' + t.judge + '）</div>';
+  }
+  function matchScore(p, kw){
+    if (!kw) return 0;
+    var n = (p.t.indexOf(kw) >= 0 ? 1 : 0) + (String(p.n) === kw ? 1 : 0);
+    p.q.forEach(function(q){ if (q.s.indexOf(kw) >= 0) n++; });
+    return n;
+  }
+  function renderList(){
+    var kw = kwEl.value.trim(), brand = brandEl.value, scope = scopeEl.value;
+    var rows = PAPERS.filter(function(p){
+      if (brand && p.b !== brand) return false;
+      if (scope === "todo" && answered(p) > 0) return false;
+      if (scope === "doing" && !(answered(p) > 0 && !isDone(p))) return false;
+      if (scope === "done" && !isDone(p)) return false;
+      return true;
+    });
+    if (kw){
+      rows = rows.map(function(p){ return {p:p, s:matchScore(p, kw)}; })
+                 .filter(function(r){ return r.s > 0; })
+                 .sort(function(a,b){ return b.s - a.s; })
+                 .map(function(r){ return r.p; });
+    }
+    if (!rows.length){ listEl.innerHTML = '<div class="empty">没有匹配的篇目，换个词试试。</div>'; return; }
+    var html = rows.map(function(p){
+      var a = answered(p), tot = p.q.length, pct = Math.round(a / tot * 100);
+      var flags = (p.fl || []).filter(function(f){ return f.indexOf("无答案") >= 0 || f.indexOf("答案码") >= 0; });
+      return '<button class="card" data-no="' + p.n + '">' +
+        '<div class="top"><span class="no">' + p.n + '</span><span class="name">' + esc(p.t) + '</span></div>' +
+        '<div class="meta"><span class="bg">' + esc(p.b) + '</span><span>' + tot + ' 题</span>' +
+          (a ? '<span class="done">已答 ' + a + '／' + tot + '</span>' : '<span>未刷</span>') + '</div>' +
+        (a ? '<div class="bar"><i style="width:' + pct + '%"></i></div>' : '') +
+        (flags.length ? '<div class="flag">' + esc(flags.join("；")) + '</div>' : '') +
+      '</button>';
+    }).join("");
+    listEl.innerHTML = html;
+  }
+  listEl.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target.closest(".card") : null;
+    if (el) openQuiz(parseInt(el.getAttribute("data-no"), 10), true);
+  });
+  kwEl.addEventListener("input", renderList);
+  brandEl.addEventListener("change", renderList);
+  scopeEl.addEventListener("change", renderList);
+
+  /* ---------------- 刷题 ---------------- */
+  var quizEl = document.getElementById("quiz"), homeEl = document.getElementById("home");
+  var qnoEl = document.getElementById("qno"), qnameEl = document.getElementById("qname"), progEl = document.getElementById("prog");
+  var passageEl = document.getElementById("passage"), transBody = document.getElementById("transBody");
+  var qwrap = document.getElementById("qwrap"), transEl = document.getElementById("trans"), scoreEl = document.getElementById("score");
+  var flagEl = document.getElementById("flag");
+  var cur = null;
+
+  function openQuiz(no, push){
+    var p = null;
+    for (var i = 0; i < PAPERS.length; i++) if (PAPERS[i].n === no) { p = PAPERS[i]; cur = p; cur._i = i; break; }
+    if (!p) return;
+    homeEl.hidden = true; quizEl.hidden = false;
+    if (push && location.hash !== "#" + no) location.hash = "#" + no;
+    qnoEl.textContent = p.n;
+    qnameEl.textContent = "　" + p.t;
+    passageEl.innerHTML = p.p.map(function(x){ return "<p>" + kx(x) + "</p>"; }).join("") || '<p>（原文缺失）</p>';
+    transBody.innerHTML = p.tr.map(function(x){ return "<p>" + kx(x) + "</p>"; }).join("") || '<p>（译文缺失）</p>';
+    transEl.hidden = true;
+    document.getElementById("tbtn").textContent = "显示译文";
+    flagEl.innerHTML = (p.fl && p.fl.length)
+      ? '<div class="res" style="margin:0 0 12px">原件提示：' + esc(p.fl.join("；")) + '</div>' : "";
+    renderQuestions(p);
+    window.scrollTo(0, 0);
+    document.title = p.n + " " + p.t + " · 文言文打卡题库";
+  }
+
+  function renderQuestions(p){
+    var rec = store[p.n] || {};
+    var html = p.q.map(function(q, i){
+      var opts = "";
+      if (q.o && q.o.length){
+        opts = q.o.map(function(text, oi){
+          var lt = LT[oi];
+          return '<button class="opt" data-i="' + i + '" data-oi="' + oi + '">' +
+            '<span class="lt">' + lt + '</span><span class="tx">' + kx(text) + '</span></button>';
+        }).join("");
+      } else {
+        opts = '<button class="opt" data-i="' + i + '" data-oi="-1">' +
+          '<span class="lt">✎</span><span class="tx">' + (q.a ? '查看参考答案' : '查看提示') + '</span></button>';
+      }
+      return '<div class="qcard" id="q-' + i + '">' +
+        '<div class="qhead"><span class="qnum">' + (i + 1) + '</span>' +
+        '<span class="qtext">' + kx(q.s) + (q.s ? "" : "（题干缺失）") + '</span></div>' +
+        opts + '<div class="resbox"></div></div>';
+    }).join("");
+    qwrap.innerHTML = html;
+    p.q.forEach(function(q, i){ if (rec[i] != null) restore(p, i, rec[i]); });
+    updateProg(p);
+  }
+
+  function resBox(i){ var c = document.getElementById("q-" + i); return c ? c.querySelector(".resbox") : null; }
+
+  function restore(p, i, val){
+    var q = p.q[i], card = document.getElementById("q-" + i);
+    if (!card) return;
+    if (!q.o || !q.o.length){
+      var box = resBox(i);
+      if (box) box.innerHTML = '<div class="blank">参考答案：<b>' + (q.a ? esc(q.a) : "原件未提供") + '</b></div>';
+      card.querySelector(".opt").classList.add("locked");
+      return;
+    }
+    var buttons = card.querySelectorAll(".opt");
+    var ok = /^[A-F]$/.test(q.a || "");
+    for (var k = 0; k < buttons.length; k++){
+      var el = buttons[k], oi = parseInt(el.getAttribute("data-oi"), 10);
+      el.classList.add("locked");
+      if (ok){
+        if (LT[oi] === q.a) el.classList.add("right");
+        if (LT[oi] === val && val !== q.a) el.classList.add("wrong");
+      }
+    }
+    var box2 = resBox(i);
+    if (box2){
+      if (!q.a) box2.innerHTML = '<div class="res">原件未提供答案，可对照译文理解。</div>';
+      else if (ok) box2.innerHTML = '<div class="res ' + (val === q.a ? "ok" : "no") + '">' +
+        (val === q.a ? "答对了" : "正确答案：<b>" + q.a + "</b>") + '</div>';
+      else box2.innerHTML = '<div class="res">参考答案：<b>' + esc(q.a) + '</b></div>';
+    }
+  }
+
+  function choose(p, i, oi){
+    var q = p.q[i];
+    if (!q.o || !q.o.length){
+      resBox(i).innerHTML = '<div class="blank">参考答案：<b>' + (q.a ? esc(q.a) : "原件未提供") + '</b></div>';
+      document.getElementById("q-" + i).querySelector(".opt").classList.add("locked");
+      return;
+    }
+    var picked = LT[oi];
+    var rec = store[p.n] || (store[p.n] = {});
+    rec[i] = picked; save();
+    var buttons = document.getElementById("q-" + i).querySelectorAll(".opt");
+    for (var k = 0; k < buttons.length; k++) buttons[k].classList.add("locked");
+    restore(p, i, picked);
+    updateProg(p);
+  }
+
+  qwrap.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target.closest(".opt") : null;
+    if (!el || !cur || el.classList.contains("locked")) return;
+    choose(cur, parseInt(el.getAttribute("data-i"), 10), parseInt(el.getAttribute("data-oi"), 10));
+  });
+
+  function updateProg(p){
+    var a = answered(p), tot = p.q.length;
+    progEl.textContent = "已答 " + a + " / " + tot;
+    if (a >= tot){
+      var j = judgeable(p);
+      var c = correctCount(p);
+      var rate = j ? Math.round(c / j * 100) : 0;
+      var word = rate >= 90 ? "很稳，可以直接冲下一篇了。" :
+                 rate >= 75 ? "不错，错题对着译文再过一遍就更牢了。" :
+                 rate >= 60 ? "基本掌握，建议把错的字词抄一遍。" :
+                              "别急，先读一遍译文，再重做这一篇。";
+      scoreEl.hidden = false;
+      scoreEl.innerHTML = "<b>" + c + " / " + j + "</b>　正确率 " + rate + "%<br><span style=\"font-size:13.5px;color:#6b6b6b\">" + esc(word) + "</span>";
+    } else {
+      scoreEl.hidden = true;
+    }
+  }
+
+  document.getElementById("back").addEventListener("click", goHome);
+  document.getElementById("floatHome").addEventListener("click", goHome);
+  function goHome(){
+    quizEl.hidden = true; homeEl.hidden = false;
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    document.title = "文言文打卡题库 · 在线自测（221 篇）";
+    renderStats(); renderList();
+    window.scrollTo(0, 0);
+  }
+  document.getElementById("phead").addEventListener("click", function(){
+    passageEl.hidden = !passageEl.hidden;
+  });
+  document.getElementById("tbtn").addEventListener("click", function(){
+    transEl.hidden = !transEl.hidden;
+    this.textContent = transEl.hidden ? "显示译文" : "收起译文";
+    if (!transEl.hidden) transEl.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+  document.getElementById("rbtn").addEventListener("click", function(){
+    if (!cur) return;
+    if (!confirm("重做本篇？本篇的作答记录会清空。")) return;
+    delete store[cur.n]; save();
+    renderQuestions(cur); updateProg(cur); renderStats();
+  });
+  document.getElementById("nbtn").addEventListener("click", function(){
+    if (!cur) return;
+    var nxt = PAPERS[(cur._i + 1) % PAPERS.length];
+    openQuiz(nxt.n, true);
+  });
+  window.addEventListener("hashchange", function(){
+    var m = /#(\d+)/.exec(location.hash);
+    if (m) openQuiz(parseInt(m[1], 10), false); else goHome();
+  });
+
+  /* ---------------- 启动 ---------------- */
+  renderStats();
+  renderList();
+  var m0 = /#(\d+)/.exec(location.hash);
+  if (m0) openQuiz(parseInt(m0[1], 10), false);
+})();
+</script>
+</body>
+</html>
